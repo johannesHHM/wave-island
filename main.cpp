@@ -2,6 +2,8 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 #include <vector>
 
 float p = 1.0;
@@ -176,7 +178,7 @@ public:
 
       // Set connections
       switch (tile.type) {
-      case air:
+      case air: {
         tile.x_1 = empty;
         tile.x_0 = empty;
         tile.y_1 = empty;
@@ -184,22 +186,29 @@ public:
         tile.z_1 = empty;
         tile.z_0 = empty;
         break;
-      case grass:
+      }
+      case grass: {
         tile.x_1 = one;
         tile.x_0 = one;
         tile.y_1 = empty;
         tile.y_0 = empty;
         tile.z_1 = one;
         tile.z_0 = one;
-        break;
-      case water:
+
+        polygon_data polygon = {0.2, 0.8, 0.2, {0.0, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.0, 0.5, p}};
+        tile.polygons.push_back(polygon);
+      } break;
+      case water: {
         tile.x_1 = one;
         tile.x_0 = one;
         tile.y_1 = empty;
         tile.y_0 = empty;
         tile.z_1 = one;
         tile.z_0 = one;
-        break;
+
+        polygon_data polygon = {0.2, 0.2, 0.8, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
+        tile.polygons.push_back(polygon);
+      } break;
       }
 
       // tile.print();
@@ -271,6 +280,27 @@ public:
     return lowest_point;
   }
 
+  tile_instance collapseTileAt(point p) {
+    std::vector<tile_instance> *poss_tiles = &possible_tiles[p.x][p.y][p.z];
+    tile_instance pick = poss_tiles->at(rand() % poss_tiles->size());
+    poss_tiles->resize(1);
+    poss_tiles->at(0) = pick;
+    return pick;
+  }
+
+  void setTiles() {
+    // tiles[2][2][2] = example_tiles[possible_tiles[2][2][2][0]];
+    // std::cout << &tiles[2][2][2] << std::endl;
+    // std::cout << &example_tiles[possible_tiles[2][2][2][0]] << std::endl;
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < size; y++) {
+        for (int z = 0; z < size; z++) {
+          tiles[x][y][z] = example_tiles[possible_tiles[x][y][z][0]];
+        }
+      }
+    }
+  }
+
   void generateWorld() {
     generateExampleList();
     generateNeighbourList();
@@ -279,23 +309,8 @@ public:
     for (int x = 0; x < size; x++) {
       for (int y = 0; y < size; y++) {
         for (int z = 0; z < size; z++) {
-          Tile tile;
-          if (y == 1 and x == 1 and z == 0) {
-            tile.type = grass;
-            tile.rotation = 90.0;
-          }
-          if (y == 0 and x == 3) {
-            tile.type = water;
-          }
-          if (tile.type == grass) {
-            polygon_data polygon = {0.2, 0.8, 0.2, {0.0, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.0, 0.5, p}};
-            tile.polygons.push_back(polygon);
-
-          } else if (tile.type == water) {
-            polygon_data polygon = {0.2, 0.2, 0.8, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
-            tile.polygons.push_back(polygon);
-          }
-          tiles[x][y][z] = tile;
+          collapseTileAt({x, y, z});
+          tiles[x][y][z].drawTile();
         }
       }
     }
@@ -319,12 +334,19 @@ public:
 World world;
 
 void initWorld() {
+
+  srand(time(NULL));
+
   world.generateWorld();
 
   point low = world.findLowestEntropy();
   std::cout << low.x << std::endl;
   std::cout << low.y << std::endl;
   std::cout << low.z << std::endl;
+  tile_instance til_ins = world.collapseTileAt(low);
+  std::cout << til_ins << std::endl;
+
+  world.setTiles();
 }
 
 void myInit() {
@@ -354,7 +376,7 @@ int main(int argc, char **argv) {
 
   glutInit(&argc, argv);
   glutInitWindowSize(600, 600);
-  glutInitWindowPosition(50, 50);
+  glutInitWindowPosition(700, 50);
   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
   glutCreateWindow("Islands");
 
