@@ -24,8 +24,20 @@ Tile tile12;
 Tile tile13;
 Doodad doodad1;
 
+struct color {
+  float r;
+  float g;
+  float b;
+};
+
+// BAD NORTH
+color water_color = {0.56863, 0.6902, 0.6902};
+color grass_color = {0.64706, 0.75294, 0.61569};
+color cliff_color = {0.76471, 0.82353, 0.79608};
+color beach_color = {0.76471, 0.82353, 0.79608};
+
 void myInit() {
-  glClearColor(0.8, 0.8, 0.8, 1);
+  glClearColor(0.4, 0.8, 0.4, 1);
   glEnable(GL_DEPTH_TEST);
 
   glMatrixMode(GL_PROJECTION);
@@ -37,40 +49,34 @@ void myInit() {
 
   glTranslatef(-1, -1, -1);
 
-  tile2.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-  tile2.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+  tile2.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+  tile2.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
 
-  tile3.polygons.push_back({0.2, 0.8, 0.2, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-  tile3.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+  tile2.rotation = 90;
 
-  tile4.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+  tile3.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+  tile3.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
 
-  tile5.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+  tile3.rotation = 90;
 
-  tile6.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-  tile6.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+  tile4.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+  tile4.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
 
-  tile7.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
-  tile7.polygons.push_back({0.2, 0.8, 0.2, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+  tile5.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
+  tile5.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
 
-  tile8.polygons.push_back({0.2, 0.8, 0.2, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
-  tile8.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+  tile6.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+  tile6.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+  tile6.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
 
-  tile9.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+  tile7.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+  tile7.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+  tile7.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
 
-  tile10.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
-  tile10.polygons.push_back({0.2, 0.8, 0.2, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
+  tile8.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+  tile8.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
 
-  tile11.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-  tile11.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-  tile11.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-
-  tile12.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
-  tile12.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-  tile12.polygons.push_back({0.2, 0.8, 0.2, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-
-  tile13.polygons.push_back({0.2, 0.8, 0.2, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-  tile13.polygons.push_back({0.024, 0.396, 0.235, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+  tile8.rotation = 90;
 }
 void draw() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -81,43 +87,46 @@ void draw() {
   tile1.drawTile();
 
   glTranslatef(-1, 0, 0);
-  tile1.drawTile();
+  tile8.drawTile();
 
-  glTranslatef(-1, 0, 0);
-  tile1.drawTile();
+  // glTranslatef(-1, 0, 0);
+  // tile1.drawTile();
 
-  glTranslatef(-1, 0, 0);
-  tile1.drawTile();
+  // glTranslatef(-1, 0, 0);
+  // tile1.drawTile();
 
-  glTranslatef(0, 0, -1);
-  tile1.drawTile();
+  // glTranslatef(-1, 0, 0);
+  // tile1.drawTile();
 
-  glTranslatef(1, 0, 0);
-  tile1.drawTile();
+  // glTranslatef(0, 0, -1);
+  // tile1.drawTile();
 
-  glTranslatef(1, 0, 0);
-  tile1.drawTile();
+  // glTranslatef(1, 0, 0);
+  // tile1.drawTile();
 
-  glTranslatef(1, 0, 0);
-  tile1.drawTile();
+  // glTranslatef(1, 0, 0);
+  // tile1.drawTile();
 
-  glTranslatef(0, 0, -1);
-  tile1.drawTile();
+  // glTranslatef(1, 0, 0);
+  // tile1.drawTile();
 
-  glTranslatef(-1, 0, 0);
-  tile1.drawTile();
+  // glTranslatef(0, 0, -1);
+  // tile1.drawTile();
 
-  glTranslatef(-1, 0, 0);
-  tile1.drawTile();
+  // glTranslatef(-1, 0, 0);
+  // tile1.drawTile();
 
-  glTranslatef(-1, 0, 0);
-  tile1.drawTile();
+  // glTranslatef(-1, 0, 0);
+  // tile1.drawTile();
 
-  glTranslatef(2, 0, 1);
+  // glTranslatef(-1, 0, 0);
+  // tile1.drawTile();
 
-  glColor3f(0.23529, 0.3451, 0.29804);
-  glTranslatef(0.5, 0.3, 0.5);
-  gluSphere(gluNewQuadric(), 0.3, 8, 8);
+  // glTranslatef(2, 0, 1);
+
+  // glColor3f(0.23529, 0.3451, 0.29804);
+  // glTranslatef(0.5, 0.3, 0.5);
+  // gluSphere(gluNewQuadric(), 0.3, 8, 8);
 
   glutSwapBuffers();
 }

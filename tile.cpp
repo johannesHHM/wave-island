@@ -203,6 +203,12 @@ enum connections {
   cliff_top_hor_c_3
 };
 
+enum doodad_connection {
+  grass_dood_big_c,
+  grass_dood_small_c,
+  none_dood_c
+};
+
 struct polygon_data {
   float red;
   float green;
@@ -232,6 +238,12 @@ public:
   connections x_0;
   connections z_1;
   connections z_0;
+
+  doodad_connection dood_0;
+  doodad_connection dood_1;
+  doodad_connection dood_2;
+  doodad_connection dood_3;
+  doodad_connection dood_center;
 
   std::vector<tile_instance> neighbours_y_1;
   std::vector<tile_instance> neighbours_y_0;
@@ -308,7 +320,7 @@ public:
       glRotatef(rotation, 0.0, 1.0, 0.0);
       glTranslatef(-0.5, -0.5, -0.5);
       drawSquare(polygon);
-      // drawLine(polygon);
+      drawLine(polygon);
       glTranslatef(0.5, 0.5, 0.5);
       glRotatef(-rotation, 0.0, 1.0, 0.0);
     }

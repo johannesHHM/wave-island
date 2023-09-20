@@ -7,7 +7,8 @@
 #include <vector>
 
 enum doodad_instance {
-  grass_doodad
+  bushes_big,
+  bushes_small
 };
 
 struct circle_data {
@@ -28,6 +29,8 @@ public:
   float x;
   float y;
   float z;
+
+  doodad_instance type;
 
   std::vector<polygon_data> polygons;
   std::vector<circle_data> circles;
