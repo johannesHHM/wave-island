@@ -43,7 +43,7 @@ void printVectorPoint(std::vector<point> vec) {
 class World {
 public:
   static const int size = 10; // 12?
-  static const int height = 5;
+  static const int height = 4;
   Tile tiles[size][height][size];
   Tile example_tiles[tile_amount];
 
@@ -55,14 +55,22 @@ public:
       for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
           for (int i = 0; i < tile_amount; i++) {
-            int restrict_size = 1;
-            if ((x > restrict_size and x < size - (restrict_size + 1)) and (z > restrict_size and z < size - (restrict_size + 1))) {
-              if (i != water and i != beach_0 and i != beach_1 and i != beach_2 and i != beach_3 and i != beach_corn_0 and i != beach_corn_1 and i != beach_corn_2 and i != beach_corn_3 and i != beach_in_corn_0 and i != beach_in_corn_1 and i != beach_in_corn_2 and i != beach_in_corn_3) {
-                possible_tiles[x][y][z].push_back(tile_instance(i));
-              }
-            } else {
-              possible_tiles[x][y][z].push_back(tile_instance(i));
-            }
+            possible_tiles[x][y][z].push_back(tile_instance(i));
+            // TODO restricting start tiles may make neighbors not correct?
+            // int restrict_size = 2;
+            // if ((x > restrict_size and x < size - (restrict_size + 1)) and (z > restrict_size and z < size - (restrict_size + 1))) {
+            //   if (i != water and i != beach_0 and i != beach_1 and i != beach_2 and i != beach_3 and i != beach_corn_0 and i != beach_corn_1 and i != beach_corn_2 and i != beach_corn_3 and i != beach_in_corn_0 and i != beach_in_corn_1 and i != beach_in_corn_2 and i != beach_in_corn_3) {
+            //     possible_tiles[x][y][z].push_back(tile_instance(i));
+            //   }
+
+            //   // if (y > 1) {
+            //   //   if (i != water and i != beach_0 and i != beach_1 and i != beach_2 and i != beach_3 and i != beach_corn_0 and i != beach_corn_1 and i != beach_corn_2 and i != beach_corn_3 and i != beach_in_corn_0 and i != beach_in_corn_1 and i != beach_in_corn_2 and i != beach_in_corn_3) {
+            //   //     possible_tiles[x][y][z].push_back(tile_instance(i));
+            //   //   }
+            // } else {
+            //   possible_tiles[x][y][z].push_back(tile_instance(i));
+            // }
+            // }
           }
         }
       }
@@ -797,6 +805,62 @@ public:
         tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
+      case cliff_tri_corn_M_0: {
+        tile.rotation = 0;
+        tile.x_1 = cliff_top_hor_c_0;
+        tile.x_0 = cliff_mid_hor_c_0;
+        tile.y_1 = cliff_vert_corn_1;
+        tile.y_0 = cliff_vert_0;
+        tile.z_1 = air_c;
+        tile.z_0 = cliff_bot_hor_c_1;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_tri_corn_M_1: {
+        tile.rotation = 90;
+        tile.x_1 = air_c;
+        tile.x_0 = cliff_bot_hor_c_2;
+        tile.y_1 = cliff_vert_corn_2;
+        tile.y_0 = cliff_vert_1;
+        tile.z_1 = cliff_mid_hor_c_1;
+        tile.z_0 = cliff_top_hor_c_1;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_tri_corn_M_2: {
+        tile.rotation = 180;
+        tile.x_1 = cliff_mid_hor_c_2;
+        tile.x_0 = cliff_top_hor_c_2;
+        tile.y_1 = cliff_vert_corn_3;
+        tile.y_0 = cliff_vert_2;
+        tile.z_1 = cliff_bot_hor_c_3;
+        tile.z_0 = air_c;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_tri_corn_M_3: {
+        tile.rotation = 270;
+        tile.x_1 = cliff_bot_hor_c_0;
+        tile.x_0 = air_c;
+        tile.y_1 = cliff_vert_corn_0;
+        tile.y_0 = cliff_vert_3;
+        tile.z_1 = cliff_top_hor_c_3;
+        tile.z_0 = cliff_mid_hor_c_3;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        break;
+      }
       }
       example_tiles[i] = tile;
     }
@@ -828,7 +892,7 @@ public:
           tile->neighbours_z_0.push_back(other->type);
         }
       }
-      tile->print();
+      // tile->print();
     }
   }
 
@@ -838,7 +902,7 @@ public:
     for (int x = 0; x < size; x++) {
       for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
-          if (possible_tiles[x][y][z].size() < lowest) {
+          if (possible_tiles[x][y][z].size() <= lowest) {
             if (not collapsed[x][y][z]) {
               lowest = possible_tiles[x][y][z].size();
               lowest_point = {x, y, z};
@@ -856,14 +920,15 @@ public:
     }
     std::vector<tile_instance> *poss_tiles = &possible_tiles[p.x][p.y][p.z];
 
-    std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
-    printVectorType(*poss_tiles);
-    std::cout << std::endl;
+    // std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
+    // printVectorType(*poss_tiles);
+    // std::cout << std::endl;
 
     if (poss_tiles->size() < 1) {
       std::cout << "POSSIBLE TILES IS EMPTY" << std::endl;
       printPoint(p);
     }
+
     for (tile_instance tile : *poss_tiles) {
       if (wanted_tile == tile) {
         poss_tiles->resize(1);
@@ -908,6 +973,10 @@ public:
       printPoint(p);
     }
     tile_instance pick = poss_tiles->at(rand() % poss_tiles->size());
+    if (pick == cliff_tri_corn_0 or pick == cliff_tri_corn_1 or pick == cliff_tri_corn_2 or pick == cliff_tri_corn_3) {
+      std::cout << "LE PROBLEM " << typeStrings[pick] << " PICKED AT:" << std::endl;
+      printPoint(p);
+    }
     poss_tiles->resize(1);
     poss_tiles->at(0) = pick;
 
@@ -984,9 +1053,7 @@ public:
   }
 
   void propagate(point p) {
-    // p = {2, 2, 2};
     std::vector<point> stack;
-    // stack.push_back({1, 2, 2});
     stack.push_back(p);
 
     while (stack.size() > 0) {
@@ -1078,6 +1145,7 @@ public:
   }
 
   void iterate() {
+    int i = 1;
     while (true) {
       point p = findLowestEntropy();
       if (p.x == -1) {
@@ -1086,6 +1154,8 @@ public:
       collapseTileAt(p);
       propagate(p);
       glutPostRedisplay();
+      // std::cout << i << std::endl;
+      i++;
     }
   }
 
@@ -1103,12 +1173,17 @@ public:
     for (int i = 0; i < size; i++) {
       collapseTileAtTo({i, h, 0}, tile);
       propagate({i, h, 0});
-      collapseTileAtTo({0, h, i}, tile);
-      propagate({0, h, i});
+
       collapseTileAtTo({i, h, size - 1}, tile);
       propagate({i, h, size - 1});
-      collapseTileAtTo({size - 1, h, i}, tile);
-      propagate({size - 1, h, i});
+
+      if (i != 0 and i != size - 1) {
+        collapseTileAtTo({0, h, i}, tile);
+        propagate({0, h, i});
+
+        collapseTileAtTo({size - 1, h, i}, tile);
+        propagate({size - 1, h, i});
+      }
     }
   }
 
@@ -1126,9 +1201,11 @@ public:
     generateNeighbourList();
     fillPossibleTiles();
 
-    // collapseBorderTo(0, water); //TODO fix this finc, collapse
+    collapseBorderTo(0, water);
 
-    // collapseLayerTo(4, air); // TODO fix this func, collapse
+    collapseLayerTo(3, air);
+
+    // collapseLayerTo(0, empty);
 
     iterate();
 
@@ -1200,8 +1277,7 @@ World world;
 void initWorld() {
   int seed = time(NULL);
   srand(seed);
-  std::cout << "seed: " << seed << std::endl
-            << std::endl;
+  std::cout << "seed: " << seed << std::endl;
 }
 
 void myInit() {
@@ -1286,6 +1362,7 @@ void input(unsigned char ch, int x, int y) {
   glutPostRedisplay();
 }
 bool once = false;
+bool once2 = false;
 
 void idle() {
   rotation_velocity -= 0.1;
@@ -1296,10 +1373,24 @@ void idle() {
   }
 
   if (not once) {
+    std::cout << "Generating World" << std::endl;
     world.generateWorld();
     once = true;
   }
+  if (once2) {
+    world.generateExampleList();
+    world.generateNeighbourList();
+    world.fillPossibleTiles();
+
+    world.collapseBorderTo(0, water);
+
+    world.collapseLayerTo(4, air);
+    once2 = false;
+    std::cout << "init done" << std::endl;
+  }
+
   if (step) {
+    std::cout << "Generating World Step By Step" << std::endl;
     world.iterateOnce();
     step = false;
   }
@@ -1307,7 +1398,7 @@ void idle() {
 };
 
 void reshape(int w, int h) {
-  std::cout << w << h << std::endl;
+  // std::cout << w << h << std::endl;
   float ratio = 1.0 * w / h;
   glViewport(0, 0, w, h);
   glFrustum(-1 * ratio, 1 * ratio, -1, 1, 3, 300);
