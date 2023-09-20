@@ -5,6 +5,8 @@
 #include <iostream>
 #include <vector>
 
+// File for tile class and tile information
+
 const int tile_amount = 68;
 const int connection_amount = 32;
 
@@ -242,6 +244,12 @@ struct polygon_data {
   float p3[3];
   float p4[3];
   float p5[3];
+};
+
+struct point {
+  int x;
+  int y;
+  int z;
 };
 
 class Tile {
