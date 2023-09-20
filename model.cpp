@@ -34,6 +34,7 @@ Tile tile19;
 Tile tile20;
 
 Doodad doodad1;
+Doodad doodad2;
 
 void myInit() {
   glClearColor(0.5, 0.5, 0.8, 1);
@@ -109,6 +110,9 @@ void myInit() {
   tile18.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
   tile18.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {1.0, 0.0, 0.7}, {0.7, 0.0, 1.0}, {0.6, 0.2, 1.0}, {1.0, 0.25, 0.7}});
 
+  tile19.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+  tile19.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+
   //HOUSE
   doodad1.polygons.push_back({wall.r, wall.g, wall.b, 4, {0.3, 0.2, 0.35}, {0.7, 0.2, 0.35}, {0.7, 0.45, 0.35}, {0.3, 0.45, 0.35}});
   doodad1.polygons.push_back({wall.r, wall.g, wall.b, 4, {0.3, 0.2, 0.65}, {0.7, 0.2, 0.65}, {0.7, 0.45, 0.65}, {0.3, 0.45, 0.65}});
@@ -122,7 +126,12 @@ void myInit() {
   doodad1.polygons.push_back({wall.r, wall.g, wall.b, 3, {0.3, 0.45, 0.65}, {0.3, 0.45, 0.35}, {0.3, 0.6, 0.5}});
   doodad1.polygons.push_back({wall.r, wall.g, wall.b, 3, {0.7, 0.45, 0.65}, {0.7, 0.45, 0.35}, {0.7, 0.6, 0.5}});
 
-  doodad1.rotation = 45;
+  doodad1.polygons.push_back({door.r, door.g, door.b, 4, {0.29, 0.2, 0.45}, {0.29, 0.2, 0.55}, {0.29, 0.4, 0.55}, {0.29, 0.4, 0.45}});
+
+  doodad1.rotation = 180;
+
+  doodad2.type = bushes_small;
+  fillDoodadData(doodad2);
 
   tile8.rotation = 90;
 }
@@ -134,22 +143,22 @@ void draw() {
 
   tile1.drawTile();
 
-  tile11.rotation = 0;
-  tile12.rotation = 0;
+  // tile11.rotation = 0;
+  // tile12.rotation = 0;
 
-  glTranslatef(0, 0, 1);
-  tile14.drawTile();
+  // glTranslatef(0, 0, 1);
+  // tile14.drawTile();
 
-  glTranslatef(1, 0, 0);
-  //tile11.drawTile();
+  // glTranslatef(1, 0, 0);
+  // //tile11.drawTile();
 
-  glTranslatef(1, 0, 0);
-  tile18.drawTile();
+  // glTranslatef(1, 0, 0);
+  // tile18.drawTile();
 
-  tile15.rotation = 90;
+  // tile15.rotation = 90;
 
-  glTranslatef(0, -1, 0);
-  tile15.drawTile();
+  // glTranslatef(0, -1, 0);
+  // tile15.drawTile();
 
   // glTranslatef(0, -1, 0);
   // tile11.drawTile();
@@ -204,7 +213,7 @@ void draw() {
   // glTranslatef(1, 0, 0);
   // tile16.drawTile();
 
-  /*glTranslatef(-1, 0, 0);
+  glTranslatef(-1, 0, 0);
   tile1.drawTile();
 
   glTranslatef(-1, 0, 0);
@@ -236,7 +245,11 @@ void draw() {
 
   glTranslatef(2, 0, 1);
 
-  doodad1.drawDoodad();*/
+  doodad1.drawDoodad();
+
+  glTranslatef(1, 0, -1);
+
+  doodad2.drawDoodad();
 
   // glColor3f(0.23529, 0.3451, 0.29804);
   // glTranslatef(0.5, 0.3, 0.5);

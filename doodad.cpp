@@ -139,24 +139,64 @@ public:
 
 void fillDoodadData(Doodad &dood) {
   std::vector<color> colors;
-  //colors.push_back({0.23529, 0.35294, 0.30588});
-  colors.push_back({0.28627, 0.43922, 0.36471});
   colors.push_back({0.21961, 0.32157, 0.28627});
+  colors.push_back({0.25529, 0.37294, 0.32588});
+  colors.push_back({0.28627, 0.43922, 0.36471});
 
-  color randColor1 = colors.at(rand() % colors.size());
-  color randColor2 = colors.at(rand() % colors.size());
-  color randColor3 = colors.at(rand() % colors.size());
+  int initial = rand() % 2;
+
+  color dark = colors[initial];
+  color mid = colors[initial + 1];
 
   switch (dood.type) {
   case bushes_big: {
-    dood.circles.push_back({randColor1.r, randColor1.g, randColor1.b, 0.7, 0.3, 0.6, 0.3, 8});
-    dood.circles.push_back({randColor2.r, randColor2.g, randColor2.b, 0.45, 0.25, 0.35, 0.2, 8});
-    dood.circles.push_back({randColor3.r, randColor3.g, randColor3.b, 0.8, 0.3, 0.3, 0.25, 8});
+    dood.circles.push_back({dark.r, dark.g, dark.b, 0.5, 0.25, 0.5, 0.3, 8});
+    dood.circles.push_back({mid.r, mid.g, mid.b, 0.5, 0.45, 0.5, 0.25, 8});
+    dood.circles.push_back({mid.r, mid.g, mid.b, 0.5, 0.61, 0.5, 0.2, 8});
+    dood.circles.push_back({mid.r, mid.g, mid.b, 0.5, 0.76, 0.5, 0.1, 8});
     break;
   }
   case bushes_small: {
-    dood.circles.push_back({randColor1.r, randColor1.g, randColor1.b, 0.25, 0.25, 0.25, 0.2, 8});
-    //dood.circles.push_back({randColor2.r, randColor2.g, randColor2.b, 0.24, 0.25, 0.22, 0.21, 8});
+    int bush_numb = rand() % 5;
+
+    float bush_x = 0.05 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (0.45 - 0.05)));
+    float bush_z = 0.05 + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (0.45 - 0.05)));
+
+    switch (bush_numb) {
+    case 1: {
+      dood.circles.push_back({dark.r, dark.g, dark.b, bush_x, 0.25, bush_z, 0.2, 8});
+      dood.circles.push_back({dark.r, dark.g, dark.b, bush_x, 0.40, bush_z, 0.15, 8});
+      dood.circles.push_back({mid.r, mid.g, mid.b, bush_x, 0.515, bush_z, 0.1, 8});
+      break;
+    }
+    case 2: {
+      dood.circles.push_back({dark.r, dark.g, dark.b, bush_x, 0.25, bush_z, 0.2, 8});
+      dood.circles.push_back({dark.r, dark.g, dark.b, bush_x, 0.40, bush_z, 0.15, 8});
+      dood.circles.push_back({mid.r, mid.g, mid.b, bush_x, 0.515, bush_z, 0.1, 8});
+      dood.circles.push_back({mid.r, mid.g, mid.b, bush_x, 0.58, bush_z, 0.08, 8});
+      break;
+    }
+    case 3: {
+      dood.circles.push_back({dark.r, dark.g, dark.b, bush_x, 0.25, bush_z, 0.2, 8});
+      dood.circles.push_back({mid.r, mid.g, mid.b, bush_x, 0.40, bush_z, 0.15, 8});
+      dood.circles.push_back({mid.r, mid.g, mid.b, bush_x, 0.515, bush_z, 0.1, 8});
+      break;
+    }
+    case 4: {
+      dood.circles.push_back({dark.r, dark.g, dark.b, bush_x, 0.25, bush_z, 0.2, 8});
+      dood.circles.push_back({mid.r, mid.g, mid.b, bush_x, 0.40, bush_z, 0.15, 8});
+      dood.circles.push_back({mid.r, mid.g, mid.b, bush_x, 0.515, bush_z, 0.1, 8});
+      dood.circles.push_back({mid.r, mid.g, mid.b, bush_x, 0.58, bush_z, 0.08, 8});
+      break;
+    }
+    case 5: {
+      dood.circles.push_back({dark.r, dark.g, dark.b, bush_x, 0.25, bush_z, 0.2, 8});
+      dood.circles.push_back({dark.r, dark.g, dark.b, bush_x, 0.40, bush_z, 0.15, 8});
+      dood.circles.push_back({dark.r, dark.g, dark.b, bush_x, 0.515, bush_z, 0.1, 8});
+      break;
+    }
+    }
+
     break;
   }
   case house: {
@@ -171,6 +211,8 @@ void fillDoodadData(Doodad &dood) {
 
     dood.polygons.push_back({wall.r, wall.g, wall.b, 3, {0.3, 0.45, 0.65}, {0.3, 0.45, 0.35}, {0.3, 0.6, 0.5}});
     dood.polygons.push_back({wall.r, wall.g, wall.b, 3, {0.7, 0.45, 0.65}, {0.7, 0.45, 0.35}, {0.7, 0.6, 0.5}});
+
+    dood.polygons.push_back({door.r, door.g, door.b, 4, {0.29, 0.2, 0.45}, {0.29, 0.2, 0.55}, {0.29, 0.4, 0.55}, {0.29, 0.4, 0.45}});
 
     dood.rotation = rand() % 360;
     break;

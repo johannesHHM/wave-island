@@ -28,7 +28,8 @@ color light_slate_gray = {0.45098, 0.55294, 0.61569};
 color sky = {0.52941, 0.80784, 0.92157};
 
 color wall = {0.76471, 0.81353, 0.78608};
-color roof = {0.82039, 0.62941, 0.60588};
+color roof = {0.667, 0.671, 0.616};
+color door = {0.667, 0.671, 0.616};
 
 // BAD NORTH
 color water_color = {0.52863, 0.6902, 0.7902};

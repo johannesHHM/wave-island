@@ -632,7 +632,7 @@ Tile fillTileData(Tile tile) {
     tile.z_0 = beach_c_0;
 
     tile.dood_0 = none_dood_c;
-    tile.dood_1 = none_dood_c;
+    tile.dood_1 = grass_dood_small_c;
     tile.dood_2 = none_dood_c;
     tile.dood_3 = none_dood_c;
     tile.dood_center = none_dood_c;
@@ -653,7 +653,7 @@ Tile fillTileData(Tile tile) {
 
     tile.dood_0 = none_dood_c;
     tile.dood_1 = none_dood_c;
-    tile.dood_2 = none_dood_c;
+    tile.dood_2 = grass_dood_small_c;
     tile.dood_3 = none_dood_c;
     tile.dood_center = none_dood_c;
 
@@ -674,7 +674,7 @@ Tile fillTileData(Tile tile) {
     tile.dood_0 = none_dood_c;
     tile.dood_1 = none_dood_c;
     tile.dood_2 = none_dood_c;
-    tile.dood_3 = none_dood_c;
+    tile.dood_3 = grass_dood_small_c;
     tile.dood_center = none_dood_c;
 
     tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
@@ -691,7 +691,7 @@ Tile fillTileData(Tile tile) {
     tile.z_1 = one_s;
     tile.z_0 = beach_c_2;
 
-    tile.dood_0 = none_dood_c;
+    tile.dood_0 = grass_dood_small_c;
     tile.dood_1 = none_dood_c;
     tile.dood_2 = none_dood_c;
     tile.dood_3 = none_dood_c;
@@ -1010,8 +1010,8 @@ Tile fillTileData(Tile tile) {
 
     tile.dood_0 = none_dood_c;
     tile.dood_1 = none_dood_c;
-    tile.dood_2 = none_dood_c;
-    tile.dood_3 = none_dood_c;
+    tile.dood_2 = grass_dood_small_c;
+    tile.dood_3 = grass_dood_small_c;
     tile.dood_center = none_dood_c;
 
     tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
@@ -1027,10 +1027,10 @@ Tile fillTileData(Tile tile) {
     tile.z_1 = cliff_top_hor_c_1;
     tile.z_0 = cliff_top_hor_c_1;
 
-    tile.dood_0 = none_dood_c;
+    tile.dood_0 = grass_dood_small_c;
     tile.dood_1 = none_dood_c;
     tile.dood_2 = none_dood_c;
-    tile.dood_3 = none_dood_c;
+    tile.dood_3 = grass_dood_small_c;
     tile.dood_center = none_dood_c;
 
     tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
@@ -1046,8 +1046,8 @@ Tile fillTileData(Tile tile) {
     tile.z_1 = one_s;
     tile.z_0 = air_c;
 
-    tile.dood_0 = none_dood_c;
-    tile.dood_1 = none_dood_c;
+    tile.dood_0 = grass_dood_small_c;
+    tile.dood_1 = grass_dood_small_c;
     tile.dood_2 = none_dood_c;
     tile.dood_3 = none_dood_c;
     tile.dood_center = none_dood_c;
@@ -1066,8 +1066,8 @@ Tile fillTileData(Tile tile) {
     tile.z_0 = cliff_top_hor_c_3;
 
     tile.dood_0 = none_dood_c;
-    tile.dood_1 = none_dood_c;
-    tile.dood_2 = none_dood_c;
+    tile.dood_1 = grass_dood_small_c;
+    tile.dood_2 = grass_dood_small_c;
     tile.dood_3 = none_dood_c;
     tile.dood_center = none_dood_c;
 
@@ -1160,7 +1160,7 @@ Tile fillTileData(Tile tile) {
 
     tile.dood_0 = none_dood_c;
     tile.dood_1 = none_dood_c;
-    tile.dood_2 = none_dood_c;
+    tile.dood_2 = grass_dood_small_c;
     tile.dood_3 = none_dood_c;
     tile.dood_center = none_dood_c;
 
@@ -1180,7 +1180,7 @@ Tile fillTileData(Tile tile) {
     tile.dood_0 = none_dood_c;
     tile.dood_1 = none_dood_c;
     tile.dood_2 = none_dood_c;
-    tile.dood_3 = none_dood_c;
+    tile.dood_3 = grass_dood_small_c;
     tile.dood_center = none_dood_c;
 
     tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
@@ -1196,7 +1196,7 @@ Tile fillTileData(Tile tile) {
     tile.z_1 = cliff_top_hor_c_1;
     tile.z_0 = one_s;
 
-    tile.dood_0 = none_dood_c;
+    tile.dood_0 = grass_dood_small_c;
     tile.dood_1 = none_dood_c;
     tile.dood_2 = none_dood_c;
     tile.dood_3 = none_dood_c;
@@ -1216,7 +1216,7 @@ Tile fillTileData(Tile tile) {
     tile.z_0 = cliff_top_hor_c_3;
 
     tile.dood_0 = none_dood_c;
-    tile.dood_1 = none_dood_c;
+    tile.dood_1 = grass_dood_small_c;
     tile.dood_2 = none_dood_c;
     tile.dood_3 = none_dood_c;
     tile.dood_center = none_dood_c;

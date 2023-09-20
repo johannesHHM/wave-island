@@ -2,7 +2,9 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <iostream>
+#include <limits>
 #include <set>
+#include <sstream>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -15,9 +17,9 @@
 
 bool step = false;
 
-double cameraX = 50;
-double cameraY = 40;
-double cameraZ = 50;
+double cameraX = 70;
+double cameraY = 45;
+double cameraZ = 70;
 
 float island_rotation = 0;
 float rotation_velocity = 0;
@@ -42,23 +44,24 @@ void printVectorPoint(std::vector<point> vec) {
 
 class World {
 public:
-  static const int size = 12; // 12?
-  static const int height = 5;
-  Tile tiles[size][height][size];
+  const static int MAX_ISLAND_SIZE = 50;
+  int size = 12; // 12?
+  int height = 6;
+  int wanted_houses = 0;
+  int seed = 1;
+  Tile tiles[MAX_ISLAND_SIZE][MAX_ISLAND_SIZE][MAX_ISLAND_SIZE];
   Tile example_tiles[tile_amount];
 
-  std::vector<tile_instance> possible_tiles[size][height][size];
+  std::vector<tile_instance> possible_tiles[MAX_ISLAND_SIZE][MAX_ISLAND_SIZE][MAX_ISLAND_SIZE];
   std::vector<Doodad> doodads;
-  bool collapsed[size][height][size] = {false};
+  bool collapsed[MAX_ISLAND_SIZE][MAX_ISLAND_SIZE][MAX_ISLAND_SIZE] = {false};
 
   void fillPossibleTiles() {
     for (int x = 0; x < size; x++) {
       for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
           for (int i = 0; i < tile_amount; i++) {
-
-            // possible_tiles[x][y][z].push_back(tile_instance(i));
-
+            // No need for ocean tiles above sea level
             if (y > 2) {
               if (i != water and i != beach_0 and i != beach_1 and i != beach_2 and i != beach_3 and i != beach_corn_0 and i != beach_corn_1 and i != beach_corn_2 and i != beach_corn_3 and i != beach_in_corn_0 and i != beach_in_corn_1 and i != beach_in_corn_2 and i != beach_in_corn_3) {
                 possible_tiles[x][y][z].push_back(tile_instance(i));
@@ -66,21 +69,6 @@ public:
             } else {
               possible_tiles[x][y][z].push_back(tile_instance(i));
             }
-
-            // TODO restricting start tiles may make neighbors not correct?
-            // int restrict_size = 1;
-            // if ((x > restrict_size and x < size - (restrict_size + 1)) and (z > restrict_size and z < size - (restrict_size + 1))) {
-            //   if (i != water and i != beach_0 and i != beach_1 and i != beach_2 and i != beach_3 and i != beach_corn_0 and i != beach_corn_1 and i != beach_corn_2 and i != beach_corn_3 and i != beach_in_corn_0 and i != beach_in_corn_1 and i != beach_in_corn_2 and i != beach_in_corn_3) {
-            //     possible_tiles[x][y][z].push_back(tile_instance(i));
-            //   }
-
-            //   // if (y > 1) {
-            //   //   if (i != water and i != beach_0 and i != beach_1 and i != beach_2 and i != beach_3 and i != beach_corn_0 and i != beach_corn_1 and i != beach_corn_2 and i != beach_corn_3 and i != beach_in_corn_0 and i != beach_in_corn_1 and i != beach_in_corn_2 and i != beach_in_corn_3) {
-            //   //     possible_tiles[x][y][z].push_back(tile_instance(i));
-            //   //   }
-            // } else {
-            //   possible_tiles[x][y][z].push_back(tile_instance(i));
-            // }
           }
         }
       }
@@ -407,127 +395,68 @@ public:
     }
   }
 
+  bool populateDoodadQuad(Tile *tile, doodad_connection *connection, float x, float y, float z) {
+
+    bool filled = false;
+    Doodad dood;
+    dood.x = x;
+    dood.y = y;
+    dood.z = z;
+
+    if (rand() % 3) {
+      return false;
+    }
+
+    switch (*connection) {
+    case grass_dood_big_c: {
+      dood.type = bushes_big;
+      filled = true;
+      break;
+    }
+    case grass_dood_small_c: {
+      dood.type = bushes_small;
+      filled = true;
+      break;
+    }
+    case none_dood_c: {
+      break;
+    }
+    }
+    if (filled) {
+      fillDoodadData(dood);
+      doodads.push_back(dood);
+      return true;
+    }
+    return false;
+  }
+
+  void populateTileDoodads(Tile *tile, int &houses, point p) {
+    populateDoodadQuad(tile, &tile->dood_0, p.x, p.y, p.z + 0.5);
+    populateDoodadQuad(tile, &tile->dood_1, p.x + 0.5, p.y, p.z + 0.5);
+    populateDoodadQuad(tile, &tile->dood_2, p.x + 0.5, p.y, p.z);
+    populateDoodadQuad(tile, &tile->dood_3, p.x, p.y, p.z);
+
+    if (tile->type == grass and houses > 0) {
+      Doodad house_dood;
+      house_dood.type = house;
+      fillDoodadData(house_dood);
+      house_dood.x = p.x;
+      house_dood.y = p.y;
+      house_dood.z = p.z;
+      doodads.push_back(house_dood);
+      houses--;
+    } else {
+      //populateDoodadQuad(tile, &tile->dood_center, p.x, p.y, p.z);
+    }
+  }
+
   void populateDoodads() {
-    int houses = 2;
+    int houses = wanted_houses;
     for (int x = 0; x < size; x++) {
       for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
           Tile *tile = &tiles[x][y][z];
-
-          if (tile->type == grass and houses > 0) {
-            std::cout << "Populating a house." << std::endl;
-            Doodad house_dood;
-            house_dood.type = house;
-            fillDoodadData(house_dood);
-            house_dood.x = x;
-            house_dood.y = y;
-            house_dood.z = z;
-            doodads.push_back(house_dood);
-            houses--;
-          } else {
-            // BUSHES
-            switch (rand() % 6) {
-            case 1: {
-
-              Doodad dood_center;
-              switch (tile->dood_center) {
-              case grass_dood_big_c: {
-                dood_center.type = bushes_big;
-                fillDoodadData(dood_center);
-                dood_center.x = x;
-                dood_center.y = y;
-                dood_center.z = z;
-                doodads.push_back(dood_center);
-                break;
-              }
-              default: {
-                break;
-              }
-              }
-              break;
-            }
-
-            case 2: {
-
-              Doodad dood_0;
-              switch (tile->dood_0) {
-              case grass_dood_small_c: {
-                dood_0.type = bushes_small;
-                fillDoodadData(dood_0);
-                dood_0.x = x;
-                dood_0.y = y;
-                dood_0.z = z + 0.5;
-                doodads.push_back(dood_0);
-                break;
-              }
-              default: {
-                break;
-              }
-              }
-              break;
-            }
-            case 3: {
-
-              Doodad dood_1;
-              switch (tile->dood_1) {
-              case grass_dood_small_c: {
-                dood_1.type = bushes_small;
-                fillDoodadData(dood_1);
-                dood_1.x = x + 0.5;
-                dood_1.y = y;
-                dood_1.z = z + 0.5;
-                doodads.push_back(dood_1);
-                break;
-              }
-              default: {
-                break;
-              }
-              }
-              break;
-            }
-            case 4: {
-
-              Doodad dood_2;
-              switch (tile->dood_2) {
-              case grass_dood_small_c: {
-                dood_2.type = bushes_small;
-                fillDoodadData(dood_2);
-                dood_2.x = x + 0.5;
-                dood_2.y = y;
-                dood_2.z = z;
-                doodads.push_back(dood_2);
-                break;
-              }
-              default: {
-                break;
-              }
-              }
-              break;
-            }
-            case 5: {
-
-              Doodad dood_3;
-              switch (tile->dood_3) {
-              case grass_dood_small_c: {
-                dood_3.type = bushes_small;
-                fillDoodadData(dood_3);
-                dood_3.x = x;
-                dood_3.y = y;
-                dood_3.z = z;
-                doodads.push_back(dood_3);
-                break;
-              }
-              default: {
-                break;
-              }
-              }
-              break;
-            }
-            default: {
-              break;
-            }
-            }
-          }
+          populateTileDoodads(tile, houses, {x, y, z});
         }
       }
     }
@@ -546,7 +475,7 @@ public:
 
     populateDoodads();
 
-    std::cout << "World Complete" << std::endl;
+    std::cout << "World Complete !" << std::endl;
   }
 
   void drawDoodads() {
@@ -559,7 +488,6 @@ public:
 
   void drawTiles() {
     glTranslatef(0, -1, 0);
-    //drawOcean();
     glTranslatef(0, 1, 0);
     for (int x = 0; x < size; x++) {
       for (int y = 0; y < height; y++) {
@@ -577,10 +505,11 @@ public:
   void drawOcean() {
     glColor3f(water_color.r, water_color.g, water_color.b);
     glBegin(GL_POLYGON);
-    glVertex3f(-100, 0, -100);
-    glVertex3f(100, 0, -100);
-    glVertex3f(100, 0, 100);
-    glVertex3f(-100, 0, 100);
+    float size = 1000;
+    glVertex3f(-size, 0, -size);
+    glVertex3f(size, 0, -size);
+    glVertex3f(size, 0, size);
+    glVertex3f(-size, 0, size);
     glEnd();
   }
 
@@ -617,27 +546,54 @@ public:
 
 World world;
 
+int readNumber() {
+  int x = 0;
+  while (true) {
+    std::cin >> x;
+    if (!std::cin.fail()) {
+      break;
+    } else {
+      std::cout << "Bad entry. Enter a NUMBER: " << std::endl;
+      std::cin.clear();
+      std::cin.ignore(10000, '\n');
+    }
+  }
+  return x;
+}
+
 void initWorld() {
-  int seed = time(NULL);
-  //seed = 1672328235;
-  //seed = 1672432447;
-  //seed = 1672491470;
-  srand(seed);
-  std::cout << "seed: " << seed << std::endl;
+  // int seed = time(NULL);
+  // srand(seed);
+  // std::cout << "seed: " << seed << std::endl;
+
+  // if (argc == 2) {
+
+  //   std::istringstream ss(argv[1]);
+  //   int x;
+  //   if (!(ss >> x)) {
+  //     std::cerr << "Invalid number: " << argv[1] << '\n';
+  //   } else if (!ss.eof()) {
+  //     std::cerr << "Trailing characters after number: " << argv[1] << '\n';
+  //   }
+  // }
 }
 
 void myInit() {
-  std::cout << glGetString(GL_VERSION) << std::endl;
+  //std::cout << glGetString(GL_VERSION) << std::endl;
 
   glClearColor(sky.r, sky.g, sky.b, 1);
   glEnable(GL_DEPTH_TEST);
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glFrustum(-1, 1, -1, 1, 3, 300);
+  glFrustum(-1, 1, -1, 1, 3, 1000);
   glMatrixMode(GL_MODELVIEW);
 
   initWorld();
+
+  glutPostRedisplay();
+
+  world.generateWorld();
 }
 
 void draw() {
@@ -645,17 +601,13 @@ void draw() {
 
   glEnable(GL_LIGHTING);
   glEnable(GL_COLOR_MATERIAL);
-  //glShadeModel(GL_SMOOTH);
-  // glEnable(GL_NORMALIZE);
   glEnable(GL_LIGHT0);
-  //glEnable(GL_LIGHT1);
 
-  float blue1[4] = {0.8, 0.8, 0.9, 1};
-  float blue2[4] = {0.6, 0.6, 0.7, 1};
-  float blue3[4] = {0.1, 0.1, 0.3, 1};
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, blue2);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, blue2);
-  glLightfv(GL_LIGHT0, GL_AMBIENT, blue1);
+  float gray[4] = {0.65, 0.65, 0.65, 1};
+
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, gray);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, gray);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, gray);
 
   glLoadIdentity();
   gluLookAt(cameraX, cameraY, cameraZ, (world.size / 2), 3, (world.size / 2), 0.0, 1.0, 0.0);
@@ -712,51 +664,63 @@ void input(unsigned char ch, int x, int y) {
   }
   glutPostRedisplay();
 }
-bool once = false;
-bool once2 = false;
 
 void idle() {
   rotation_velocity -= 0.1;
   island_rotation += rotation_velocity;
   rotation_velocity /= 1.2;
+
   if (rotation_velocity < 0.2 and rotation_velocity > -0.2) {
     rotation_velocity = 0;
   }
 
-  if (not once) {
-    std::cout << "Generating World" << std::endl;
-    world.generateWorld();
-    once = true;
-  }
-  if (once2) {
-    world.generateExampleList();
-    world.generateNeighbourList();
-    world.fillPossibleTiles();
-
-    world.collapseBorderTo(0, water);
-
-    world.collapseLayerTo(4, air);
-    once2 = false;
-    std::cout << "init done" << std::endl;
-  }
-
-  if (step) {
-    std::cout << "Generating World Step By Step" << std::endl;
-    world.iterateOnce();
-    step = false;
-  }
   glutPostRedisplay();
 };
 
 void reshape(int w, int h) {
-  // std::cout << w << h << std::endl;
   float ratio = 1.0 * w / h;
   glViewport(0, 0, w, h);
   glFrustum(-1 * ratio, 1 * ratio, -1, 1, 3, 300);
   glutPostRedisplay();
 }
 
+void takeUserArguments() {
+
+  std::cout << "Enter size of world, recommended size: 8 to 15" << std::endl;
+  world.size = readNumber();
+  if (world.size > world.MAX_ISLAND_SIZE) {
+    world.size = world.MAX_ISLAND_SIZE;
+  }
+
+  std::cout << "Enter height of world, recommended height: 4 to 7" << std::endl;
+  world.height = readNumber();
+  if (world.height > world.MAX_ISLAND_SIZE) {
+    world.height = world.MAX_ISLAND_SIZE;
+  }
+
+  std::cout << "Enter wanted amount of houses, recommended amount: 0 to 4" << std::endl;
+  world.wanted_houses = readNumber();
+
+  std::cout << "Enter world seed, if random seed is wanted enter '-1'" << std::endl;
+  world.seed = readNumber();
+
+  if (world.seed == -1) {
+    world.seed = time(NULL);
+  }
+
+  std::cout << "Using seed: " << world.seed << std::endl;
+  srand(world.seed);
+
+  std::cout << std::endl;
+
+  std::cout << "Generating World ... " << std::endl;
+}
+
 int main(int argc, char **argv) {
+
+  std::cout << "Argument size: " << argc << std::endl;
+
+  takeUserArguments();
 
   glutInit(&argc, argv);
   glutInitWindowSize(900, 900);
@@ -764,9 +728,9 @@ int main(int argc, char **argv) {
   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
   glutCreateWindow("Islands");
 
-  myInit();
   glutIdleFunc(idle);
   glutDisplayFunc(draw);
+  myInit();
   glutKeyboardFunc(input);
   glutReshapeFunc(reshape);
 
