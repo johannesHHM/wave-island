@@ -42,7 +42,7 @@ void printVectorPoint(std::vector<point> vec) {
 
 class World {
 public:
-  static const int size = 12; // 12?
+  static const int size = 10; // 12?
   static const int height = 5;
   Tile tiles[size][height][size];
   Tile example_tiles[tile_amount];
@@ -55,7 +55,8 @@ public:
       for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
           for (int i = 0; i < tile_amount; i++) {
-            if ((x > 3 and x < size - 4) and (z > 3 and z < size - 4)) {
+            int restrict_size = 1;
+            if ((x > restrict_size and x < size - (restrict_size + 1)) and (z > restrict_size and z < size - (restrict_size + 1))) {
               if (i != water and i != beach_0 and i != beach_1 and i != beach_2 and i != beach_3 and i != beach_corn_0 and i != beach_corn_1 and i != beach_corn_2 and i != beach_corn_3 and i != beach_in_corn_0 and i != beach_in_corn_1 and i != beach_in_corn_2 and i != beach_in_corn_3) {
                 possible_tiles[x][y][z].push_back(tile_instance(i));
               }
@@ -741,6 +742,61 @@ public:
         tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
         break;
       }
+      case cliff_tri_corn_0: {
+        tile.x_1 = cliff_mid_hor_c_0;
+        tile.x_0 = cliff_top_hor_c_0;
+        tile.y_1 = cliff_vert_corn_0;
+        tile.y_0 = cliff_vert_0;
+        tile.z_1 = air_c;
+        tile.z_0 = cliff_bot_hor_c_3;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_tri_corn_1: {
+        tile.rotation = 90;
+        tile.x_1 = air_c;
+        tile.x_0 = cliff_bot_hor_c_0;
+        tile.y_1 = cliff_vert_corn_1;
+        tile.y_0 = cliff_vert_1;
+        tile.z_1 = cliff_top_hor_c_1;
+        tile.z_0 = cliff_mid_hor_c_1;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_tri_corn_2: {
+        tile.rotation = 180;
+        tile.x_1 = cliff_top_hor_c_2;
+        tile.x_0 = cliff_mid_hor_c_2;
+        tile.y_1 = cliff_vert_corn_2;
+        tile.y_0 = cliff_vert_2;
+        tile.z_1 = cliff_bot_hor_c_1;
+        tile.z_0 = air_c;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_tri_corn_3: {
+        tile.rotation = 270;
+        tile.x_1 = cliff_bot_hor_c_2;
+        tile.x_0 = air_c;
+        tile.y_1 = cliff_vert_corn_3;
+        tile.y_0 = cliff_vert_3;
+        tile.z_1 = cliff_mid_hor_c_3;
+        tile.z_0 = cliff_top_hor_c_3;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        break;
+      }
       }
       example_tiles[i] = tile;
     }
@@ -800,9 +856,9 @@ public:
     }
     std::vector<tile_instance> *poss_tiles = &possible_tiles[p.x][p.y][p.z];
 
-    // std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
-    // printVectorType(*poss_tiles);
-    // std::cout << std::endl;
+    std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
+    printVectorType(*poss_tiles);
+    std::cout << std::endl;
 
     if (poss_tiles->size() < 1) {
       std::cout << "POSSIBLE TILES IS EMPTY" << std::endl;
@@ -1070,9 +1126,9 @@ public:
     generateNeighbourList();
     fillPossibleTiles();
 
-    collapseBorderTo(0, water);
+    // collapseBorderTo(0, water); //TODO fix this finc, collapse
 
-    collapseLayerTo(4, air);
+    // collapseLayerTo(4, air); // TODO fix this func, collapse
 
     iterate();
 
@@ -1173,7 +1229,7 @@ void draw() {
   glEnable(GL_LIGHT1);
 
   float blue1[4] = {0.9, 0.9, 1, 1};
-  float blue2[4] = {0.4, 0.4, 0.9, 1};
+  float blue2[4] = {0.5, 0.5, 0.9, 1};
   float blue3[4] = {0.1, 0.1, 0.3, 1};
   glLightfv(GL_LIGHT1, GL_DIFFUSE, blue2);
   glLightfv(GL_LIGHT1, GL_SPECULAR, blue2);
@@ -1250,10 +1306,18 @@ void idle() {
   glutPostRedisplay();
 };
 
+void reshape(int w, int h) {
+  std::cout << w << h << std::endl;
+  float ratio = 1.0 * w / h;
+  glViewport(0, 0, w, h);
+  glFrustum(-1 * ratio, 1 * ratio, -1, 1, 3, 300);
+  glutPostRedisplay();
+}
+
 int main(int argc, char **argv) {
 
   glutInit(&argc, argv);
-  glutInitWindowSize(600, 600);
+  glutInitWindowSize(700, 700);
   glutInitWindowPosition(700, 50);
   glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
   glutCreateWindow("Islands");
@@ -1262,6 +1326,7 @@ int main(int argc, char **argv) {
   glutIdleFunc(idle);
   glutDisplayFunc(draw);
   glutKeyboardFunc(input);
+  glutReshapeFunc(reshape);
 
   glutMainLoop();
 

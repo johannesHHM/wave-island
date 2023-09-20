@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-const int tile_amount = 52;
+const int tile_amount = 56;
 const int connection_amount = 32;
 
 enum tile_instance {
@@ -68,7 +68,12 @@ enum tile_instance {
   cliff_in_corn_bot_0,
   cliff_in_corn_bot_1,
   cliff_in_corn_bot_2,
-  cliff_in_corn_bot_3
+  cliff_in_corn_bot_3,
+
+  cliff_tri_corn_0,
+  cliff_tri_corn_1,
+  cliff_tri_corn_2,
+  cliff_tri_corn_3
 
 };
 
@@ -77,42 +82,52 @@ std::vector<std::string> typeStrings{
     "empty",
     "grass",
     "water",
+
     "beach_0",
     "beach_1",
     "beach_2",
     "beach_3",
+
     "beach_corn_0",
     "beach_corn_1",
     "beach_corn_2",
     "beach_corn_3",
+
     "beach_in_corn_0",
     "beach_in_corn_1",
     "beach_in_corn_2",
     "beach_in_corn_3",
+
     "cliff_side_bot_0",
     "cliff_side_bot_1",
     "cliff_side_bot_2",
     "cliff_side_bot_3",
+
     "cliff_corn_bot_0",
     "cliff_corn_bot_1",
     "cliff_corn_bot_2",
     "cliff_corn_bot_3",
+
     "cliff_side_mid_0",
     "cliff_side_mid_1",
     "cliff_side_mid_2",
     "cliff_side_mid_3",
+
     "cliff_corn_mid_0",
     "cliff_corn_mid_1",
     "cliff_corn_mid_2",
     "cliff_corn_mid_3",
+
     "cliff_side_top_0",
     "cliff_side_top_1",
     "cliff_side_top_2",
     "cliff_side_top_3",
+
     "cliff_corn_top_0",
     "cliff_corn_top_1",
     "cliff_corn_top_2",
     "cliff_corn_top_3",
+
     "cliff_in_corn_mid_0",
     "cliff_in_corn_mid_1",
     "cliff_in_corn_mid_2",
@@ -126,13 +141,19 @@ std::vector<std::string> typeStrings{
     "cliff_in_corn_bot_0",
     "cliff_in_corn_bot_1",
     "cliff_in_corn_bot_2",
-    "cliff_in_corn_bot_3"};
+    "cliff_in_corn_bot_3",
+
+    "cliff_tri_corn_0",
+    "cliff_tri_corn_1",
+    "cliff_tri_corn_2",
+    "cliff_tri_corn_3"};
 
 enum connections {
   air_c,
   empty_c,
   one_s,
   two_s,
+
   beach_c_0,
   beach_c_1,
   beach_c_2,
