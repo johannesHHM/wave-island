@@ -42,6 +42,8 @@ The program will show a lightblue screen until the island has been generated.
 
 ## Recommended Controls
 
+<kbd>enter</kbd> regenerate island with new random seed
+
 <kbd>space</kbd> stop island rotation
 
 <kbd>←</kbd> rotate island clockwise 
