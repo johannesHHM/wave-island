@@ -8,6 +8,7 @@
 #include <time.h>
 #include <vector>
 
+#include "color.cpp"
 #include "doodad.cpp"
 #include "printers.cpp"
 #include "tile.cpp"
@@ -21,8 +22,6 @@ double cameraZ = 50;
 float island_rotation = 0;
 float rotation_velocity = 0;
 
-float p = 1.0;
-
 int zoom = 2;
 
 struct point {
@@ -30,42 +29,6 @@ struct point {
   int y;
   int z;
 };
-
-struct color {
-  float r;
-  float g;
-  float b;
-};
-
-// color water_color = {0.4, 0.325, 0.796};
-// color grass_color = {0.427, 0.631, 0.875};
-// color cliff_color = {0.608, 0.922, 0.922};
-// color beach_color = {0.608, 0.922, 0.922};
-
-color space_cadet = {0.12549, 0.15686, 0.30588};
-color metallic_blue = {0.17255, 0.2902, 0.47059};
-color queen_blue = {0.21961, 0.45882, 0.63137};
-color sky_blue = {0.5451, 0.79216, 0.86667};
-color white = {1.0, 1.0, 1.0};
-color azureish_white = {0.83922, 0.88235, 0.91373};
-color cadet_blue = {0.6549, 0.73725, 0.78824};
-color light_slate_gray = {0.45098, 0.55294, 0.61569};
-
-// color water_color = queen_blue;
-// color grass_color = light_slate_gray;
-// color cliff_color = azureish_white;
-// color beach_color = azureish_white;
-
-color sky = {0.52941, 0.80784, 0.92157};
-
-color wall = {0.76471, 0.81353, 0.78608};
-color roof = {0.82039, 0.62941, 0.60588};
-
-// BAD NORTH
-color water_color = {0.52863, 0.6902, 0.7902};
-color grass_color = {0.64706, 0.75294, 0.61569};
-color cliff_color = {0.76471, 0.82353, 0.79608};
-color beach_color = {0.76471, 0.82353, 0.79608};
 
 void printPoint(point p) {
   std::cout << "p: " << p.x << " " << p.y << " " << p.z << std::endl;
@@ -79,8 +42,8 @@ void printVectorPoint(std::vector<point> vec) {
 
 class World {
 public:
-  static const int size = 13; // 12?
-  static const int height = 6;
+  static const int size = 12; // 12?
+  static const int height = 5;
   Tile tiles[size][height][size];
   Tile example_tiles[tile_amount];
 
@@ -129,1269 +92,9 @@ public:
       Tile tile;
       tile.type = tile_instance(i);
 
-      switch (tile.type) {
-      case air: {
-        tile.x_1 = air_c;
-        tile.x_0 = air_c;
-        tile.y_1 = air_c;
-        tile.y_0 = air_c;
-        tile.z_1 = air_c;
-        tile.z_0 = air_c;
+      tile = fillTileData(tile);
 
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-        break;
-      }
-      case empty: {
-        tile.x_1 = empty_c;
-        tile.x_0 = empty_c;
-        tile.y_1 = empty_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = empty_c;
-        tile.z_0 = empty_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-        break;
-      }
-      case grass: {
-        tile.x_1 = one_s;
-        tile.x_0 = one_s;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = one_s;
-        tile.z_0 = one_s;
-
-        // polygon_data polygon = {grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
-        polygon_data polygon = {grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = grass_dood_big_c;
-
-        tile.polygons.push_back(polygon);
-
-        break;
-      }
-      case water: {
-        tile.x_1 = two_s;
-        tile.x_0 = two_s;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = two_s;
-        tile.z_0 = two_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        polygon_data polygon = {water_color.r, water_color.g, water_color.b, 4, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
-
-        break;
-      }
-      case beach_0: {
-        tile.x_1 = one_s;
-        tile.x_0 = two_s;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = beach_c_0;
-        tile.z_0 = beach_c_0;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
-        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
-        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
-        break;
-      }
-      case beach_1: {
-        tile.rotation = 90;
-
-        tile.x_1 = beach_c_1;
-        tile.x_0 = beach_c_1;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = two_s;
-        tile.z_0 = one_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
-        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
-        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
-        break;
-      }
-      case beach_2: {
-        tile.rotation = 180;
-
-        tile.x_1 = two_s;
-        tile.x_0 = one_s;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = beach_c_2;
-        tile.z_0 = beach_c_2;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
-        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
-        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
-        break;
-      }
-      case beach_3: {
-        tile.rotation = 270;
-
-        tile.x_1 = beach_c_3;
-        tile.x_0 = beach_c_3;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = one_s;
-        tile.z_0 = two_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
-        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
-        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
-        break;
-      }
-      case beach_corn_0: {
-        tile.rotation = 0;
-        tile.x_1 = beach_c_1;
-        tile.x_0 = two_s;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = two_s;
-        tile.z_0 = beach_c_0;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
-        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
-        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
-        break;
-      }
-      case beach_corn_1: {
-        tile.rotation = 90;
-        tile.x_1 = two_s;
-        tile.x_0 = beach_c_1;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = two_s;
-        tile.z_0 = beach_c_2;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
-        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
-        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
-        break;
-      }
-      case beach_corn_2: {
-        tile.rotation = 180;
-        tile.x_1 = two_s;
-        tile.x_0 = beach_c_3;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = beach_c_2;
-        tile.z_0 = two_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
-        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
-        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
-        break;
-      }
-      case beach_corn_3: {
-        tile.rotation = 270;
-        tile.x_1 = beach_c_3;
-        tile.x_0 = two_s;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = beach_c_0;
-        tile.z_0 = two_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
-        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
-        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
-        break;
-      }
-      case beach_in_corn_0: {
-        tile.x_1 = one_s;
-        tile.x_0 = beach_c_3;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = one_s;
-        tile.z_0 = beach_c_0;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
-        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
-        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
-        break;
-      }
-      case beach_in_corn_1: {
-        tile.rotation = 90;
-        tile.x_1 = one_s;
-        tile.x_0 = beach_c_1;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = beach_c_0;
-        tile.z_0 = one_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
-        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
-        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
-        break;
-      }
-      case beach_in_corn_2: {
-        tile.rotation = 180;
-        tile.x_1 = beach_c_1;
-        tile.x_0 = one_s;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = beach_c_2;
-        tile.z_0 = one_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
-        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
-        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
-        break;
-      }
-      case beach_in_corn_3: {
-        tile.rotation = 270;
-        tile.x_1 = beach_c_3;
-        tile.x_0 = one_s;
-        tile.y_1 = air_c;
-        tile.y_0 = empty_c;
-        tile.z_1 = one_s;
-        tile.z_0 = beach_c_2;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
-        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
-        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
-        break;
-      }
-      case cliff_side_bot_0: {
-        tile.x_1 = cliff_bot_hor_c_0;
-        tile.x_0 = cliff_bot_hor_c_0;
-        tile.y_1 = cliff_vert_0;
-        tile.y_0 = empty_c;
-        tile.z_1 = one_s;
-        tile.z_0 = empty_c;
-
-        tile.dood_0 = grass_dood_small_c;
-        tile.dood_1 = grass_dood_small_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_side_bot_1: {
-        tile.rotation = 90;
-        tile.x_1 = one_s;
-        tile.x_0 = empty_c;
-        tile.y_1 = cliff_vert_1;
-        tile.y_0 = empty_c;
-        tile.z_1 = cliff_bot_hor_c_1;
-        tile.z_0 = cliff_bot_hor_c_1;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = grass_dood_small_c;
-        tile.dood_2 = grass_dood_small_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_side_bot_2: {
-        tile.rotation = 180;
-
-        tile.x_1 = cliff_bot_hor_c_2;
-        tile.x_0 = cliff_bot_hor_c_2;
-        tile.y_1 = cliff_vert_2;
-        tile.y_0 = empty_c;
-        tile.z_1 = empty_c;
-        tile.z_0 = one_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = grass_dood_small_c;
-        tile.dood_3 = grass_dood_small_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_side_bot_3: {
-        tile.rotation = 270;
-
-        tile.x_1 = empty_c;
-        tile.x_0 = one_s;
-        tile.y_1 = cliff_vert_3;
-        tile.y_0 = empty_c;
-        tile.z_1 = cliff_bot_hor_c_3;
-        tile.z_0 = cliff_bot_hor_c_3;
-
-        tile.dood_0 = grass_dood_small_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = grass_dood_small_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_corn_bot_0: {
-        tile.x_1 = cliff_bot_hor_c_0;
-        tile.x_0 = one_s;
-        tile.y_1 = cliff_vert_corn_0;
-        tile.y_0 = empty_c;
-        tile.z_1 = one_s;
-        tile.z_0 = cliff_bot_hor_c_3;
-
-        tile.dood_0 = grass_dood_small_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-        break;
-      }
-      case cliff_corn_bot_1: {
-        tile.rotation = 90;
-        tile.x_1 = one_s;
-        tile.x_0 = cliff_bot_hor_c_0;
-        tile.y_1 = cliff_vert_corn_1;
-        tile.y_0 = empty_c;
-        tile.z_1 = one_s;
-        tile.z_0 = cliff_bot_hor_c_1;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = grass_dood_small_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-        break;
-      }
-      case cliff_corn_bot_2: {
-        tile.rotation = 180;
-        tile.x_1 = one_s;
-        tile.x_0 = cliff_bot_hor_c_2;
-        tile.y_1 = cliff_vert_corn_2;
-        tile.y_0 = empty_c;
-        tile.z_1 = cliff_bot_hor_c_1;
-        tile.z_0 = one_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = grass_dood_small_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-        break;
-      }
-      case cliff_corn_bot_3: {
-        tile.rotation = 270;
-        tile.x_1 = cliff_bot_hor_c_2;
-        tile.x_0 = one_s;
-        tile.y_1 = cliff_vert_corn_3;
-        tile.y_0 = empty_c;
-        tile.z_1 = cliff_bot_hor_c_3;
-        tile.z_0 = one_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = grass_dood_small_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-        break;
-      }
-      case cliff_side_mid_0: {
-        tile.x_1 = cliff_mid_hor_c_0;
-        tile.x_0 = cliff_mid_hor_c_0;
-        tile.y_1 = cliff_vert_0;
-        tile.y_0 = cliff_vert_0;
-        tile.z_1 = air_c;
-        tile.z_0 = empty_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_side_mid_1: {
-        tile.rotation = 90;
-        tile.x_1 = air_c;
-        tile.x_0 = empty_c;
-        tile.y_1 = cliff_vert_1;
-        tile.y_0 = cliff_vert_1;
-        tile.z_1 = cliff_mid_hor_c_1;
-        tile.z_0 = cliff_mid_hor_c_1;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_side_mid_2: {
-        tile.rotation = 180;
-        tile.x_1 = cliff_mid_hor_c_2;
-        tile.x_0 = cliff_mid_hor_c_2;
-        tile.y_1 = cliff_vert_2;
-        tile.y_0 = cliff_vert_2;
-        tile.z_1 = empty_c;
-        tile.z_0 = air_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_side_mid_3: {
-        tile.rotation = 270;
-        tile.x_1 = empty_c;
-        tile.x_0 = air_c;
-        tile.y_1 = cliff_vert_3;
-        tile.y_0 = cliff_vert_3;
-        tile.z_1 = cliff_mid_hor_c_3;
-        tile.z_0 = cliff_mid_hor_c_3;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_corn_mid_0: {
-        tile.x_1 = cliff_mid_hor_c_0;
-        tile.x_0 = air_c;
-        tile.y_1 = cliff_vert_corn_0;
-        tile.y_0 = cliff_vert_corn_0;
-        tile.z_1 = air_c;
-        tile.z_0 = cliff_mid_hor_c_3;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-
-        break;
-      }
-      case cliff_corn_mid_1: {
-        tile.rotation = 90;
-        tile.x_1 = air_c;
-        tile.x_0 = cliff_mid_hor_c_0;
-        tile.y_1 = cliff_vert_corn_1;
-        tile.y_0 = cliff_vert_corn_1;
-        tile.z_1 = air_c;
-        tile.z_0 = cliff_mid_hor_c_1;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-
-        break;
-      }
-      case cliff_corn_mid_2: {
-        tile.rotation = 180;
-        tile.x_1 = air_c;
-        tile.x_0 = cliff_mid_hor_c_2;
-        tile.y_1 = cliff_vert_corn_2;
-        tile.y_0 = cliff_vert_corn_2;
-        tile.z_1 = cliff_mid_hor_c_1;
-        tile.z_0 = air_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-
-        break;
-      }
-      case cliff_corn_mid_3: {
-        tile.rotation = 270;
-        tile.x_1 = cliff_mid_hor_c_2;
-        tile.x_0 = air_c;
-        tile.y_1 = cliff_vert_corn_3;
-        tile.y_0 = cliff_vert_corn_3;
-        tile.z_1 = cliff_mid_hor_c_3;
-        tile.z_0 = air_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-
-        break;
-      }
-      case cliff_side_top_0: {
-        tile.x_1 = cliff_top_hor_c_0;
-        tile.x_0 = cliff_top_hor_c_0;
-        tile.y_1 = air_c;
-        tile.y_0 = cliff_vert_0;
-        tile.z_1 = air_c;
-        tile.z_0 = one_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_side_top_1: {
-        tile.rotation = 90;
-        tile.x_1 = air_c;
-        tile.x_0 = one_s;
-        tile.y_1 = air_c;
-        tile.y_0 = cliff_vert_1;
-        tile.z_1 = cliff_top_hor_c_1;
-        tile.z_0 = cliff_top_hor_c_1;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_side_top_2: {
-        tile.rotation = 180;
-        tile.x_1 = cliff_top_hor_c_2;
-        tile.x_0 = cliff_top_hor_c_2;
-        tile.y_1 = air_c;
-        tile.y_0 = cliff_vert_2;
-        tile.z_1 = one_s;
-        tile.z_0 = air_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_side_top_3: {
-        tile.rotation = 270;
-        tile.x_1 = one_s;
-        tile.x_0 = air_c;
-        tile.y_1 = air_c;
-        tile.y_0 = cliff_vert_3;
-        tile.z_1 = cliff_top_hor_c_3;
-        tile.z_0 = cliff_top_hor_c_3;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_corn_top_0: {
-        tile.x_1 = cliff_top_hor_c_0;
-        tile.x_0 = air_c;
-        tile.y_1 = air_c;
-        tile.y_0 = cliff_vert_corn_0;
-        tile.z_1 = air_c;
-        tile.z_0 = cliff_top_hor_c_3;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_corn_top_1: {
-        tile.rotation = 90;
-        tile.x_1 = air_c;
-        tile.x_0 = cliff_top_hor_c_0;
-        tile.y_1 = air_c;
-        tile.y_0 = cliff_vert_corn_1;
-        tile.z_1 = air_c;
-        tile.z_0 = cliff_top_hor_c_1;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_corn_top_2: {
-        tile.rotation = 180;
-        tile.x_1 = air_c;
-        tile.x_0 = cliff_top_hor_c_2;
-        tile.y_1 = air_c;
-        tile.y_0 = cliff_vert_corn_2;
-        tile.z_1 = cliff_top_hor_c_1;
-        tile.z_0 = air_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_corn_top_3: {
-        tile.rotation = 270;
-        tile.x_1 = cliff_top_hor_c_2;
-        tile.x_0 = air_c;
-        tile.y_1 = air_c;
-        tile.y_0 = cliff_vert_corn_3;
-        tile.z_1 = cliff_top_hor_c_3;
-        tile.z_0 = air_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_in_corn_top_0: {
-        tile.x_1 = one_s;
-        tile.x_0 = cliff_top_hor_c_0;
-        tile.y_1 = air_c;
-        tile.y_0 = cliff_in_vert_corn_0;
-        tile.z_1 = cliff_top_hor_c_3;
-        tile.z_0 = one_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
-        break;
-      }
-      case cliff_in_corn_top_1: {
-        tile.rotation = 90;
-        tile.x_1 = cliff_top_hor_c_0;
-        tile.x_0 = one_s;
-        tile.y_1 = air_c;
-        tile.y_0 = cliff_in_vert_corn_1;
-        tile.z_1 = cliff_top_hor_c_1;
-        tile.z_0 = one_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
-        break;
-      }
-      case cliff_in_corn_top_2: {
-        tile.rotation = 180;
-        tile.x_1 = cliff_top_hor_c_2;
-        tile.x_0 = one_s;
-        tile.y_1 = air_c;
-        tile.y_0 = cliff_in_vert_corn_2;
-        tile.z_1 = cliff_top_hor_c_1;
-        tile.z_0 = one_s;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
-        break;
-      }
-      case cliff_in_corn_top_3: {
-        tile.rotation = 270;
-        tile.x_1 = one_s;
-        tile.x_0 = cliff_top_hor_c_2;
-        tile.y_1 = air_c;
-        tile.y_0 = cliff_in_vert_corn_3;
-        tile.z_1 = one_s;
-        tile.z_0 = cliff_top_hor_c_3;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
-        break;
-      }
-      case cliff_in_corn_mid_0: {
-        tile.x_1 = empty_c;
-        tile.x_0 = cliff_mid_hor_c_0;
-        tile.y_1 = cliff_in_vert_corn_0;
-        tile.y_0 = cliff_in_vert_corn_0;
-        tile.z_1 = cliff_mid_hor_c_3;
-        tile.z_0 = empty_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_in_corn_mid_1: {
-        tile.rotation = 90;
-        tile.x_1 = cliff_mid_hor_c_0;
-        tile.x_0 = empty_c;
-        tile.y_1 = cliff_in_vert_corn_1;
-        tile.y_0 = cliff_in_vert_corn_1;
-        tile.z_1 = cliff_mid_hor_c_1;
-        tile.z_0 = empty_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_in_corn_mid_2: {
-        tile.rotation = 180;
-        tile.x_1 = cliff_mid_hor_c_2;
-        tile.x_0 = empty_c;
-        tile.y_1 = cliff_in_vert_corn_2;
-        tile.y_0 = cliff_in_vert_corn_2;
-        tile.z_1 = empty_c;
-        tile.z_0 = cliff_mid_hor_c_1;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
-
-        break;
-      }
-      case cliff_in_corn_mid_3: {
-        tile.rotation = 270;
-        tile.x_1 = empty_c;
-        tile.x_0 = cliff_mid_hor_c_2;
-        tile.y_1 = cliff_in_vert_corn_3;
-        tile.y_0 = cliff_in_vert_corn_3;
-        tile.z_1 = empty_c;
-        tile.z_0 = cliff_mid_hor_c_3;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
-
-        break;
-      }
-      case cliff_in_corn_bot_0: {
-        tile.x_1 = empty_c;
-        tile.x_0 = cliff_bot_hor_c_0;
-        tile.y_1 = cliff_in_vert_corn_0;
-        tile.y_0 = empty_c;
-        tile.z_1 = cliff_bot_hor_c_3;
-        tile.z_0 = empty_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_in_corn_bot_1: {
-        tile.rotation = 90;
-        tile.x_1 = cliff_bot_hor_c_0;
-        tile.x_0 = empty_c;
-        tile.y_1 = cliff_in_vert_corn_1;
-        tile.y_0 = empty_c;
-        tile.z_1 = cliff_bot_hor_c_1;
-        tile.z_0 = empty_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_in_corn_bot_2: {
-        tile.rotation = 180;
-        tile.x_1 = cliff_bot_hor_c_2;
-        tile.x_0 = empty_c;
-        tile.y_1 = cliff_in_vert_corn_2;
-        tile.y_0 = empty_c;
-        tile.z_1 = empty_c;
-        tile.z_0 = cliff_bot_hor_c_1;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_in_corn_bot_3: {
-        tile.rotation = 270;
-        tile.x_1 = empty_c;
-        tile.x_0 = cliff_bot_hor_c_2;
-        tile.y_1 = cliff_in_vert_corn_3;
-        tile.y_0 = empty_c;
-        tile.z_1 = empty_c;
-        tile.z_0 = cliff_bot_hor_c_3;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
-        break;
-      }
-      case cliff_tri_corn_0: {
-        tile.x_1 = cliff_mid_hor_c_0;
-        tile.x_0 = cliff_top_hor_c_0;
-        tile.y_1 = cliff_vert_corn_0;
-        tile.y_0 = cliff_vert_0;
-        tile.z_1 = air_c;
-        tile.z_0 = cliff_bot_hor_c_3;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = grass_dood_small_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_tri_corn_1: {
-        tile.rotation = 90;
-        tile.x_1 = air_c;
-        tile.x_0 = cliff_bot_hor_c_0;
-        tile.y_1 = cliff_vert_corn_1;
-        tile.y_0 = cliff_vert_1;
-        tile.z_1 = cliff_top_hor_c_1;
-        tile.z_0 = cliff_mid_hor_c_1;
-
-        tile.dood_0 = grass_dood_small_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_tri_corn_2: {
-        tile.rotation = 180;
-        tile.x_1 = cliff_top_hor_c_2;
-        tile.x_0 = cliff_mid_hor_c_2;
-        tile.y_1 = cliff_vert_corn_2;
-        tile.y_0 = cliff_vert_2;
-        tile.z_1 = cliff_bot_hor_c_1;
-        tile.z_0 = air_c;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = grass_dood_small_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_tri_corn_3: {
-        tile.rotation = 270;
-        tile.x_1 = cliff_bot_hor_c_2;
-        tile.x_0 = air_c;
-        tile.y_1 = cliff_vert_corn_3;
-        tile.y_0 = cliff_vert_3;
-        tile.z_1 = cliff_mid_hor_c_3;
-        tile.z_0 = cliff_top_hor_c_3;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = grass_dood_small_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_tri_corn_M_0: {
-        tile.rotation = 0;
-        tile.x_1 = cliff_top_hor_c_0;
-        tile.x_0 = cliff_mid_hor_c_0;
-        tile.y_1 = cliff_vert_corn_1;
-        tile.y_0 = cliff_vert_0;
-        tile.z_1 = air_c;
-        tile.z_0 = cliff_bot_hor_c_1;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = grass_dood_small_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_tri_corn_M_1: {
-        tile.rotation = 90;
-        tile.x_1 = air_c;
-        tile.x_0 = cliff_bot_hor_c_2;
-        tile.y_1 = cliff_vert_corn_2;
-        tile.y_0 = cliff_vert_1;
-        tile.z_1 = cliff_mid_hor_c_1;
-        tile.z_0 = cliff_top_hor_c_1;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = grass_dood_small_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_tri_corn_M_2: {
-        tile.rotation = 180;
-        tile.x_1 = cliff_mid_hor_c_2;
-        tile.x_0 = cliff_top_hor_c_2;
-        tile.y_1 = cliff_vert_corn_3;
-        tile.y_0 = cliff_vert_2;
-        tile.z_1 = cliff_bot_hor_c_3;
-        tile.z_0 = air_c;
-
-        tile.dood_0 = grass_dood_small_c;
-        tile.dood_1 = none_dood_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_tri_corn_M_3: {
-        tile.rotation = 270;
-        tile.x_1 = cliff_bot_hor_c_0;
-        tile.x_0 = air_c;
-        tile.y_1 = cliff_vert_corn_0;
-        tile.y_0 = cliff_vert_3;
-        tile.z_1 = cliff_top_hor_c_3;
-        tile.z_0 = cliff_mid_hor_c_3;
-
-        tile.dood_0 = none_dood_c;
-        tile.dood_1 = grass_dood_small_c;
-        tile.dood_2 = none_dood_c;
-        tile.dood_3 = none_dood_c;
-        tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        break;
-      }
-      case cliff_side_tri_corn_0: {
-        tile.x_1 = cliff_bot_hor_c_0;
-        tile.x_0 = cliff_mid_hor_c_0;
-        tile.y_1 = cliff_vert_0;
-        tile.y_0 = cliff_in_vert_corn_0;
-        tile.z_1 = cliff_top_hor_c_3;
-        tile.z_0 = empty_c;
-
-        // tile.dood_0 = none_dood_c;
-        // tile.dood_1 = grass_dood_small_c;
-        // tile.dood_2 = none_dood_c;
-        // tile.dood_3 = none_dood_c;
-        // tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.4, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.25, 0.7}});
-        break;
-      }
-      case cliff_side_tri_corn_1: {
-        tile.rotation = 90;
-        tile.x_1 = cliff_top_hor_c_0;
-        tile.x_0 = empty_c;
-        tile.y_1 = cliff_vert_1;
-        tile.y_0 = cliff_in_vert_corn_1;
-        tile.z_1 = cliff_mid_hor_c_1;
-        tile.z_0 = cliff_bot_hor_c_1;
-
-        // tile.dood_0 = none_dood_c;
-        // tile.dood_1 = grass_dood_small_c;
-        // tile.dood_2 = none_dood_c;
-        // tile.dood_3 = none_dood_c;
-        // tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.4, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.25, 0.7}});
-        break;
-      }
-      case cliff_side_tri_corn_2: {
-        tile.rotation = 180;
-        tile.x_1 = cliff_mid_hor_c_2;
-        tile.x_0 = cliff_bot_hor_c_2;
-        tile.y_1 = cliff_vert_2;
-        tile.y_0 = cliff_in_vert_corn_2;
-        tile.z_1 = empty_c;
-        tile.z_0 = cliff_top_hor_c_1;
-
-        // tile.dood_0 = none_dood_c;
-        // tile.dood_1 = grass_dood_small_c;
-        // tile.dood_2 = none_dood_c;
-        // tile.dood_3 = none_dood_c;
-        // tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.4, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.25, 0.7}});
-        break;
-      }
-      case cliff_side_tri_corn_3: {
-        tile.rotation = 270;
-        tile.x_1 = empty_c;
-        tile.x_0 = cliff_top_hor_c_2;
-        tile.y_1 = cliff_vert_3;
-        tile.y_0 = cliff_in_vert_corn_3;
-        tile.z_1 = cliff_bot_hor_c_3;
-        tile.z_0 = cliff_mid_hor_c_3;
-
-        // tile.dood_0 = none_dood_c;
-        // tile.dood_1 = grass_dood_small_c;
-        // tile.dood_2 = none_dood_c;
-        // tile.dood_3 = none_dood_c;
-        // tile.dood_center = none_dood_c;
-
-        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.4, 0.2, 1.0}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
-        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.25, 0.7}});
-        break;
-      }
-      }
       example_tiles[i] = tile;
-    }
-  }
-
-  void fillDoodad(Doodad &dood) {
-    std::vector<color> colors;
-    colors.push_back({0.23529, 0.35294, 0.30588});
-    colors.push_back({0.28627, 0.43922, 0.36471});
-    colors.push_back({0.21961, 0.32157, 0.28627});
-
-    color randColor1 = colors.at(rand() % colors.size());
-    color randColor2 = colors.at(rand() % colors.size());
-    color randColor3 = colors.at(rand() % colors.size());
-
-    switch (dood.type) {
-    case bushes_big: {
-      dood.circles.push_back({randColor1.r, randColor1.g, randColor1.b, 0.7, 0.3, 0.6, 0.3, 8});
-      dood.circles.push_back({randColor2.r, randColor2.g, randColor2.b, 0.45, 0.25, 0.35, 0.2, 8});
-      dood.circles.push_back({randColor3.r, randColor3.g, randColor3.b, 0.8, 0.3, 0.3, 0.25, 8});
-      break;
-    }
-    case bushes_small: {
-      dood.circles.push_back({randColor1.r, randColor1.g, randColor1.b, 0.25, 0.25, 0.25, 0.2, 8});
-      //dood.circles.push_back({randColor2.r, randColor2.g, randColor2.b, 0.24, 0.25, 0.22, 0.21, 8});
-      break;
-    }
-    case house: {
-      dood.polygons.push_back({wall.r, wall.g, wall.b, 4, {0.3, 0.2, 0.35}, {0.7, 0.2, 0.35}, {0.7, 0.45, 0.35}, {0.3, 0.45, 0.35}});
-      dood.polygons.push_back({wall.r, wall.g, wall.b, 4, {0.3, 0.2, 0.65}, {0.7, 0.2, 0.65}, {0.7, 0.45, 0.65}, {0.3, 0.45, 0.65}});
-
-      dood.polygons.push_back({wall.r, wall.g, wall.b, 4, {0.3, 0.2, 0.35}, {0.3, 0.2, 0.65}, {0.3, 0.45, 0.65}, {0.3, 0.45, 0.35}});
-      dood.polygons.push_back({wall.r, wall.g, wall.b, 4, {0.7, 0.2, 0.35}, {0.7, 0.2, 0.65}, {0.7, 0.45, 0.65}, {0.7, 0.45, 0.35}});
-
-      dood.polygons.push_back({roof.r, roof.g, roof.b, 4, {0.725, 0.425, 0.325}, {0.275, 0.425, 0.325}, {0.275, 0.6, 0.5}, {0.725, 0.6, 0.5}});
-      dood.polygons.push_back({roof.r, roof.g, roof.b, 4, {0.725, 0.425, 0.675}, {0.275, 0.425, 0.675}, {0.275, 0.6, 0.5}, {0.725, 0.6, 0.5}});
-
-      dood.polygons.push_back({wall.r, wall.g, wall.b, 3, {0.3, 0.45, 0.65}, {0.3, 0.45, 0.35}, {0.3, 0.6, 0.5}});
-      dood.polygons.push_back({wall.r, wall.g, wall.b, 3, {0.7, 0.45, 0.65}, {0.7, 0.45, 0.35}, {0.7, 0.6, 0.5}});
-
-      dood.rotation = rand() % 360;
-      break;
-    }
     }
   }
 
@@ -1449,10 +152,6 @@ public:
     }
     std::vector<tile_instance> *poss_tiles = &possible_tiles[p.x][p.y][p.z];
 
-    // std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
-    // printVectorType(*poss_tiles);
-    // std::cout << std::endl;
-
     if (poss_tiles->size() < 1) {
       std::cout << "POSSIBLE TILES IS EMPTY" << std::endl;
       printPoint(p);
@@ -1492,9 +191,6 @@ public:
       collapsed[p.x][p.y][p.z] = true;
     }
     std::vector<tile_instance> *poss_tiles = &possible_tiles[p.x][p.y][p.z];
-    // std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
-    // printVectorType(*poss_tiles);
-    // std::cout << std::endl;
 
     if (poss_tiles->size() < 1) {
       std::cout << "POSSIBLE TILES IS EMPTY" << std::endl;
@@ -1504,10 +200,6 @@ public:
     tile_instance pick = poss_tiles->at(rand() % poss_tiles->size());
     poss_tiles->resize(1);
     poss_tiles->at(0) = pick;
-
-    if (pick == cliff_side_tri_corn_0 or pick == cliff_side_tri_corn_1 or pick == cliff_side_tri_corn_2 or pick == cliff_side_tri_corn_3) {
-      std::cout << "Picked new ones" << std::endl;
-    }
 
     for (Tile pos_tile : example_tiles) {
       if (pick == pos_tile.type) {
@@ -1589,7 +281,6 @@ public:
       stack.pop_back();
 
       std::vector<point> neigh = neighbours(current_point);
-      // printVectorPoint(neigh);
 
       for (int i = 0; i < 6; i++) {
 
@@ -1675,7 +366,6 @@ public:
       collapseTileAt(p);
       propagate(p);
       glutPostRedisplay();
-      // std::cout << i << std::endl;
       i++;
     }
   }
@@ -1728,15 +418,13 @@ public:
             std::cout << "Populating a house." << std::endl;
             Doodad house_dood;
             house_dood.type = house;
-            fillDoodad(house_dood);
+            fillDoodadData(house_dood);
             house_dood.x = x;
             house_dood.y = y;
             house_dood.z = z;
             doodads.push_back(house_dood);
             houses--;
           } else {
-            // if (true) {
-
             // BUSHES
             switch (rand() % 6) {
             case 1: {
@@ -1745,7 +433,7 @@ public:
               switch (tile->dood_center) {
               case grass_dood_big_c: {
                 dood_center.type = bushes_big;
-                fillDoodad(dood_center);
+                fillDoodadData(dood_center);
                 dood_center.x = x;
                 dood_center.y = y;
                 dood_center.z = z;
@@ -1765,7 +453,7 @@ public:
               switch (tile->dood_0) {
               case grass_dood_small_c: {
                 dood_0.type = bushes_small;
-                fillDoodad(dood_0);
+                fillDoodadData(dood_0);
                 dood_0.x = x;
                 dood_0.y = y;
                 dood_0.z = z + 0.5;
@@ -1784,7 +472,7 @@ public:
               switch (tile->dood_1) {
               case grass_dood_small_c: {
                 dood_1.type = bushes_small;
-                fillDoodad(dood_1);
+                fillDoodadData(dood_1);
                 dood_1.x = x + 0.5;
                 dood_1.y = y;
                 dood_1.z = z + 0.5;
@@ -1803,7 +491,7 @@ public:
               switch (tile->dood_2) {
               case grass_dood_small_c: {
                 dood_2.type = bushes_small;
-                fillDoodad(dood_2);
+                fillDoodadData(dood_2);
                 dood_2.x = x + 0.5;
                 dood_2.y = y;
                 dood_2.z = z;
@@ -1822,7 +510,7 @@ public:
               switch (tile->dood_3) {
               case grass_dood_small_c: {
                 dood_3.type = bushes_small;
-                fillDoodad(dood_3);
+                fillDoodadData(dood_3);
                 dood_3.x = x;
                 dood_3.y = y;
                 dood_3.z = z;
@@ -1840,20 +528,6 @@ public:
             }
             }
           }
-
-          // if (tile->type == grass) {
-          //   Doodad dod;
-          //   dod.x = x;
-          //   dod.y = y;
-          //   dod.z = z;
-          //   // dod.circles.push_back({0.23529, 0.35294, 0.30588, 0.3, 0.3, 0.3, 0.3, 6});
-          //   // dod.circles.push_back({0.28627, 0.43922, 0.36471, 0.1, 0.25, 0.0, 0.2, 6});
-          //   // dod.circles.push_back({0.21961, 0.32157, 0.28627, 0.4, 0.3, 0.0, 0.25, 6});
-          //   dod.circles.push_back({0.23529, 0.35294, 0.30588, 0.7, 0.3, 0.6, 0.3, 6});
-          //   dod.circles.push_back({0.28627, 0.43922, 0.36471, 0.45, 0.25, 0.35, 0.2, 6});
-          //   dod.circles.push_back({0.21961, 0.32157, 0.28627, 0.8, 0.3, 0.3, 0.25, 6});
-          //   doodads.push_back(dod);
-          // }
         }
       }
     }
@@ -1865,12 +539,8 @@ public:
     fillPossibleTiles();
 
     collapseLayerTo(0, empty);
-
     collapseBorderTo(1, water);
-
     collapseLayerTo(height - 1, air);
-
-    // collapseLayerTo(0, empty);
 
     iterate();
 
@@ -1891,7 +561,6 @@ public:
     glTranslatef(0, -1, 0);
     //drawOcean();
     glTranslatef(0, 1, 0);
-    // drawOutline();
     for (int x = 0; x < size; x++) {
       for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
@@ -1917,7 +586,6 @@ public:
 
   void drawOutline() {
     glColor3f(0.0, 0.0, 0.0);
-    // glTranslatef(-0.5, -0.5, -0.5);
     glLineWidth(2.0);
     glBegin(GL_LINE_LOOP);
     glVertex3f(0, 0, 0);

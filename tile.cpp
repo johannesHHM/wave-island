@@ -1,10 +1,11 @@
 #pragma once
 
+#include "doodad.cpp"
 #include <GL/gl.h>
 #include <iostream>
 #include <vector>
 
-const int tile_amount = 64;
+const int tile_amount = 68;
 const int connection_amount = 32;
 
 enum tile_instance {
@@ -86,7 +87,12 @@ enum tile_instance {
   cliff_side_tri_corn_0,
   cliff_side_tri_corn_1,
   cliff_side_tri_corn_2,
-  cliff_side_tri_corn_3
+  cliff_side_tri_corn_3,
+
+  cliff_side_tri_corn_M_0,
+  cliff_side_tri_corn_M_1,
+  cliff_side_tri_corn_M_2,
+  cliff_side_tri_corn_M_3
 
 };
 
@@ -169,7 +175,12 @@ std::vector<std::string> typeStrings{
     "cliff_side_tri_corn_0",
     "cliff_side_tri_corn_1",
     "cliff_side_tri_corn_2",
-    "cliff_side_tri_corn_3"};
+    "cliff_side_tri_corn_3",
+
+    "cliff_side_tri_corn_M_0",
+    "cliff_side_tri_corn_M_1",
+    "cliff_side_tri_corn_M_2",
+    "cliff_side_tri_corn_M_3"};
 
 enum connections {
   air_c,
@@ -378,3 +389,1307 @@ public:
               << std::endl;
   }
 };
+
+Tile fillTileData(Tile tile) {
+  switch (tile.type) {
+  case air: {
+    tile.x_1 = air_c;
+    tile.x_0 = air_c;
+    tile.y_1 = air_c;
+    tile.y_0 = air_c;
+    tile.z_1 = air_c;
+    tile.z_0 = air_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+    break;
+  }
+  case empty: {
+    tile.x_1 = empty_c;
+    tile.x_0 = empty_c;
+    tile.y_1 = empty_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = empty_c;
+    tile.z_0 = empty_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+    break;
+  }
+  case grass: {
+    tile.x_1 = one_s;
+    tile.x_0 = one_s;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = one_s;
+    tile.z_0 = one_s;
+
+    // polygon_data polygon = {grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}};
+    polygon_data polygon = {grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}};
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = grass_dood_big_c;
+
+    tile.polygons.push_back(polygon);
+
+    break;
+  }
+  case water: {
+    tile.x_1 = two_s;
+    tile.x_0 = two_s;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = two_s;
+    tile.z_0 = two_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    polygon_data polygon = {water_color.r, water_color.g, water_color.b, 4, {0.0, 0.0, 0.0}, {1.0, 0.0, 0.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 1.0}};
+
+    break;
+  }
+  case beach_0: {
+    tile.x_1 = one_s;
+    tile.x_0 = two_s;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = beach_c_0;
+    tile.z_0 = beach_c_0;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.5, 0.2, 1.0}});
+    tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, 1.0}, {0.5, 0.2, 1.0}});
+    // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
+    break;
+  }
+  case beach_1: {
+    tile.rotation = 90;
+
+    tile.x_1 = beach_c_1;
+    tile.x_0 = beach_c_1;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = two_s;
+    tile.z_0 = one_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.5, 0.2, 1.0}});
+    tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, 1.0}, {0.5, 0.2, 1.0}});
+    // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
+    break;
+  }
+  case beach_2: {
+    tile.rotation = 180;
+
+    tile.x_1 = two_s;
+    tile.x_0 = one_s;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = beach_c_2;
+    tile.z_0 = beach_c_2;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.5, 0.2, 1.0}});
+    tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, 1.0}, {0.5, 0.2, 1.0}});
+    // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
+    break;
+  }
+  case beach_3: {
+    tile.rotation = 270;
+
+    tile.x_1 = beach_c_3;
+    tile.x_0 = beach_c_3;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = one_s;
+    tile.z_0 = two_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.5, 0.2, 1.0}});
+    tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, 1.0}, {0.5, 0.2, 1.0}});
+    // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
+    break;
+  }
+  case beach_corn_0: {
+    tile.rotation = 0;
+    tile.x_1 = beach_c_1;
+    tile.x_0 = two_s;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = two_s;
+    tile.z_0 = beach_c_0;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+    tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+    // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+    break;
+  }
+  case beach_corn_1: {
+    tile.rotation = 90;
+    tile.x_1 = two_s;
+    tile.x_0 = beach_c_1;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = two_s;
+    tile.z_0 = beach_c_2;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+    tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+    // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+    break;
+  }
+  case beach_corn_2: {
+    tile.rotation = 180;
+    tile.x_1 = two_s;
+    tile.x_0 = beach_c_3;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = beach_c_2;
+    tile.z_0 = two_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+    tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+    // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+    break;
+  }
+  case beach_corn_3: {
+    tile.rotation = 270;
+    tile.x_1 = beach_c_3;
+    tile.x_0 = two_s;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = beach_c_0;
+    tile.z_0 = two_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+    tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+    // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+    break;
+  }
+  case beach_in_corn_0: {
+    tile.x_1 = one_s;
+    tile.x_0 = beach_c_3;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = one_s;
+    tile.z_0 = beach_c_0;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+    tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+    // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
+    break;
+  }
+  case beach_in_corn_1: {
+    tile.rotation = 90;
+    tile.x_1 = one_s;
+    tile.x_0 = beach_c_1;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = beach_c_0;
+    tile.z_0 = one_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+    tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+    // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
+    break;
+  }
+  case beach_in_corn_2: {
+    tile.rotation = 180;
+    tile.x_1 = beach_c_1;
+    tile.x_0 = one_s;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = beach_c_2;
+    tile.z_0 = one_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+    tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+    // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
+    break;
+  }
+  case beach_in_corn_3: {
+    tile.rotation = 270;
+    tile.x_1 = beach_c_3;
+    tile.x_0 = one_s;
+    tile.y_1 = air_c;
+    tile.y_0 = empty_c;
+    tile.z_1 = one_s;
+    tile.z_0 = beach_c_2;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+    tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+    // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
+    break;
+  }
+  case cliff_side_bot_0: {
+    tile.x_1 = cliff_bot_hor_c_0;
+    tile.x_0 = cliff_bot_hor_c_0;
+    tile.y_1 = cliff_vert_0;
+    tile.y_0 = empty_c;
+    tile.z_1 = one_s;
+    tile.z_0 = empty_c;
+
+    tile.dood_0 = grass_dood_small_c;
+    tile.dood_1 = grass_dood_small_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_side_bot_1: {
+    tile.rotation = 90;
+    tile.x_1 = one_s;
+    tile.x_0 = empty_c;
+    tile.y_1 = cliff_vert_1;
+    tile.y_0 = empty_c;
+    tile.z_1 = cliff_bot_hor_c_1;
+    tile.z_0 = cliff_bot_hor_c_1;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = grass_dood_small_c;
+    tile.dood_2 = grass_dood_small_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_side_bot_2: {
+    tile.rotation = 180;
+
+    tile.x_1 = cliff_bot_hor_c_2;
+    tile.x_0 = cliff_bot_hor_c_2;
+    tile.y_1 = cliff_vert_2;
+    tile.y_0 = empty_c;
+    tile.z_1 = empty_c;
+    tile.z_0 = one_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = grass_dood_small_c;
+    tile.dood_3 = grass_dood_small_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_side_bot_3: {
+    tile.rotation = 270;
+
+    tile.x_1 = empty_c;
+    tile.x_0 = one_s;
+    tile.y_1 = cliff_vert_3;
+    tile.y_0 = empty_c;
+    tile.z_1 = cliff_bot_hor_c_3;
+    tile.z_0 = cliff_bot_hor_c_3;
+
+    tile.dood_0 = grass_dood_small_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = grass_dood_small_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_corn_bot_0: {
+    tile.x_1 = cliff_bot_hor_c_0;
+    tile.x_0 = one_s;
+    tile.y_1 = cliff_vert_corn_0;
+    tile.y_0 = empty_c;
+    tile.z_1 = one_s;
+    tile.z_0 = cliff_bot_hor_c_3;
+
+    tile.dood_0 = grass_dood_small_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+    break;
+  }
+  case cliff_corn_bot_1: {
+    tile.rotation = 90;
+    tile.x_1 = one_s;
+    tile.x_0 = cliff_bot_hor_c_0;
+    tile.y_1 = cliff_vert_corn_1;
+    tile.y_0 = empty_c;
+    tile.z_1 = one_s;
+    tile.z_0 = cliff_bot_hor_c_1;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = grass_dood_small_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+    break;
+  }
+  case cliff_corn_bot_2: {
+    tile.rotation = 180;
+    tile.x_1 = one_s;
+    tile.x_0 = cliff_bot_hor_c_2;
+    tile.y_1 = cliff_vert_corn_2;
+    tile.y_0 = empty_c;
+    tile.z_1 = cliff_bot_hor_c_1;
+    tile.z_0 = one_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = grass_dood_small_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+    break;
+  }
+  case cliff_corn_bot_3: {
+    tile.rotation = 270;
+    tile.x_1 = cliff_bot_hor_c_2;
+    tile.x_0 = one_s;
+    tile.y_1 = cliff_vert_corn_3;
+    tile.y_0 = empty_c;
+    tile.z_1 = cliff_bot_hor_c_3;
+    tile.z_0 = one_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = grass_dood_small_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+    break;
+  }
+  case cliff_side_mid_0: {
+    tile.x_1 = cliff_mid_hor_c_0;
+    tile.x_0 = cliff_mid_hor_c_0;
+    tile.y_1 = cliff_vert_0;
+    tile.y_0 = cliff_vert_0;
+    tile.z_1 = air_c;
+    tile.z_0 = empty_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_side_mid_1: {
+    tile.rotation = 90;
+    tile.x_1 = air_c;
+    tile.x_0 = empty_c;
+    tile.y_1 = cliff_vert_1;
+    tile.y_0 = cliff_vert_1;
+    tile.z_1 = cliff_mid_hor_c_1;
+    tile.z_0 = cliff_mid_hor_c_1;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_side_mid_2: {
+    tile.rotation = 180;
+    tile.x_1 = cliff_mid_hor_c_2;
+    tile.x_0 = cliff_mid_hor_c_2;
+    tile.y_1 = cliff_vert_2;
+    tile.y_0 = cliff_vert_2;
+    tile.z_1 = empty_c;
+    tile.z_0 = air_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_side_mid_3: {
+    tile.rotation = 270;
+    tile.x_1 = empty_c;
+    tile.x_0 = air_c;
+    tile.y_1 = cliff_vert_3;
+    tile.y_0 = cliff_vert_3;
+    tile.z_1 = cliff_mid_hor_c_3;
+    tile.z_0 = cliff_mid_hor_c_3;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_corn_mid_0: {
+    tile.x_1 = cliff_mid_hor_c_0;
+    tile.x_0 = air_c;
+    tile.y_1 = cliff_vert_corn_0;
+    tile.y_0 = cliff_vert_corn_0;
+    tile.z_1 = air_c;
+    tile.z_0 = cliff_mid_hor_c_3;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+
+    break;
+  }
+  case cliff_corn_mid_1: {
+    tile.rotation = 90;
+    tile.x_1 = air_c;
+    tile.x_0 = cliff_mid_hor_c_0;
+    tile.y_1 = cliff_vert_corn_1;
+    tile.y_0 = cliff_vert_corn_1;
+    tile.z_1 = air_c;
+    tile.z_0 = cliff_mid_hor_c_1;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+
+    break;
+  }
+  case cliff_corn_mid_2: {
+    tile.rotation = 180;
+    tile.x_1 = air_c;
+    tile.x_0 = cliff_mid_hor_c_2;
+    tile.y_1 = cliff_vert_corn_2;
+    tile.y_0 = cliff_vert_corn_2;
+    tile.z_1 = cliff_mid_hor_c_1;
+    tile.z_0 = air_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+
+    break;
+  }
+  case cliff_corn_mid_3: {
+    tile.rotation = 270;
+    tile.x_1 = cliff_mid_hor_c_2;
+    tile.x_0 = air_c;
+    tile.y_1 = cliff_vert_corn_3;
+    tile.y_0 = cliff_vert_corn_3;
+    tile.z_1 = cliff_mid_hor_c_3;
+    tile.z_0 = air_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+
+    break;
+  }
+  case cliff_side_top_0: {
+    tile.x_1 = cliff_top_hor_c_0;
+    tile.x_0 = cliff_top_hor_c_0;
+    tile.y_1 = air_c;
+    tile.y_0 = cliff_vert_0;
+    tile.z_1 = air_c;
+    tile.z_0 = one_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_side_top_1: {
+    tile.rotation = 90;
+    tile.x_1 = air_c;
+    tile.x_0 = one_s;
+    tile.y_1 = air_c;
+    tile.y_0 = cliff_vert_1;
+    tile.z_1 = cliff_top_hor_c_1;
+    tile.z_0 = cliff_top_hor_c_1;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_side_top_2: {
+    tile.rotation = 180;
+    tile.x_1 = cliff_top_hor_c_2;
+    tile.x_0 = cliff_top_hor_c_2;
+    tile.y_1 = air_c;
+    tile.y_0 = cliff_vert_2;
+    tile.z_1 = one_s;
+    tile.z_0 = air_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_side_top_3: {
+    tile.rotation = 270;
+    tile.x_1 = one_s;
+    tile.x_0 = air_c;
+    tile.y_1 = air_c;
+    tile.y_0 = cliff_vert_3;
+    tile.z_1 = cliff_top_hor_c_3;
+    tile.z_0 = cliff_top_hor_c_3;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_corn_top_0: {
+    tile.x_1 = cliff_top_hor_c_0;
+    tile.x_0 = air_c;
+    tile.y_1 = air_c;
+    tile.y_0 = cliff_vert_corn_0;
+    tile.z_1 = air_c;
+    tile.z_0 = cliff_top_hor_c_3;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_corn_top_1: {
+    tile.rotation = 90;
+    tile.x_1 = air_c;
+    tile.x_0 = cliff_top_hor_c_0;
+    tile.y_1 = air_c;
+    tile.y_0 = cliff_vert_corn_1;
+    tile.z_1 = air_c;
+    tile.z_0 = cliff_top_hor_c_1;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_corn_top_2: {
+    tile.rotation = 180;
+    tile.x_1 = air_c;
+    tile.x_0 = cliff_top_hor_c_2;
+    tile.y_1 = air_c;
+    tile.y_0 = cliff_vert_corn_2;
+    tile.z_1 = cliff_top_hor_c_1;
+    tile.z_0 = air_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_corn_top_3: {
+    tile.rotation = 270;
+    tile.x_1 = cliff_top_hor_c_2;
+    tile.x_0 = air_c;
+    tile.y_1 = air_c;
+    tile.y_0 = cliff_vert_corn_3;
+    tile.z_1 = cliff_top_hor_c_3;
+    tile.z_0 = air_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_in_corn_top_0: {
+    tile.x_1 = one_s;
+    tile.x_0 = cliff_top_hor_c_0;
+    tile.y_1 = air_c;
+    tile.y_0 = cliff_in_vert_corn_0;
+    tile.z_1 = cliff_top_hor_c_3;
+    tile.z_0 = one_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
+    break;
+  }
+  case cliff_in_corn_top_1: {
+    tile.rotation = 90;
+    tile.x_1 = cliff_top_hor_c_0;
+    tile.x_0 = one_s;
+    tile.y_1 = air_c;
+    tile.y_0 = cliff_in_vert_corn_1;
+    tile.z_1 = cliff_top_hor_c_1;
+    tile.z_0 = one_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
+    break;
+  }
+  case cliff_in_corn_top_2: {
+    tile.rotation = 180;
+    tile.x_1 = cliff_top_hor_c_2;
+    tile.x_0 = one_s;
+    tile.y_1 = air_c;
+    tile.y_0 = cliff_in_vert_corn_2;
+    tile.z_1 = cliff_top_hor_c_1;
+    tile.z_0 = one_s;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
+    break;
+  }
+  case cliff_in_corn_top_3: {
+    tile.rotation = 270;
+    tile.x_1 = one_s;
+    tile.x_0 = cliff_top_hor_c_2;
+    tile.y_1 = air_c;
+    tile.y_0 = cliff_in_vert_corn_3;
+    tile.z_1 = one_s;
+    tile.z_0 = cliff_top_hor_c_3;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
+    break;
+  }
+  case cliff_in_corn_mid_0: {
+    tile.x_1 = empty_c;
+    tile.x_0 = cliff_mid_hor_c_0;
+    tile.y_1 = cliff_in_vert_corn_0;
+    tile.y_0 = cliff_in_vert_corn_0;
+    tile.z_1 = cliff_mid_hor_c_3;
+    tile.z_0 = empty_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_in_corn_mid_1: {
+    tile.rotation = 90;
+    tile.x_1 = cliff_mid_hor_c_0;
+    tile.x_0 = empty_c;
+    tile.y_1 = cliff_in_vert_corn_1;
+    tile.y_0 = cliff_in_vert_corn_1;
+    tile.z_1 = cliff_mid_hor_c_1;
+    tile.z_0 = empty_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_in_corn_mid_2: {
+    tile.rotation = 180;
+    tile.x_1 = cliff_mid_hor_c_2;
+    tile.x_0 = empty_c;
+    tile.y_1 = cliff_in_vert_corn_2;
+    tile.y_0 = cliff_in_vert_corn_2;
+    tile.z_1 = empty_c;
+    tile.z_0 = cliff_mid_hor_c_1;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+
+    break;
+  }
+  case cliff_in_corn_mid_3: {
+    tile.rotation = 270;
+    tile.x_1 = empty_c;
+    tile.x_0 = cliff_mid_hor_c_2;
+    tile.y_1 = cliff_in_vert_corn_3;
+    tile.y_0 = cliff_in_vert_corn_3;
+    tile.z_1 = empty_c;
+    tile.z_0 = cliff_mid_hor_c_3;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+
+    break;
+  }
+  case cliff_in_corn_bot_0: {
+    tile.x_1 = empty_c;
+    tile.x_0 = cliff_bot_hor_c_0;
+    tile.y_1 = cliff_in_vert_corn_0;
+    tile.y_0 = empty_c;
+    tile.z_1 = cliff_bot_hor_c_3;
+    tile.z_0 = empty_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_in_corn_bot_1: {
+    tile.rotation = 90;
+    tile.x_1 = cliff_bot_hor_c_0;
+    tile.x_0 = empty_c;
+    tile.y_1 = cliff_in_vert_corn_1;
+    tile.y_0 = empty_c;
+    tile.z_1 = cliff_bot_hor_c_1;
+    tile.z_0 = empty_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_in_corn_bot_2: {
+    tile.rotation = 180;
+    tile.x_1 = cliff_bot_hor_c_2;
+    tile.x_0 = empty_c;
+    tile.y_1 = cliff_in_vert_corn_2;
+    tile.y_0 = empty_c;
+    tile.z_1 = empty_c;
+    tile.z_0 = cliff_bot_hor_c_1;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_in_corn_bot_3: {
+    tile.rotation = 270;
+    tile.x_1 = empty_c;
+    tile.x_0 = cliff_bot_hor_c_2;
+    tile.y_1 = cliff_in_vert_corn_3;
+    tile.y_0 = empty_c;
+    tile.z_1 = empty_c;
+    tile.z_0 = cliff_bot_hor_c_3;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+    break;
+  }
+  case cliff_tri_corn_0: {
+    tile.x_1 = cliff_mid_hor_c_0;
+    tile.x_0 = cliff_top_hor_c_0;
+    tile.y_1 = cliff_vert_corn_0;
+    tile.y_0 = cliff_vert_0;
+    tile.z_1 = air_c;
+    tile.z_0 = cliff_bot_hor_c_3;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = grass_dood_small_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_tri_corn_1: {
+    tile.rotation = 90;
+    tile.x_1 = air_c;
+    tile.x_0 = cliff_bot_hor_c_0;
+    tile.y_1 = cliff_vert_corn_1;
+    tile.y_0 = cliff_vert_1;
+    tile.z_1 = cliff_top_hor_c_1;
+    tile.z_0 = cliff_mid_hor_c_1;
+
+    tile.dood_0 = grass_dood_small_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_tri_corn_2: {
+    tile.rotation = 180;
+    tile.x_1 = cliff_top_hor_c_2;
+    tile.x_0 = cliff_mid_hor_c_2;
+    tile.y_1 = cliff_vert_corn_2;
+    tile.y_0 = cliff_vert_2;
+    tile.z_1 = cliff_bot_hor_c_1;
+    tile.z_0 = air_c;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = grass_dood_small_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_tri_corn_3: {
+    tile.rotation = 270;
+    tile.x_1 = cliff_bot_hor_c_2;
+    tile.x_0 = air_c;
+    tile.y_1 = cliff_vert_corn_3;
+    tile.y_0 = cliff_vert_3;
+    tile.z_1 = cliff_mid_hor_c_3;
+    tile.z_0 = cliff_top_hor_c_3;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = grass_dood_small_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_tri_corn_M_0: {
+    tile.rotation = 0;
+    tile.x_1 = cliff_top_hor_c_0;
+    tile.x_0 = cliff_mid_hor_c_0;
+    tile.y_1 = cliff_vert_corn_1;
+    tile.y_0 = cliff_vert_0;
+    tile.z_1 = air_c;
+    tile.z_0 = cliff_bot_hor_c_1;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = grass_dood_small_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_tri_corn_M_1: {
+    tile.rotation = 90;
+    tile.x_1 = air_c;
+    tile.x_0 = cliff_bot_hor_c_2;
+    tile.y_1 = cliff_vert_corn_2;
+    tile.y_0 = cliff_vert_1;
+    tile.z_1 = cliff_mid_hor_c_1;
+    tile.z_0 = cliff_top_hor_c_1;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = grass_dood_small_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_tri_corn_M_2: {
+    tile.rotation = 180;
+    tile.x_1 = cliff_mid_hor_c_2;
+    tile.x_0 = cliff_top_hor_c_2;
+    tile.y_1 = cliff_vert_corn_3;
+    tile.y_0 = cliff_vert_2;
+    tile.z_1 = cliff_bot_hor_c_3;
+    tile.z_0 = air_c;
+
+    tile.dood_0 = grass_dood_small_c;
+    tile.dood_1 = none_dood_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_tri_corn_M_3: {
+    tile.rotation = 270;
+    tile.x_1 = cliff_bot_hor_c_0;
+    tile.x_0 = air_c;
+    tile.y_1 = cliff_vert_corn_0;
+    tile.y_0 = cliff_vert_3;
+    tile.z_1 = cliff_top_hor_c_3;
+    tile.z_0 = cliff_mid_hor_c_3;
+
+    tile.dood_0 = none_dood_c;
+    tile.dood_1 = grass_dood_small_c;
+    tile.dood_2 = none_dood_c;
+    tile.dood_3 = none_dood_c;
+    tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+    break;
+  }
+  case cliff_side_tri_corn_0: {
+    tile.x_1 = cliff_bot_hor_c_0;
+    tile.x_0 = cliff_mid_hor_c_0;
+    tile.y_1 = cliff_vert_0;
+    tile.y_0 = cliff_in_vert_corn_0;
+    tile.z_1 = cliff_top_hor_c_3;
+    tile.z_0 = empty_c;
+
+    // tile.dood_0 = none_dood_c;
+    // tile.dood_1 = grass_dood_small_c;
+    // tile.dood_2 = none_dood_c;
+    // tile.dood_3 = none_dood_c;
+    // tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.4, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.25, 0.7}});
+    break;
+  }
+  case cliff_side_tri_corn_1: {
+    tile.rotation = 90;
+    tile.x_1 = cliff_top_hor_c_0;
+    tile.x_0 = empty_c;
+    tile.y_1 = cliff_vert_1;
+    tile.y_0 = cliff_in_vert_corn_1;
+    tile.z_1 = cliff_mid_hor_c_1;
+    tile.z_0 = cliff_bot_hor_c_1;
+
+    // tile.dood_0 = none_dood_c;
+    // tile.dood_1 = grass_dood_small_c;
+    // tile.dood_2 = none_dood_c;
+    // tile.dood_3 = none_dood_c;
+    // tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.4, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.25, 0.7}});
+    break;
+  }
+  case cliff_side_tri_corn_2: {
+    tile.rotation = 180;
+    tile.x_1 = cliff_mid_hor_c_2;
+    tile.x_0 = cliff_bot_hor_c_2;
+    tile.y_1 = cliff_vert_2;
+    tile.y_0 = cliff_in_vert_corn_2;
+    tile.z_1 = empty_c;
+    tile.z_0 = cliff_top_hor_c_1;
+
+    // tile.dood_0 = none_dood_c;
+    // tile.dood_1 = grass_dood_small_c;
+    // tile.dood_2 = none_dood_c;
+    // tile.dood_3 = none_dood_c;
+    // tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.4, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.25, 0.7}});
+    break;
+  }
+  case cliff_side_tri_corn_3: {
+    tile.rotation = 270;
+    tile.x_1 = empty_c;
+    tile.x_0 = cliff_top_hor_c_2;
+    tile.y_1 = cliff_vert_3;
+    tile.y_0 = cliff_in_vert_corn_3;
+    tile.z_1 = cliff_bot_hor_c_3;
+    tile.z_0 = cliff_mid_hor_c_3;
+
+    // tile.dood_0 = none_dood_c;
+    // tile.dood_1 = grass_dood_small_c;
+    // tile.dood_2 = none_dood_c;
+    // tile.dood_3 = none_dood_c;
+    // tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.4, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.25, 0.7}});
+    break;
+  }
+  case cliff_side_tri_corn_M_0: {
+    tile.x_1 = cliff_mid_hor_c_0;
+    tile.x_0 = cliff_bot_hor_c_0;
+    tile.y_1 = cliff_vert_0;
+    tile.y_0 = cliff_in_vert_corn_1;
+    tile.z_1 = cliff_top_hor_c_1;
+    tile.z_0 = empty_c;
+
+    // tile.dood_0 = none_dood_c;
+    // tile.dood_1 = grass_dood_small_c;
+    // tile.dood_2 = none_dood_c;
+    // tile.dood_3 = none_dood_c;
+    // tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {0.6, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {1.0, 0.0, 0.7}, {0.7, 0.0, 1.0}, {0.6, 0.2, 1.0}, {1.0, 0.25, 0.7}});
+    break;
+  }
+  case cliff_side_tri_corn_M_1: {
+    tile.rotation = 90;
+    tile.x_1 = cliff_top_hor_c_2;
+    tile.x_0 = empty_c;
+    tile.y_1 = cliff_vert_1;
+    tile.y_0 = cliff_in_vert_corn_2;
+    tile.z_1 = cliff_bot_hor_c_1;
+    tile.z_0 = cliff_mid_hor_c_1;
+
+    // tile.dood_0 = none_dood_c;
+    // tile.dood_1 = grass_dood_small_c;
+    // tile.dood_2 = none_dood_c;
+    // tile.dood_3 = none_dood_c;
+    // tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {0.6, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {1.0, 0.0, 0.7}, {0.7, 0.0, 1.0}, {0.6, 0.2, 1.0}, {1.0, 0.25, 0.7}});
+    break;
+  }
+  case cliff_side_tri_corn_M_2: {
+    tile.rotation = 180;
+    tile.x_1 = cliff_bot_hor_c_2;
+    tile.x_0 = cliff_mid_hor_c_2;
+    tile.y_1 = cliff_vert_2;
+    tile.y_0 = cliff_in_vert_corn_3;
+    tile.z_1 = empty_c;
+    tile.z_0 = cliff_top_hor_c_3;
+
+    // tile.dood_0 = none_dood_c;
+    // tile.dood_1 = grass_dood_small_c;
+    // tile.dood_2 = none_dood_c;
+    // tile.dood_3 = none_dood_c;
+    // tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {0.6, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {1.0, 0.0, 0.7}, {0.7, 0.0, 1.0}, {0.6, 0.2, 1.0}, {1.0, 0.25, 0.7}});
+    break;
+  }
+  case cliff_side_tri_corn_M_3: {
+    tile.rotation = 270;
+    tile.x_1 = empty_c;
+    tile.x_0 = cliff_top_hor_c_0;
+    tile.y_1 = cliff_vert_3;
+    tile.y_0 = cliff_in_vert_corn_0;
+    tile.z_1 = cliff_mid_hor_c_3;
+    tile.z_0 = cliff_bot_hor_c_3;
+
+    // tile.dood_0 = none_dood_c;
+    // tile.dood_1 = grass_dood_small_c;
+    // tile.dood_2 = none_dood_c;
+    // tile.dood_3 = none_dood_c;
+    // tile.dood_center = none_dood_c;
+
+    tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {0.6, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+    tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {1.0, 0.0, 0.7}, {0.7, 0.0, 1.0}, {0.6, 0.2, 1.0}, {1.0, 0.25, 0.7}});
+    break;
+  }
+  }
+  return tile;
+}

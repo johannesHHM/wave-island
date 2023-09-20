@@ -1,9 +1,12 @@
-#include "doodad.cpp"
-#include "tile.cpp"
+
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <vector>
+
+#include "color.cpp"
+#include "doodad.cpp"
+#include "tile.cpp"
 
 double cameraX = 4;
 double cameraY = 4;
@@ -27,23 +30,10 @@ Tile tile15;
 Tile tile16;
 Tile tile17;
 Tile tile18;
+Tile tile19;
+Tile tile20;
 
 Doodad doodad1;
-
-struct color {
-  float r;
-  float g;
-  float b;
-};
-
-// BAD NORTH
-color water_color = {0.56863, 0.6902, 0.6902};
-color grass_color = {0.64706, 0.75294, 0.61569};
-color cliff_color = {0.76471, 0.82353, 0.79608};
-color beach_color = {0.76471, 0.82353, 0.79608};
-
-color wall = {0.7, 0.7, 0.7};
-color roof = {0.7, 0.5, 0.5};
 
 void myInit() {
   glClearColor(0.5, 0.5, 0.8, 1);
@@ -114,6 +104,11 @@ void myInit() {
   tile17.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
   tile17.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
 
+  // NEW MIRROR
+  tile18.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {0.6, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+  tile18.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+  tile18.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {1.0, 0.0, 0.7}, {0.7, 0.0, 1.0}, {0.6, 0.2, 1.0}, {1.0, 0.25, 0.7}});
+
   //HOUSE
   doodad1.polygons.push_back({wall.r, wall.g, wall.b, 4, {0.3, 0.2, 0.35}, {0.7, 0.2, 0.35}, {0.7, 0.45, 0.35}, {0.3, 0.45, 0.35}});
   doodad1.polygons.push_back({wall.r, wall.g, wall.b, 4, {0.3, 0.2, 0.65}, {0.7, 0.2, 0.65}, {0.7, 0.45, 0.65}, {0.3, 0.45, 0.65}});
@@ -135,7 +130,7 @@ void draw() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glLoadIdentity();
-  gluLookAt(cameraX, cameraY, cameraZ, -1, 0, -1, 0.0, 1.0, 0.0);
+  gluLookAt(cameraX, cameraY, cameraZ, 1, 0, -1, 0.0, 1.0, 0.0);
 
   tile1.drawTile();
 
@@ -146,7 +141,15 @@ void draw() {
   tile14.drawTile();
 
   glTranslatef(1, 0, 0);
-  tile11.drawTile();
+  //tile11.drawTile();
+
+  glTranslatef(1, 0, 0);
+  tile18.drawTile();
+
+  tile15.rotation = 90;
+
+  glTranslatef(0, -1, 0);
+  tile15.drawTile();
 
   // glTranslatef(0, -1, 0);
   // tile11.drawTile();
