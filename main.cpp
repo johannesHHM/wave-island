@@ -8,6 +8,7 @@
 #include <time.h>
 #include <vector>
 
+#include "doodad.cpp"
 #include "printers.cpp"
 #include "tile.cpp"
 
@@ -73,12 +74,13 @@ void printVectorPoint(std::vector<point> vec) {
 
 class World {
 public:
-  static const int size = 12; // 12?
-  static const int height = 6;
+  static const int size = 8; // 12?
+  static const int height = 4;
   Tile tiles[size][height][size];
   Tile example_tiles[tile_amount];
 
   std::vector<tile_instance> possible_tiles[size][height][size];
+  std::vector<Doodad> doodads;
   bool collapsed[size][height][size] = {false};
 
   void fillPossibleTiles() {
@@ -87,7 +89,7 @@ public:
         for (int z = 0; z < size; z++) {
           for (int i = 0; i < tile_amount; i++) {
 
-            //possible_tiles[x][y][z].push_back(tile_instance(i));
+            // possible_tiles[x][y][z].push_back(tile_instance(i));
 
             if (y > 1) {
               if (i != water and i != beach_0 and i != beach_1 and i != beach_2 and i != beach_3 and i != beach_corn_0 and i != beach_corn_1 and i != beach_corn_2 and i != beach_corn_3 and i != beach_in_corn_0 and i != beach_in_corn_1 and i != beach_in_corn_2 and i != beach_in_corn_3) {
@@ -117,8 +119,7 @@ public:
     }
   }
 
-  void
-  generateExampleList() {
+  void generateExampleList() {
     for (int i = 0; i < tile_amount; i++) {
       Tile tile;
       tile.type = tile_instance(i);
@@ -150,8 +151,8 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = one_s;
 
-        //polygon_data polygon = {grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
-        polygon_data polygon = {255, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
+        // polygon_data polygon = {grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
+        polygon_data polygon = {grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
 
         tile.polygons.push_back(polygon);
 
@@ -1227,6 +1228,26 @@ public:
     }
   }
 
+  void populateDoodads() {
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < height; y++) {
+        for (int z = 0; z < size; z++) {
+          Tile *tile = &tiles[x][y][z];
+          if (tile->type == grass or tile->type == cliff_side_bot_0 or tile->type == cliff_side_bot_1 or tile->type == cliff_side_bot_2 or tile->type == cliff_side_bot_3) {
+            Doodad dod;
+            dod.x = x;
+            dod.y = y;
+            dod.z = z;
+            dod.circles.push_back({0.23529, 0.35294, 0.30588, 0.3, 0.3, 0.3, 0.3, 6});
+            dod.circles.push_back({0.28627, 0.43922, 0.36471, 0.1, 0.25, 0.0, 0.2, 6});
+            dod.circles.push_back({0.21961, 0.32157, 0.28627, 0.4, 0.3, 0.0, 0.25, 6});
+            doodads.push_back(dod);
+          }
+        }
+      }
+    }
+  }
+
   void generateWorld() {
     generateExampleList();
     generateNeighbourList();
@@ -1240,7 +1261,17 @@ public:
 
     iterate();
 
+    populateDoodads();
+
     std::cout << "Im done" << std::endl;
+  }
+
+  void drawCircles() {
+    // std::cout << doodads.size() << std::endl;
+    for (Doodad doodad : doodads) {
+      doodad.drawDoodad();
+      glPopMatrix();
+    }
   }
 
   void drawTiles() {
@@ -1307,6 +1338,7 @@ World world;
 
 void initWorld() {
   int seed = time(NULL);
+  seed = 1672328235;
   srand(seed);
   std::cout << "seed: " << seed << std::endl;
 }
@@ -1354,6 +1386,7 @@ void draw() {
   glScalef(zoom, zoom, zoom);
 
   world.drawTiles();
+  world.drawCircles();
 
   glTranslatef(world.size / 2 * zoom, 0, world.size / 2 * zoom);
 
