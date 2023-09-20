@@ -56,8 +56,10 @@ color light_slate_gray = {0.45098, 0.55294, 0.61569};
 // color cliff_color = azureish_white;
 // color beach_color = azureish_white;
 
+color sky = {0.52941, 0.80784, 0.92157};
+
 // BAD NORTH
-color water_color = {0.56863, 0.6902, 0.6902};
+color water_color = {0.52863, 0.6902, 0.7902};
 color grass_color = {0.64706, 0.75294, 0.61569};
 color cliff_color = {0.76471, 0.82353, 0.79608};
 color beach_color = {0.76471, 0.82353, 0.79608};
@@ -74,8 +76,8 @@ void printVectorPoint(std::vector<point> vec) {
 
 class World {
 public:
-  static const int size = 8; // 12?
-  static const int height = 4;
+  static const int size = 11; // 12?
+  static const int height = 5;
   Tile tiles[size][height][size];
   Tile example_tiles[tile_amount];
 
@@ -1621,7 +1623,8 @@ public:
           Tile *tile = &tiles[x][y][z];
 
           // BUSHES
-          if (rand() % 6 == 1) {
+          switch (rand() % 6) {
+          case 1: {
 
             Doodad dood_center;
             switch (tile->dood_center) {
@@ -1638,6 +1641,10 @@ public:
               break;
             }
             }
+            break;
+          }
+
+          case 2: {
 
             Doodad dood_0;
             switch (tile->dood_0) {
@@ -1654,6 +1661,9 @@ public:
               break;
             }
             }
+            break;
+          }
+          case 3: {
 
             Doodad dood_1;
             switch (tile->dood_1) {
@@ -1670,6 +1680,9 @@ public:
               break;
             }
             }
+            break;
+          }
+          case 4: {
 
             Doodad dood_2;
             switch (tile->dood_2) {
@@ -1686,6 +1699,9 @@ public:
               break;
             }
             }
+            break;
+          }
+          case 5: {
 
             Doodad dood_3;
             switch (tile->dood_3) {
@@ -1702,6 +1718,11 @@ public:
               break;
             }
             }
+            break;
+          }
+          default: {
+            break;
+          }
           }
 
           // if (tile->type == grass) {
@@ -1737,7 +1758,7 @@ public:
 
     populateDoodads();
 
-    std::cout << "Im done" << std::endl;
+    std::cout << "World Complete" << std::endl;
   }
 
   void drawDoodads() {
@@ -1750,7 +1771,7 @@ public:
 
   void drawTiles() {
     glTranslatef(0, -1, 0);
-    drawOcean();
+    //drawOcean();
     glTranslatef(0, 1, 0);
     // drawOutline();
     for (int x = 0; x < size; x++) {
@@ -1812,7 +1833,8 @@ World world;
 
 void initWorld() {
   int seed = time(NULL);
-  seed = 1672328235;
+  //seed = 1672328235;
+  seed = 1672432447;
   srand(seed);
   std::cout << "seed: " << seed << std::endl;
 }
@@ -1820,7 +1842,7 @@ void initWorld() {
 void myInit() {
   std::cout << glGetString(GL_VERSION) << std::endl;
 
-  glClearColor(water_color.r, water_color.g, water_color.b, 1);
+  glClearColor(sky.r, sky.g, sky.b, 1);
   glEnable(GL_DEPTH_TEST);
 
   glMatrixMode(GL_PROJECTION);
@@ -1834,24 +1856,28 @@ void myInit() {
 void draw() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  // glEnable(GL_LIGHTING);
-  // glEnable(GL_COLOR_MATERIAL);
-  // glShadeModel(GL_SMOOTH);
-  // // glEnable(GL_NORMALIZE);
-  // // glEnable(GL_LIGHT0);
-  // glEnable(GL_LIGHT1);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_COLOR_MATERIAL);
+  //glShadeModel(GL_SMOOTH);
+  // glEnable(GL_NORMALIZE);
+  glEnable(GL_LIGHT0);
+  //glEnable(GL_LIGHT1);
 
-  // float blue1[4] = {0.9, 0.9, 1, 1};
-  // float blue2[4] = {0.5, 0.5, 0.9, 1};
-  // float blue3[4] = {0.1, 0.1, 0.3, 1};
-  // glLightfv(GL_LIGHT1, GL_DIFFUSE, blue2);
-  // glLightfv(GL_LIGHT1, GL_SPECULAR, blue2);
-  // glLightfv(GL_LIGHT1, GL_AMBIENT, blue1);
+  float blue1[4] = {0.8, 0.8, 0.9, 1};
+  float blue2[4] = {0.6, 0.6, 0.7, 1};
+  float blue3[4] = {0.1, 0.1, 0.3, 1};
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, blue2);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, blue2);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, blue1);
 
   glLoadIdentity();
   gluLookAt(cameraX, cameraY, cameraZ, (world.size / 2), 3, (world.size / 2), 0.0, 1.0, 0.0);
 
   glScalef(zoom, zoom, zoom);
+
+  glTranslatef(0, -1, 0);
+  world.drawOcean();
+  glTranslatef(0, 1, 0);
 
   glRotatef(island_rotation, 0, 1, 0);
 

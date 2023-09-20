@@ -320,7 +320,7 @@ public:
       glRotatef(rotation, 0.0, 1.0, 0.0);
       glTranslatef(-0.5, -0.5, -0.5);
       drawSquare(polygon);
-      drawLine(polygon);
+      //drawLine(polygon);
       glTranslatef(0.5, 0.5, 0.5);
       glRotatef(-rotation, 0.0, 1.0, 0.0);
     }
