@@ -14,13 +14,13 @@
 
 bool step = false;
 
-double cameraX = 10;
-double cameraY = 10;
-double cameraZ = 10;
+double cameraX = 20;
+double cameraY = 20;
+double cameraZ = 20;
 
 float p = 1.0;
 
-const int tile_amount = 9;
+const int tile_amount = 12;
 
 enum tile_instance {
   air,
@@ -31,7 +31,11 @@ enum tile_instance {
   beach_1,
   beach_2,
   beach_3,
-  beach_corn_0
+  beach_corn_0,
+  beach_corn_1,
+  beach_corn_2,
+  beach_corn_3
+
 };
 
 std::vector<std::string> typeStrings{
@@ -42,9 +46,13 @@ std::vector<std::string> typeStrings{
     "beach_0",
     "beach_1",
     "beach_2",
-    "beach_3"};
+    "beach_3",
+    "beach_corn_0",
+    "beach_corn_1",
+    "beach_corn_2",
+    "beach_corn_3"};
 
-int connection_amount = 6;
+int connection_amount = 8;
 
 enum connections {
   air_c,
@@ -52,7 +60,9 @@ enum connections {
   one_s,
   two_s,
   beach_c_0,
-  beach_c_1
+  beach_c_1,
+  beach_c_2,
+  beach_c_3
 };
 
 struct polygon_data {
@@ -152,7 +162,7 @@ public:
   };
 
   void print() {
-    std::cout << "Info of tile, type: " << type << std::endl;
+    std::cout << "Info of tile, type: " << typeStrings[type] << std::endl;
     std::cout << "Connection x_1: " << x_1 << std::endl;
     std::cout << "Connection x_0: " << x_0 << std::endl;
     std::cout << "Connection y_1: " << y_1 << std::endl;
@@ -162,32 +172,32 @@ public:
 
     std::cout << "Neighbour list x_1: ";
     for (int i = 0; i < neighbours_x_1.size(); i++) {
-      std::cout << neighbours_x_1[i] << ", ";
+      std::cout << typeStrings[neighbours_x_1[i]] << ", ";
     }
     std::cout << std::endl;
     std::cout << "Neighbour list x_0: ";
     for (int i = 0; i < neighbours_x_0.size(); i++) {
-      std::cout << neighbours_x_0[i] << ", ";
+      std::cout << typeStrings[neighbours_x_0[i]] << ", ";
     }
     std::cout << std::endl;
     std::cout << "Neighbour list y_1: ";
     for (int i = 0; i < neighbours_y_1.size(); i++) {
-      std::cout << neighbours_y_1[i] << ", ";
+      std::cout << typeStrings[neighbours_y_1[i]] << ", ";
     }
     std::cout << std::endl;
     std::cout << "Neighbour list y_0: ";
     for (int i = 0; i < neighbours_y_0.size(); i++) {
-      std::cout << neighbours_y_0[i] << ", ";
+      std::cout << typeStrings[neighbours_y_0[i]] << ", ";
     }
     std::cout << std::endl;
     std::cout << "Neighbour list z_1: ";
     for (int i = 0; i < neighbours_z_1.size(); i++) {
-      std::cout << neighbours_z_1[i] << ", ";
+      std::cout << typeStrings[neighbours_z_1[i]] << ", ";
     }
     std::cout << std::endl;
     std::cout << "Neighbour list z_0: ";
     for (int i = 0; i < neighbours_z_0.size(); i++) {
-      std::cout << neighbours_z_0[i] << ", ";
+      std::cout << typeStrings[neighbours_z_0[i]] << ", ";
     }
     std::cout << std::endl
               << std::endl;
@@ -298,8 +308,8 @@ public:
       case beach_1: {
         tile.rotation = 90;
 
-        tile.x_1 = beach_c_0;
-        tile.x_0 = beach_c_0;
+        tile.x_1 = beach_c_1;
+        tile.x_0 = beach_c_1;
         tile.y_1 = air_c;
         tile.y_0 = empty_c;
         tile.z_1 = two_s;
@@ -318,8 +328,8 @@ public:
         tile.x_0 = one_s;
         tile.y_1 = air_c;
         tile.y_0 = empty_c;
-        tile.z_1 = beach_c_1;
-        tile.z_0 = beach_c_1;
+        tile.z_1 = beach_c_2;
+        tile.z_0 = beach_c_2;
 
         polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
         tile.polygons.push_back(polygon);
@@ -330,8 +340,8 @@ public:
       case beach_3: {
         tile.rotation = 270;
 
-        tile.x_1 = beach_c_1;
-        tile.x_0 = beach_c_1;
+        tile.x_1 = beach_c_3;
+        tile.x_0 = beach_c_3;
         tile.y_1 = air_c;
         tile.y_0 = empty_c;
         tile.z_1 = one_s;
@@ -344,17 +354,74 @@ public:
         break;
       }
       case beach_corn_0: {
-        tile.x_1 = one_s;
+        tile.rotation = 0;
+        tile.x_1 = beach_c_1;
         tile.x_0 = two_s;
         tile.y_1 = air_c;
         tile.y_0 = empty_c;
         tile.z_1 = two_s;
-        tile.z_0 = beach_c_1;
+        tile.z_0 = beach_c_0;
 
         polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}, {0.5, 0.5, 0}};
         tile.polygons.push_back(polygon);
         polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
+        polygon_data polygon3 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        tile.polygons.push_back(polygon3);
+        break;
+      }
+      case beach_corn_1: {
+        tile.rotation = 90;
+
+        tile.x_1 = two_s;
+        tile.x_0 = beach_c_1;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = two_s;
+        tile.z_0 = beach_c_2;
+
+        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}, {0.5, 0.5, 0}};
+        tile.polygons.push_back(polygon);
+        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
+        tile.polygons.push_back(polygon2);
+        polygon_data polygon3 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        tile.polygons.push_back(polygon3);
+        break;
+      }
+      case beach_corn_2: {
+        tile.rotation = 180;
+
+        tile.x_1 = two_s;
+        tile.x_0 = beach_c_3;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = beach_c_2;
+        tile.z_0 = two_s;
+
+        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}, {0.5, 0.5, 0}};
+        tile.polygons.push_back(polygon);
+        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
+        tile.polygons.push_back(polygon2);
+        polygon_data polygon3 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        tile.polygons.push_back(polygon3);
+        break;
+      }
+      case beach_corn_3: {
+        tile.rotation = 270;
+
+        tile.x_1 = beach_c_3;
+        tile.x_0 = two_s;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = beach_c_0;
+        tile.z_0 = two_s;
+
+        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}, {0.5, 0.5, 0}};
+        tile.polygons.push_back(polygon);
+        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
+        tile.polygons.push_back(polygon2);
+        polygon_data polygon3 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        tile.polygons.push_back(polygon3);
         break;
       }
       }
@@ -364,53 +431,6 @@ public:
       example_tiles[i] = tile;
     }
   }
-
-  // void generateNeighbourList() {
-  //   for (int i = 0; i < tile_amount; i++) {
-  //     Tile *tile = &example_tiles[i];
-  //     if (tile->x_1 == empty_c_c) {
-  //       tile->neighbours_x_1.push_back(air);
-  //     }
-  //     if (tile->x_0 == empty_c) {
-  //       tile->neighbours_x_0.push_back(air);
-  //     }
-  //     if (tile->y_1 == empty_c) {
-  //       tile->neighbours_y_1.push_back(air);
-  //     }
-  //     if (tile->y_0 == empty_c) {
-  //       tile->neighbours_y_0.push_back(air);
-  //     }
-  //     if (tile->z_1 == empty_c) {
-  //       tile->neighbours_z_1.push_back(air);
-  //     }
-  //     if (tile->z_0 == empty_c) {
-  //       tile->neighbours_z_0.push_back(air);
-  //     }
-  //     for (int j = 0; j < tile_amount; j++) {
-  //       Tile *other = &example_tiles[j];
-
-  //       if (tile->x_1 == other->x_0 and tile->x_1 != empty_c) {
-  //         tile->neighbours_x_1.push_back(other->type);
-  //       }
-  //       if (tile->x_0 == other->x_1 and tile->x_0 != empty_c) {
-  //         tile->neighbours_x_0.push_back(other->type);
-  //       }
-  //       if (tile->y_1 == other->y_0 and tile->y_1 != empty_c) {
-  //         tile->neighbours_y_1.push_back(other->type);
-  //       }
-  //       if (tile->y_0 == other->y_1 and tile->y_0 != empty_c) {
-  //         tile->neighbours_y_0.push_back(other->type);
-  //       }
-  //       if (tile->z_1 == other->z_0 and tile->z_1 != empty_c) {
-  //         tile->neighbours_z_1.push_back(other->type);
-  //       }
-  //       if (tile->z_0 == other->z_1 and tile->z_0 != empty_c) {
-  //         tile->neighbours_z_0.push_back(other->type);
-  //       }
-  //     }
-  //     // tile->print();
-  //   }
-  // }
 
   void generateNeighbourList() {
     for (int i = 0; i < tile_amount; i++) {
@@ -438,7 +458,7 @@ public:
           tile->neighbours_z_0.push_back(other->type);
         }
       }
-      // tile->print();
+      tile->print();
     }
   }
 
@@ -466,6 +486,11 @@ public:
 
   tile_instance collapseTileAtTo(point p, tile_instance wanted_tile) {
     std::vector<tile_instance> *poss_tiles = &possible_tiles[p.x][p.y][p.z];
+
+    std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
+    printVectorType(*poss_tiles);
+    std::cout << std::endl;
+
     if (poss_tiles->size() < 1) {
       std::cout << "POSSIBLE TILES IS EMPTY" << std::endl;
       printPoint(p);
@@ -499,12 +524,13 @@ public:
   }
   tile_instance collapseTileAt(point p) {
     std::vector<tile_instance> *poss_tiles = &possible_tiles[p.x][p.y][p.z];
-    // std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
-    //  for (tile_instance tile : *poss_tiles) {
-    //    std::cout << tile << std::endl;
-    //  }
+    std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
+    printVectorType(*poss_tiles);
+    std::cout << std::endl;
+
     if (poss_tiles->size() < 1) {
       std::cout << "POSSIBLE TILES IS EMPTY" << std::endl;
+
       printPoint(p);
     }
     tile_instance pick = poss_tiles->at(rand() % poss_tiles->size());
@@ -666,18 +692,29 @@ public:
   }
 
   void iterateOnce() {
-    point p = findLowestEntropy();
-    // printPoint(p);
-    if (p.x != -1) {
-      collapseTileAt(p);
-      propagate(p);
+    bool ar = true;
+    while (ar) {
+      point p = findLowestEntropy();
+      printPoint(p);
+      if (p.x != -1) {
+        tile_instance tile = collapseTileAt(p);
+        std::cout << typeStrings[tile] << std::endl;
+        if (tile != air and tile != empty) {
+          ar = false;
+        }
+
+        propagate(p);
+      } else {
+        ar = false;
+      }
     }
 
-    std::cout << "-----" << std::endl;
-    printVectorType(possible_tiles[0][0][0]);
-    // for (int i = 0; i < possible_tiles[1][2][2].size(); i++) {
-    //   std::cout << possible_tiles[1][2][2].at(i) << std::endl;
-    // }
+    // std::cout << "-----" << std::endl;
+    // printVectorType(possible_tiles[2][0][1]);
+    // std::cout << "-----" << std::endl;
+    //   for (int i = 0; i < possible_tiles[1][2][2].size(); i++) {
+    //     std::cout << possible_tiles[1][2][2].at(i) << std::endl;
+    //   }
   }
 
   void iterate() {
@@ -716,30 +753,24 @@ public:
     generateNeighbourList();
     fillPossibleTiles();
 
-    // iterate();
+    iterate();
 
     // point p = {2, 2, 2};
-    // collapsed[2][2][2] = true;
+
     // printPoint(p);
     // if (p.x != -1) {
-    //   collapseTileAtTo(p, water);
+    //   collapseTileAtTo(p, beach_corn_0);
+    //   collapsed[2][2][2] = true;
     //   propagate(p);
     // }
 
-    iterate();
-
-    // std::vector<tile_instance> v;
-    // v.push_back(grass);
-    // collapseTileAt({2, 2, 2});
+    // p = {7, 2, 5};
     // collapsed[2][2][2] = true;
-
-    // possible_tiles[2][2][2] = v;
-
-    // std::cout << "p: " << p.x << " " << p.y << " " << p.z << std::endl;
-
-    // propagate({2, 2, 2});
-
-    // iterate();
+    // printPoint(p);
+    // if (p.x != -1) {
+    //   collapseTileAtTo(p, beach_1);
+    //   propagate(p);
+    // }
 
     std::cout << "Generate world exiting." << std::endl;
   }
@@ -761,7 +792,7 @@ public:
 
   void drawOutline() {
     glColor3f(0.0, 0.0, 0.0);
-    glTranslatef(-0.5, -0.5, -0.5);
+    // glTranslatef(-0.5, -0.5, -0.5);
     glLineWidth(2.0);
     glBegin(GL_LINE_LOOP);
     glVertex3f(0, 0, 0);
@@ -771,9 +802,19 @@ public:
     glVertex3f(0, 0, 0);
 
     glVertex3f(0, size, 0);
+
     glVertex3f(size, size, 0);
+    glVertex3f(size, 0, 0);
+    glVertex3f(size, size, 0);
+
     glVertex3f(size, size, size);
+    glVertex3f(size, 0, size);
+    glVertex3f(size, size, size);
+
     glVertex3f(0, size, size);
+    glVertex3f(0, 0, size);
+    glVertex3f(0, size, size);
+
     glVertex3f(0, size, 0);
 
     glEnd();
@@ -785,7 +826,11 @@ World world;
 
 void initWorld() {
   int seed = time(NULL);
-  // seed = 1666866302;
+  // seed = 1666931670;
+  // seed = 1666931832;
+  // seed = 1666932170;
+  // seed = 1666937174;
+  // seed = 1666938197;
   srand(seed);
   std::cout << seed << std::endl;
   // srand(1666838701);
@@ -836,7 +881,7 @@ void input(unsigned char ch, int x, int y) {
     cameraY -= 1;
     break;
   case 'l':
-    // step = true;
+    step = true;
     break;
   }
   glutPostRedisplay();
