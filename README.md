@@ -1,4 +1,8 @@
-# About
+# wave-island
+
+![Screenshot](preview/12x5.png)
+
+## About
 
 Final project for IDATT2505.
 A program that uses wave function collapse algorithm to generate an island.
