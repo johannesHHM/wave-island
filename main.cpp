@@ -13,9 +13,9 @@
 
 bool step = false;
 
-double cameraX = 30;
+double cameraX = 50;
 double cameraY = 30;
-double cameraZ = 30;
+double cameraZ = 50;
 
 float p = 1.0;
 
@@ -52,7 +52,13 @@ public:
       for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
           for (int i = 0; i < tile_amount; i++) {
-            possible_tiles[x][y][z].push_back(tile_instance(i));
+            if ((x > 2 and x < size - 3) and (z > 2 and z < size - 3)) {
+              if (i != water and i != beach_0 and i != beach_1 and i != beach_2 and i != beach_3 and i != beach_corn_0 and i != beach_corn_1 and i != beach_corn_2 and i != beach_corn_3 and i != beach_in_corn_0 and i != beach_in_corn_1 and i != beach_in_corn_2 and i != beach_in_corn_3) {
+                possible_tiles[x][y][z].push_back(tile_instance(i));
+              }
+            } else {
+              possible_tiles[x][y][z].push_back(tile_instance(i));
+            }
           }
         }
       }
@@ -320,7 +326,7 @@ public:
       case cliff_side_bot_0: {
         tile.x_1 = cliff_bot_hor_c_0;
         tile.x_0 = cliff_bot_hor_c_0;
-        tile.y_1 = air_c;
+        tile.y_1 = cliff_vert_0;
         tile.y_0 = empty_c;
         tile.z_1 = one_s;
         tile.z_0 = empty_c;
@@ -333,7 +339,7 @@ public:
         tile.rotation = 90;
         tile.x_1 = one_s;
         tile.x_0 = empty_c;
-        tile.y_1 = air_c;
+        tile.y_1 = cliff_vert_1;
         tile.y_0 = empty_c;
         tile.z_1 = cliff_bot_hor_c_1;
         tile.z_0 = cliff_bot_hor_c_1;
@@ -347,7 +353,7 @@ public:
 
         tile.x_1 = cliff_bot_hor_c_2;
         tile.x_0 = cliff_bot_hor_c_2;
-        tile.y_1 = air_c;
+        tile.y_1 = cliff_vert_2;
         tile.y_0 = empty_c;
         tile.z_1 = empty_c;
         tile.z_0 = one_s;
@@ -361,7 +367,7 @@ public:
 
         tile.x_1 = empty_c;
         tile.x_0 = one_s;
-        tile.y_1 = air_c;
+        tile.y_1 = cliff_vert_3;
         tile.y_0 = empty_c;
         tile.z_1 = cliff_bot_hor_c_3;
         tile.z_0 = cliff_bot_hor_c_3;
