@@ -19,7 +19,7 @@ double cameraZ = 20;
 
 float p = 1.0;
 
-const int tile_amount = 13;
+const int tile_amount = 16;
 const int connection_amount = 8;
 
 struct point {
@@ -38,144 +38,6 @@ void printVectorPoint(std::vector<point> vec) {
   }
 }
 
-// class Tile {
-// public:
-//   GLfloat p = 1.0;
-
-//   tile_instance type = air;
-//   float rotation = 0.0;
-
-//   std::vector<polygon_data> polygons;
-
-//   connections y_1;
-//   connections y_0;
-//   connections x_1;
-//   connections x_0;
-//   connections z_1;
-//   connections z_0;
-
-//   std::vector<tile_instance> neighbours_y_1;
-//   std::vector<tile_instance> neighbours_y_0;
-//   std::vector<tile_instance> neighbours_x_1;
-//   std::vector<tile_instance> neighbours_x_0;
-//   std::vector<tile_instance> neighbours_z_1;
-//   std::vector<tile_instance> neighbours_z_0;
-
-//   Tile(){};
-
-//   void drawSquare(polygon_data polygon) {
-//     glColor3f(polygon.red, polygon.green, polygon.blue);
-//     glBegin(GL_POLYGON);
-//     switch (polygon.point_amount) {
-//     case 3: {
-//       glVertex3fv(polygon.p1);
-//       glVertex3fv(polygon.p2);
-//       glVertex3fv(polygon.p3);
-//       break;
-//     }
-//     case 4: {
-//       glVertex3fv(polygon.p1);
-//       glVertex3fv(polygon.p2);
-//       glVertex3fv(polygon.p3);
-//       glVertex3fv(polygon.p4);
-//       break;
-//     }
-//     case 5: {
-//       glVertex3fv(polygon.p1);
-//       glVertex3fv(polygon.p2);
-//       glVertex3fv(polygon.p3);
-//       glVertex3fv(polygon.p4);
-//       glVertex3fv(polygon.p5);
-//       break;
-//     }
-//     }
-//     glEnd();
-//   };
-//   void drawLine(polygon_data polygon) {
-//     glColor3f(0.0, 0.0, 0.0);
-//     glLineWidth(2.0);
-//     glBegin(GL_LINE_LOOP);
-//     switch (polygon.point_amount) {
-//     case 3: {
-//       glVertex3fv(polygon.p1);
-//       glVertex3fv(polygon.p2);
-//       glVertex3fv(polygon.p3);
-//       break;
-//     }
-//     case 4: {
-//       glVertex3fv(polygon.p1);
-//       glVertex3fv(polygon.p2);
-//       glVertex3fv(polygon.p3);
-//       glVertex3fv(polygon.p4);
-//       break;
-//     }
-//     case 5: {
-//       glVertex3fv(polygon.p1);
-//       glVertex3fv(polygon.p2);
-//       glVertex3fv(polygon.p3);
-//       glVertex3fv(polygon.p4);
-//       glVertex3fv(polygon.p5);
-//       break;
-//     }
-//     }
-//     glEnd();
-//   };
-
-//   void drawTile() {
-//     for (polygon_data polygon : polygons) {
-
-//       glRotatef(rotation, 0.0, 1.0, 0.0);
-//       glTranslatef(-0.5, -0.5, -0.5);
-//       drawSquare(polygon);
-//       // drawLine(polygon);
-//       glTranslatef(0.5, 0.5, 0.5);
-//       glRotatef(-rotation, 0.0, 1.0, 0.0);
-//     }
-//   };
-
-//   void print() {
-//     std::cout << "Info of tile, type: " << typeStrings[type] << std::endl;
-//     std::cout << "Connection x_1: " << x_1 << std::endl;
-//     std::cout << "Connection x_0: " << x_0 << std::endl;
-//     std::cout << "Connection y_1: " << y_1 << std::endl;
-//     std::cout << "Connection y_0: " << y_0 << std::endl;
-//     std::cout << "Connection z_1: " << z_1 << std::endl;
-//     std::cout << "Connection z_0: " << z_0 << std::endl;
-
-//     std::cout << "Neighbour list x_1: ";
-//     for (int i = 0; i < neighbours_x_1.size(); i++) {
-//       std::cout << typeStrings[neighbours_x_1[i]] << ", ";
-//     }
-//     std::cout << std::endl;
-//     std::cout << "Neighbour list x_0: ";
-//     for (int i = 0; i < neighbours_x_0.size(); i++) {
-//       std::cout << typeStrings[neighbours_x_0[i]] << ", ";
-//     }
-//     std::cout << std::endl;
-//     std::cout << "Neighbour list y_1: ";
-//     for (int i = 0; i < neighbours_y_1.size(); i++) {
-//       std::cout << typeStrings[neighbours_y_1[i]] << ", ";
-//     }
-//     std::cout << std::endl;
-//     std::cout << "Neighbour list y_0: ";
-//     for (int i = 0; i < neighbours_y_0.size(); i++) {
-//       std::cout << typeStrings[neighbours_y_0[i]] << ", ";
-//     }
-//     std::cout << std::endl;
-//     std::cout << "Neighbour list z_1: ";
-//     for (int i = 0; i < neighbours_z_1.size(); i++) {
-//       std::cout << typeStrings[neighbours_z_1[i]] << ", ";
-//     }
-//     std::cout << std::endl;
-//     std::cout << "Neighbour list z_0: ";
-//     for (int i = 0; i < neighbours_z_0.size(); i++) {
-//       std::cout << typeStrings[neighbours_z_0[i]] << ", ";
-//     }
-//     std::cout << std::endl
-//               << std::endl;
-//   }
-// };
-
 class World {
 public:
   static const int size = 10;
@@ -191,7 +53,6 @@ public:
         for (int z = 0; z < size; z++) {
           for (int i = 0; i < tile_amount; i++) {
             possible_tiles[x][y][z].push_back(tile_instance(i));
-            // std::cout << tile_instance(i) << std::endl;
           }
         }
       }
@@ -200,11 +61,9 @@ public:
 
   void generateExampleList() {
     for (int i = 0; i < tile_amount; i++) {
-      // Set type enum
       Tile tile;
       tile.type = tile_instance(i);
 
-      // Set connections
       switch (tile.type) {
       case air: {
         tile.x_1 = air_c;
@@ -213,8 +72,8 @@ public:
         tile.y_0 = air_c;
         tile.z_1 = air_c;
         tile.z_0 = air_c;
-        polygon_data polygon = {0.6, 0.1, 0.1, 4, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
-        // polygon_data polygon2 = {0.6, 0.1, 0.1, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
+        // polygon_data polygon = {0.6, 0.1, 0.1, 4, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
+        //  polygon_data polygon2 = {0.6, 0.1, 0.1, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
 
         // tile.polygons.push_back(polygon);
         break;
@@ -241,9 +100,8 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = one_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.0, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.0, 0.5, p}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
         // polygon_data polygon2 = {0.2, 0.8, 0.2, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
-
         tile.polygons.push_back(polygon);
         // tile.polygons.push_back(polygon2);
         break;
@@ -271,10 +129,12 @@ public:
         tile.z_1 = beach_c_0;
         tile.z_0 = beach_c_0;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}};
         tile.polygons.push_back(polygon2);
+        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}};
+        tile.polygons.push_back(polygon3);
         break;
       }
       case beach_1: {
@@ -287,10 +147,12 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = one_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}};
         tile.polygons.push_back(polygon2);
+        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}};
+        tile.polygons.push_back(polygon3);
         break;
       }
       case beach_2: {
@@ -303,10 +165,12 @@ public:
         tile.z_1 = beach_c_2;
         tile.z_0 = beach_c_2;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}};
         tile.polygons.push_back(polygon2);
+        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}};
+        tile.polygons.push_back(polygon3);
         break;
       }
       case beach_3: {
@@ -319,10 +183,12 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = two_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}};
         tile.polygons.push_back(polygon2);
+        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}};
+        tile.polygons.push_back(polygon3);
         break;
       }
       case beach_corn_0: {
@@ -334,11 +200,11 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = beach_c_0;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.0}, {1.0, 0.5, 0.5}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        polygon_data polygon3 = {0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
         tile.polygons.push_back(polygon3);
         break;
       }
@@ -352,11 +218,11 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = beach_c_2;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.0}, {1.0, 0.5, 0.5}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        polygon_data polygon3 = {0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
         tile.polygons.push_back(polygon3);
         break;
       }
@@ -370,11 +236,11 @@ public:
         tile.z_1 = beach_c_2;
         tile.z_0 = two_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.0}, {1.0, 0.5, 0.5}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        polygon_data polygon3 = {0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
         tile.polygons.push_back(polygon3);
         break;
       }
@@ -388,11 +254,11 @@ public:
         tile.z_1 = beach_c_0;
         tile.z_0 = two_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.0}, {1.0, 0.5, 0.5}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        polygon_data polygon3 = {0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
         tile.polygons.push_back(polygon3);
         break;
       }
@@ -404,8 +270,9 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = beach_c_0;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.0}, {1.0, 0.5, 1.0}, {0.0, 0.5, 1.0}, {0.0, 0.5, 0.5}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 3, {0.0, 0.0, 0.0}, {0.5, 0.5, 0.0}, {0.0, 0.5, 0.5}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+        tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
       case beach_in_corn_1: {
@@ -417,8 +284,9 @@ public:
         tile.z_1 = beach_c_0;
         tile.z_0 = one_s;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.0}, {1.0, 0.5, 1.0}, {0.0, 0.5, 1.0}, {0.0, 0.5, 0.5}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 3, {0.0, 0.0, 0.0}, {0.5, 0.5, 0.0}, {0.0, 0.5, 0.5}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+        tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
       case beach_in_corn_2: {
@@ -430,8 +298,9 @@ public:
         tile.z_1 = beach_c_2;
         tile.z_0 = one_s;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.0}, {1.0, 0.5, 1.0}, {0.0, 0.5, 1.0}, {0.0, 0.5, 0.5}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 3, {0.0, 0.0, 0.0}, {0.5, 0.5, 0.0}, {0.0, 0.5, 0.5}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+        tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
       case beach_in_corn_3: {
@@ -443,8 +312,9 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = beach_c_2;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.0}, {1.0, 0.5, 1.0}, {0.0, 0.5, 1.0}, {0.0, 0.5, 0.5}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 3, {0.0, 0.0, 0.0}, {0.5, 0.5, 0.0}, {0.0, 0.5, 0.5}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+        tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
       }
@@ -495,24 +365,23 @@ public:
             if (not collapsed[x][y][z]) {
               lowest = possible_tiles[x][y][z].size();
               lowest_point = {x, y, z};
-              // std::cout << "Lowest point " << x << " " << y << " " << z << std::endl;
             }
           }
         }
       }
     }
-    if (lowest_point.x != -1) {
-      collapsed[lowest_point.x][lowest_point.y][lowest_point.z] = true;
-    }
     return lowest_point;
   }
 
   tile_instance collapseTileAtTo(point p, tile_instance wanted_tile) {
+    if (p.x != -1) {
+      collapsed[p.x][p.y][p.z] = true;
+    }
     std::vector<tile_instance> *poss_tiles = &possible_tiles[p.x][p.y][p.z];
 
-    std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
-    printVectorType(*poss_tiles);
-    std::cout << std::endl;
+    // std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
+    // printVectorType(*poss_tiles);
+    // std::cout << std::endl;
 
     if (poss_tiles->size() < 1) {
       std::cout << "POSSIBLE TILES IS EMPTY" << std::endl;
@@ -546,10 +415,13 @@ public:
     return pick;
   }
   tile_instance collapseTileAt(point p) {
+    if (p.x != -1) {
+      collapsed[p.x][p.y][p.z] = true;
+    }
     std::vector<tile_instance> *poss_tiles = &possible_tiles[p.x][p.y][p.z];
-    std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
-    printVectorType(*poss_tiles);
-    std::cout << std::endl;
+    // std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
+    // printVectorType(*poss_tiles);
+    // std::cout << std::endl;
 
     if (poss_tiles->size() < 1) {
       std::cout << "POSSIBLE TILES IS EMPTY" << std::endl;
@@ -607,13 +479,6 @@ public:
     } else {
       neighbours.push_back({-1, -1, -1});
     }
-
-    // for (point p : neighbours) {
-    //   std::cout << p.x << std::endl;
-    //   std::cout << p.y << std::endl;
-    //   std::cout << p.z << std::endl;
-    //   std::cout << std::endl;
-    // }
     return neighbours;
   }
 
@@ -721,46 +586,29 @@ public:
       printPoint(p);
       if (p.x != -1) {
         tile_instance tile = collapseTileAt(p);
-        std::cout << typeStrings[tile] << std::endl;
         if (tile != air and tile != empty) {
           ar = false;
         }
-
         propagate(p);
       } else {
         ar = false;
       }
     }
-
-    // std::cout << "-----" << std::endl;
-    // printVectorType(possible_tiles[2][0][1]);
-    // std::cout << "-----" << std::endl;
-    //   for (int i = 0; i < possible_tiles[1][2][2].size(); i++) {
-    //     std::cout << possible_tiles[1][2][2].at(i) << std::endl;
-    //   }
   }
 
   void iterate() {
     while (true) {
       point p = findLowestEntropy();
       if (p.x == -1) {
-        std::cout << "BREAK" << std::endl;
         break;
       }
       collapseTileAt(p);
       propagate(p);
       glutPostRedisplay();
-      // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-
-      // std::cout << "loop" << std::endl;
     }
-    std::cout << "Exiting the iterate loop." << std::endl;
   }
 
   void setTiles() {
-    // tiles[2][2][2] = example_tiles[possible_tiles[2][2][2][0]];
-    // std::cout << &tiles[2][2][2] << std::endl;
-    // std::cout << &example_tiles[possible_tiles[2][2][2][0]] << std::endl;
     for (int x = 0; x < size; x++) {
       for (int y = 0; y < size; y++) {
         for (int z = 0; z < size; z++) {
@@ -770,32 +618,36 @@ public:
     }
   }
 
+  void collapseBorderTo(int height, tile_instance tile) {
+    for (int i = 0; i < size; i++) {
+      collapseTileAtTo({i, height, 0}, tile);
+      propagate({i, height, 0});
+      collapseTileAtTo({0, height, i}, tile);
+      propagate({0, height, i});
+      collapseTileAtTo({i, height, size - 1}, tile);
+      propagate({i, height, size - 1});
+      collapseTileAtTo({size - 1, height, i}, tile);
+      propagate({size - 1, height, i});
+    }
+  }
+
   void generateWorld() {
-    std::cout << "Generate world called." << std::endl;
     generateExampleList();
     generateNeighbourList();
     fillPossibleTiles();
 
+    collapseBorderTo(1, water);
+    std::cout << "IM OUT!";
+
+    // point p = {0, 0, 0};
+
+    // printPoint(p);
+    // if (p.x != -1) {
+    //   collapseTileAtTo(p, empty);
+    //   propagate(p);
+    // }
+
     iterate();
-
-    // point p = {2, 2, 2};
-
-    // printPoint(p);
-    // if (p.x != -1) {
-    //   collapseTileAtTo(p, beach_corn_0);
-    //   collapsed[2][2][2] = true;
-    //   propagate(p);
-    // }
-
-    // p = {7, 2, 5};
-    // collapsed[2][2][2] = true;
-    // printPoint(p);
-    // if (p.x != -1) {
-    //   collapseTileAtTo(p, beach_1);
-    //   propagate(p);
-    // }
-
-    std::cout << "Generate world exiting." << std::endl;
   }
 
   void drawTiles() {
@@ -849,18 +701,14 @@ World world;
 
 void initWorld() {
   int seed = time(NULL);
-  // seed = 1666931670;
-  // seed = 1666931832;
-  // seed = 1666932170;
-  // seed = 1666937174;
-  // seed = 1666938197;
   srand(seed);
-  std::cout << seed << std::endl;
-  // srand(1666838701);
-  std::cout << std::endl;
+  std::cout << "seed: " << seed << std::endl
+            << std::endl;
 }
 
 void myInit() {
+  std::cout << glGetString(GL_VERSION) << std::endl;
+
   glClearColor(0.8, 0.8, 0.8, 1);
   glEnable(GL_DEPTH_TEST);
 
