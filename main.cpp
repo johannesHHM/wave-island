@@ -4,11 +4,38 @@
 #include <iostream>
 #include <vector>
 
+float p = 1.0;
+
+float c[8][3] = {
+    {0.0, 0.0, 0.0},
+    {0.0, p, 0.0},
+    {p, p, 0.0},
+    {p, 0.0, 0.0},
+    {0.0, 0.0, p},
+    {0.0, p, p},
+    {p, p, p},
+    {p, 0.0, p}};
+
+struct polygon_data {
+  float red;
+  float green;
+  float blue;
+
+  float p1[3];
+  float p2[3];
+  float p3[3];
+  float p4[3];
+};
+
 class Tile {
 public:
   float red;
   float green;
   float blue;
+
+  GLfloat p = 1.0;
+
+  std::vector<polygon_data> polygons;
 
   Tile() {
     red = 0.0;
@@ -21,49 +48,9 @@ public:
     green = g;
     blue = b;
   }
-};
 
-class World {
-public:
-  static const int size = 10;
-  Tile tiles[size][size][size];
-
-  void generateWorld() {
-    for (int x = 0; x < size; x++) {
-      for (int y = 0; y < size; y++) {
-        for (int z = 0; z < size; z++) {
-          Tile tile(0.2, 0.8, 0.1);
-          tiles[x][y][z] = tile;
-        }
-      }
-    }
-  }
-
-  void drawTiles() {
-    for (int x = 0; x < size; x++) {
-      for (int y = 0; y < size; y++) {
-        for (int z = 0; z < size; z++) {
-          glTranslated(x, y, z);
-          drawTile(tiles[x][y][z]);
-          glTranslated(-x, -y, -z);
-        }
-      }
-    }
-  }
-  GLfloat p = 2.0;
-
-  GLfloat c[8][3] = {
-      {0.0, 0.0, 0.0},
-      {0.0, p, 0.0},
-      {p, p, 0.0},
-      {p, 0.0, 0.0},
-      {0.0, 0.0, p},
-      {0.0, p, p},
-      {p, p, p},
-      {p, 0.0, p}};
-
-  void drawSquare(int p1, int p2, int p3, int p4, Tile tile) {
-    glColor3f(tile.red, tile.green, tile.blue);
+  void drawSquare(int p1, int p2, int p3, int p4, float red, float green, float blue) {
+    glColor3f(red, green, blue);
     glBegin(GL_POLYGON);
     glVertex3fv(c[p1]);
     glVertex3fv(c[p2]);
@@ -72,13 +59,40 @@ public:
     glEnd();
   };
 
-  void drawTile(Tile tile) {
-    drawSquare(0, 3, 7, 4, tile);
-    drawSquare(5, 6, 2, 1, tile);
-    drawSquare(4, 5, 6, 7, tile);
-    drawSquare(6, 2, 3, 7, tile);
-    drawSquare(0, 3, 2, 1, tile);
-    drawSquare(0, 1, 5, 4, tile);
+  void drawSquare2(polygon_data polygon) {
+    glColor3f(polygon.red, polygon.green, polygon.blue);
+    glBegin(GL_POLYGON);
+    glVertex3fv(polygon.p1);
+    glVertex3fv(polygon.p2);
+    glVertex3fv(polygon.p3);
+    glVertex3fv(polygon.p4);
+    glEnd();
+  };
+  void drawLine(polygon_data polygon) {
+    glColor3f(0.0, 0.0, 0.0);
+    glLineWidth(2.0);
+    glBegin(GL_LINE_LOOP);
+    glVertex3fv(polygon.p1);
+    glVertex3fv(polygon.p2);
+    glVertex3fv(polygon.p3);
+    glVertex3fv(polygon.p4);
+    glEnd();
+  };
+
+  void drawTile2() {
+    for (polygon_data polygon : polygons) {
+      drawSquare2(polygon);
+      drawLine(polygon);
+    }
+  };
+
+  void drawTile() {
+    drawSquare(0, 3, 7, 4, red, green, blue);
+    drawSquare(5, 6, 2, 1, red, green, blue);
+    drawSquare(4, 5, 6, 7, red, green, blue);
+    drawSquare(6, 2, 3, 7, red, green, blue);
+    drawSquare(0, 3, 2, 1, red, green, blue);
+    drawSquare(0, 1, 5, 4, red, green, blue);
 
     glColor3f(0.0, 0.0, 0.0);
 
@@ -110,6 +124,44 @@ public:
   };
 };
 
+class World {
+public:
+  static const int size = 10;
+  Tile tiles[size][size][size];
+
+  void generateWorld() {
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < size; y++) {
+        for (int z = 0; z < size; z++) {
+          Tile tile;
+          if (y == 1) {
+            polygon_data polygon = {0.2, 0.8, 0.2, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
+            tile.polygons.push_back(polygon);
+          }
+          if (y == 0) {
+            polygon_data polygon = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
+            tile.polygons.push_back(polygon);
+          }
+
+          tiles[x][y][z] = tile;
+        }
+      }
+    }
+  }
+
+  void drawTiles() {
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < size; y++) {
+        for (int z = 0; z < size; z++) {
+          glTranslated(x, y, z);
+          tiles[x][y][z].drawTile2();
+          glTranslated(-x, -y, -z);
+        }
+      }
+    }
+  }
+};
+
 World world;
 
 void initWorld() {
@@ -132,14 +184,7 @@ void draw() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glLoadIdentity();
-  gluLookAt(10, 20, 10, 0, 0, 0, 0.0, 1.0, 0.0);
-
-  // drawCube();
-  // Tile t1(0.2, 0.8, 0.1);
-  // world.drawTile(t1);
-
-  // Tile t2(0.2, 0.8, 0.1);
-  // world.drawTile(t2);
+  gluLookAt(20, 20, 20, 0, 0, 0, 0.0, 1.0, 0.0);
 
   world.drawTiles();
 
