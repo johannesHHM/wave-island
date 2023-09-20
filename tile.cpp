@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 
-const int tile_amount = 24;
-const int connection_amount = 12;
+const int tile_amount = 40;
+const int connection_amount = 28;
 
 enum tile_instance {
   air,
@@ -24,14 +24,36 @@ enum tile_instance {
   beach_in_corn_1,
   beach_in_corn_2,
   beach_in_corn_3,
+
   cliff_side_bot_0,
   cliff_side_bot_1,
   cliff_side_bot_2,
   cliff_side_bot_3,
+
   cliff_corn_bot_0,
   cliff_corn_bot_1,
   cliff_corn_bot_2,
-  cliff_corn_bot_3
+  cliff_corn_bot_3,
+
+  cliff_side_mid_0,
+  cliff_side_mid_1,
+  cliff_side_mid_2,
+  cliff_side_mid_3,
+
+  cliff_corn_mid_0,
+  cliff_corn_mid_1,
+  cliff_corn_mid_2,
+  cliff_corn_mid_3,
+
+  cliff_side_top_0,
+  cliff_side_top_1,
+  cliff_side_top_2,
+  cliff_side_top_3,
+
+  cliff_corn_top_0,
+  cliff_corn_top_1,
+  cliff_corn_top_2,
+  cliff_corn_top_3
 
 };
 
@@ -59,7 +81,24 @@ std::vector<std::string> typeStrings{
     "cliff_corn_bot_0",
     "cliff_corn_bot_1",
     "cliff_corn_bot_2",
-    "cliff_corn_bot_3"};
+    "cliff_corn_bot_3",
+    "cliff_side_mid_0",
+    "cliff_side_mid_1",
+    "cliff_side_mid_2",
+    "cliff_side_mid_3",
+    "cliff_corn_mid_0",
+    "cliff_corn_mid_1",
+    "cliff_corn_mid_2",
+    "cliff_corn_mid_3",
+    "cliff_side_top_0",
+    "cliff_side_top_1",
+    "cliff_side_top_2",
+    "cliff_side_top_3",
+    "cliff_corn_top_0",
+    "cliff_corn_top_1",
+    "cliff_corn_top_2",
+    "cliff_corn_top_3",
+};
 
 enum connections {
   air_c,
@@ -70,15 +109,31 @@ enum connections {
   beach_c_1,
   beach_c_2,
   beach_c_3,
+
   cliff_bot_hor_c_0,
   cliff_bot_hor_c_1,
   cliff_bot_hor_c_2,
   cliff_bot_hor_c_3,
 
-  cliff_mid_ver_c_0,
-  cliff_mid_ver_c_1,
-  cliff_mid_ver_c_2,
-  cliff_mid_ver_c_3,
+  cliff_vert_0,
+  cliff_vert_1,
+  cliff_vert_2,
+  cliff_vert_3,
+
+  cliff_vert_corn_0,
+  cliff_vert_corn_1,
+  cliff_vert_corn_2,
+  cliff_vert_corn_3,
+
+  cliff_mid_hor_c_0,
+  cliff_mid_hor_c_1,
+  cliff_mid_hor_c_2,
+  cliff_mid_hor_c_3,
+
+  cliff_top_hor_c_0,
+  cliff_top_hor_c_1,
+  cliff_top_hor_c_2,
+  cliff_top_hor_c_3
 };
 
 struct polygon_data {
@@ -186,7 +241,7 @@ public:
       glRotatef(rotation, 0.0, 1.0, 0.0);
       glTranslatef(-0.5, -0.5, -0.5);
       drawSquare(polygon);
-      // drawLine(polygon);
+      drawLine(polygon);
       glTranslatef(0.5, 0.5, 0.5);
       glRotatef(-rotation, 0.0, 1.0, 0.0);
     }

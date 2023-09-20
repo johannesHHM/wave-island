@@ -39,7 +39,7 @@ void printVectorPoint(std::vector<point> vec) {
 
 class World {
 public:
-  static const int size = 20;
+  static const int size = 13;
   static const int height = 5;
   Tile tiles[size][height][size];
   Tile example_tiles[tile_amount];
@@ -373,7 +373,7 @@ public:
       case cliff_corn_bot_0: {
         tile.x_1 = cliff_bot_hor_c_0;
         tile.x_0 = one_s;
-        tile.y_1 = air_c;
+        tile.y_1 = cliff_vert_corn_0;
         tile.y_0 = empty_c;
         tile.z_1 = one_s;
         tile.z_0 = cliff_bot_hor_c_3;
@@ -386,7 +386,7 @@ public:
         tile.rotation = 90;
         tile.x_1 = one_s;
         tile.x_0 = cliff_bot_hor_c_0;
-        tile.y_1 = air_c;
+        tile.y_1 = cliff_vert_corn_1;
         tile.y_0 = empty_c;
         tile.z_1 = one_s;
         tile.z_0 = cliff_bot_hor_c_1;
@@ -399,7 +399,7 @@ public:
         tile.rotation = 180;
         tile.x_1 = one_s;
         tile.x_0 = cliff_bot_hor_c_2;
-        tile.y_1 = air_c;
+        tile.y_1 = cliff_vert_corn_2;
         tile.y_0 = empty_c;
         tile.z_1 = cliff_bot_hor_c_1;
         tile.z_0 = one_s;
@@ -412,7 +412,7 @@ public:
         tile.rotation = 270;
         tile.x_1 = cliff_bot_hor_c_2;
         tile.x_0 = one_s;
-        tile.y_1 = air_c;
+        tile.y_1 = cliff_vert_corn_3;
         tile.y_0 = empty_c;
         tile.z_1 = cliff_bot_hor_c_3;
         tile.z_0 = one_s;
@@ -421,10 +421,207 @@ public:
         tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
         break;
       }
+      case cliff_side_mid_0: {
+        tile.x_1 = cliff_mid_hor_c_0;
+        tile.x_0 = cliff_mid_hor_c_0;
+        tile.y_1 = cliff_vert_0;
+        tile.y_0 = cliff_vert_0;
+        tile.z_1 = air_c;
+        tile.z_0 = empty_c;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        break;
       }
+      case cliff_side_mid_1: {
+        tile.rotation = 90;
+        tile.x_1 = air_c;
+        tile.x_0 = empty_c;
+        tile.y_1 = cliff_vert_1;
+        tile.y_0 = cliff_vert_1;
+        tile.z_1 = cliff_mid_hor_c_1;
+        tile.z_0 = cliff_mid_hor_c_1;
 
-      // tile.print();
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        break;
+      }
+      case cliff_side_mid_2: {
+        tile.rotation = 180;
+        tile.x_1 = cliff_mid_hor_c_2;
+        tile.x_0 = cliff_mid_hor_c_2;
+        tile.y_1 = cliff_vert_2;
+        tile.y_0 = cliff_vert_2;
+        tile.z_1 = empty_c;
+        tile.z_0 = air_c;
 
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        break;
+      }
+      case cliff_side_mid_3: {
+        tile.rotation = 270;
+        tile.x_1 = empty_c;
+        tile.x_0 = air_c;
+        tile.y_1 = cliff_vert_3;
+        tile.y_0 = cliff_vert_3;
+        tile.z_1 = cliff_mid_hor_c_3;
+        tile.z_0 = cliff_mid_hor_c_3;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        break;
+      }
+      case cliff_corn_mid_0: {
+        tile.x_1 = cliff_mid_hor_c_0;
+        tile.x_0 = air_c;
+        tile.y_1 = cliff_vert_corn_0;
+        tile.y_0 = cliff_vert_corn_0;
+        tile.z_1 = air_c;
+        tile.z_0 = cliff_mid_hor_c_3;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+
+        break;
+      }
+      case cliff_corn_mid_1: {
+        tile.rotation = 90;
+        tile.x_1 = air_c;
+        tile.x_0 = cliff_mid_hor_c_0;
+        tile.y_1 = cliff_vert_corn_1;
+        tile.y_0 = cliff_vert_corn_1;
+        tile.z_1 = air_c;
+        tile.z_0 = cliff_mid_hor_c_1;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+
+        break;
+      }
+      case cliff_corn_mid_2: {
+        tile.rotation = 180;
+        tile.x_1 = air_c;
+        tile.x_0 = cliff_mid_hor_c_2;
+        tile.y_1 = cliff_vert_corn_2;
+        tile.y_0 = cliff_vert_corn_2;
+        tile.z_1 = cliff_mid_hor_c_1;
+        tile.z_0 = air_c;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+
+        break;
+      }
+      case cliff_corn_mid_3: {
+        tile.rotation = 270;
+        tile.x_1 = cliff_mid_hor_c_2;
+        tile.x_0 = air_c;
+        tile.y_1 = cliff_vert_corn_3;
+        tile.y_0 = cliff_vert_corn_3;
+        tile.z_1 = cliff_mid_hor_c_3;
+        tile.z_0 = air_c;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+
+        break;
+      }
+      case cliff_side_top_0: {
+        tile.x_1 = cliff_top_hor_c_0;
+        tile.x_0 = cliff_top_hor_c_0;
+        tile.y_1 = air_c;
+        tile.y_0 = cliff_vert_0;
+        tile.z_1 = air_c;
+        tile.z_0 = one_s;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_side_top_1: {
+        tile.rotation = 90;
+        tile.x_1 = air_c;
+        tile.x_0 = one_s;
+        tile.y_1 = air_c;
+        tile.y_0 = cliff_vert_1;
+        tile.z_1 = cliff_top_hor_c_1;
+        tile.z_0 = cliff_top_hor_c_1;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_side_top_2: {
+        tile.rotation = 180;
+        tile.x_1 = cliff_top_hor_c_2;
+        tile.x_0 = cliff_top_hor_c_2;
+        tile.y_1 = air_c;
+        tile.y_0 = cliff_vert_2;
+        tile.z_1 = one_s;
+        tile.z_0 = air_c;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_side_top_3: {
+        tile.rotation = 270;
+        tile.x_1 = one_s;
+        tile.x_0 = air_c;
+        tile.y_1 = air_c;
+        tile.y_0 = cliff_vert_3;
+        tile.z_1 = cliff_top_hor_c_3;
+        tile.z_0 = cliff_top_hor_c_3;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_corn_top_0: {
+        tile.x_1 = cliff_top_hor_c_0;
+        tile.x_0 = air_c;
+        tile.y_1 = air_c;
+        tile.y_0 = cliff_vert_corn_0;
+        tile.z_1 = air_c;
+        tile.z_0 = cliff_top_hor_c_3;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_corn_top_1: {
+        tile.rotation = 90;
+        tile.x_1 = air_c;
+        tile.x_0 = cliff_top_hor_c_0;
+        tile.y_1 = air_c;
+        tile.y_0 = cliff_vert_corn_1;
+        tile.z_1 = air_c;
+        tile.z_0 = cliff_top_hor_c_1;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_corn_top_2: {
+        tile.rotation = 180;
+        tile.x_1 = air_c;
+        tile.x_0 = cliff_top_hor_c_2;
+        tile.y_1 = air_c;
+        tile.y_0 = cliff_vert_corn_2;
+        tile.z_1 = cliff_top_hor_c_1;
+        tile.z_0 = air_c;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+        break;
+      }
+      case cliff_corn_top_3: {
+        tile.rotation = 270;
+        tile.x_1 = cliff_top_hor_c_2;
+        tile.x_0 = air_c;
+        tile.y_1 = air_c;
+        tile.y_0 = cliff_vert_corn_3;
+        tile.z_1 = cliff_top_hor_c_3;
+        tile.z_0 = air_c;
+
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
+        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+        break;
+      }
+      }
       example_tiles[i] = tile;
     }
   }
