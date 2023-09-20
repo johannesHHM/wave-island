@@ -73,8 +73,8 @@ void printVectorPoint(std::vector<point> vec) {
 
 class World {
 public:
-  static const int size = 9; // 12?
-  static const int height = 5;
+  static const int size = 12; // 12?
+  static const int height = 6;
   Tile tiles[size][height][size];
   Tile example_tiles[tile_amount];
 
@@ -86,9 +86,19 @@ public:
       for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
           for (int i = 0; i < tile_amount; i++) {
-            possible_tiles[x][y][z].push_back(tile_instance(i));
+
+            //possible_tiles[x][y][z].push_back(tile_instance(i));
+
+            if (y > 1) {
+              if (i != water and i != beach_0 and i != beach_1 and i != beach_2 and i != beach_3 and i != beach_corn_0 and i != beach_corn_1 and i != beach_corn_2 and i != beach_corn_3 and i != beach_in_corn_0 and i != beach_in_corn_1 and i != beach_in_corn_2 and i != beach_in_corn_3) {
+                possible_tiles[x][y][z].push_back(tile_instance(i));
+              }
+            } else {
+              possible_tiles[x][y][z].push_back(tile_instance(i));
+            }
+
             // TODO restricting start tiles may make neighbors not correct?
-            // int restrict_size = 2;
+            // int restrict_size = 1;
             // if ((x > restrict_size and x < size - (restrict_size + 1)) and (z > restrict_size and z < size - (restrict_size + 1))) {
             //   if (i != water and i != beach_0 and i != beach_1 and i != beach_2 and i != beach_3 and i != beach_corn_0 and i != beach_corn_1 and i != beach_corn_2 and i != beach_corn_3 and i != beach_in_corn_0 and i != beach_in_corn_1 and i != beach_in_corn_2 and i != beach_in_corn_3) {
             //     possible_tiles[x][y][z].push_back(tile_instance(i));
@@ -101,14 +111,14 @@ public:
             // } else {
             //   possible_tiles[x][y][z].push_back(tile_instance(i));
             // }
-            // }
           }
         }
       }
     }
   }
 
-  void generateExampleList() {
+  void
+  generateExampleList() {
     for (int i = 0; i < tile_amount; i++) {
       Tile tile;
       tile.type = tile_instance(i);
@@ -140,7 +150,9 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = one_s;
 
-        polygon_data polygon = {grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
+        //polygon_data polygon = {grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
+        polygon_data polygon = {255, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
+
         tile.polygons.push_back(polygon);
 
         break;
