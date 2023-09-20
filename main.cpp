@@ -42,7 +42,7 @@ void printVectorPoint(std::vector<point> vec) {
 
 class World {
 public:
-  static const int size = 15;
+  static const int size = 12; // 12?
   static const int height = 5;
   Tile tiles[size][height][size];
   Tile example_tiles[tile_amount];
@@ -126,8 +126,8 @@ public:
         polygon_data polygon = {0.2, 0.2, 0.8, 4, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
         // polygon_data polygon2 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
 
-        tile.polygons.push_back(polygon);
-        // tile.polygons.push_back(polygon2);
+        // tile.polygons.push_back(polygon);
+        //  tile.polygons.push_back(polygon2);
         break;
       }
       case beach_0: {
@@ -143,7 +143,7 @@ public:
         polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}};
         tile.polygons.push_back(polygon2);
         polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}};
-        tile.polygons.push_back(polygon3);
+        // tile.polygons.push_back(polygon3);
         break;
       }
       case beach_1: {
@@ -161,7 +161,7 @@ public:
         polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}};
         tile.polygons.push_back(polygon2);
         polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}};
-        tile.polygons.push_back(polygon3);
+        // tile.polygons.push_back(polygon3);
         break;
       }
       case beach_2: {
@@ -179,7 +179,7 @@ public:
         polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}};
         tile.polygons.push_back(polygon2);
         polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}};
-        tile.polygons.push_back(polygon3);
+        // tile.polygons.push_back(polygon3);
         break;
       }
       case beach_3: {
@@ -197,7 +197,7 @@ public:
         polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}};
         tile.polygons.push_back(polygon2);
         polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}};
-        tile.polygons.push_back(polygon3);
+        // tile.polygons.push_back(polygon3);
         break;
       }
       case beach_corn_0: {
@@ -214,7 +214,7 @@ public:
         polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
         polygon_data polygon3 = {0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
-        tile.polygons.push_back(polygon3);
+        // tile.polygons.push_back(polygon3);
         break;
       }
       case beach_corn_1: {
@@ -232,7 +232,7 @@ public:
         polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
         polygon_data polygon3 = {0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
-        tile.polygons.push_back(polygon3);
+        // tile.polygons.push_back(polygon3);
         break;
       }
       case beach_corn_2: {
@@ -250,7 +250,7 @@ public:
         polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
         polygon_data polygon3 = {0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
-        tile.polygons.push_back(polygon3);
+        // tile.polygons.push_back(polygon3);
         break;
       }
       case beach_corn_3: {
@@ -268,7 +268,7 @@ public:
         polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
         polygon_data polygon3 = {0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
-        tile.polygons.push_back(polygon3);
+        // tile.polygons.push_back(polygon3);
         break;
       }
       case beach_in_corn_0: {
@@ -281,7 +281,7 @@ public:
 
         tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
         tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
-        tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
+        // tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
       case beach_in_corn_1: {
@@ -295,7 +295,7 @@ public:
 
         tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
         tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
-        tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
+        // tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
       case beach_in_corn_2: {
@@ -309,7 +309,7 @@ public:
 
         tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
         tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
-        tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
+        // tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
       case beach_in_corn_3: {
@@ -323,7 +323,7 @@ public:
 
         tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
         tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
-        tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
+        // tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
       case cliff_side_bot_0: {
@@ -1115,6 +1115,8 @@ public:
     collapseLayerTo(4, air);
 
     iterate();
+
+    std::cout << "Im done" << std::endl;
   }
 
   void drawTiles() {
@@ -1189,7 +1191,7 @@ void initWorld() {
 void myInit() {
   std::cout << glGetString(GL_VERSION) << std::endl;
 
-  glClearColor(0.8, 0.8, 0.8, 1);
+  glClearColor(0.2, 0.2, 0.8, 1);
   glEnable(GL_DEPTH_TEST);
 
   glMatrixMode(GL_PROJECTION);
@@ -1202,6 +1204,20 @@ void myInit() {
 
 void draw() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  glEnable(GL_LIGHTING);
+  glEnable(GL_COLOR_MATERIAL);
+  glShadeModel(GL_SMOOTH);
+  // glEnable(GL_NORMALIZE);
+  //  glEnable(GL_LIGHT0);
+  glEnable(GL_LIGHT1);
+
+  float blue1[4] = {0.9, 0.9, 1, 1};
+  float blue2[4] = {0.4, 0.4, 0.9, 1};
+  float blue3[4] = {0.1, 0.1, 0.3, 1};
+  glLightfv(GL_LIGHT1, GL_DIFFUSE, blue2);
+  glLightfv(GL_LIGHT1, GL_SPECULAR, blue2);
+  glLightfv(GL_LIGHT1, GL_AMBIENT, blue1);
 
   glLoadIdentity();
   gluLookAt(cameraX, cameraY, cameraZ, (world.size / 2) * zoom, 3, (world.size / 2) * zoom, 0.0, 1.0, 0.0);
