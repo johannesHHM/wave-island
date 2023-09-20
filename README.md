@@ -27,11 +27,11 @@ The program can be run by giving it zero arguments, and going thorugh configurat
 
 Or you can supply the 5 needed arguments, in order,
 
-- size: integer from 0 to 50 (recommend 6 - 15)
-- height: integer from 0 to 50 (recommend 4 - 8)
-- houses: integer from 0 and up (recommend 0 - 4)
-- trees: any integer for trees -1 for no trees (recommend 1)
-- seed: any integer for seed, -1 for random seed (recommend -1)
+- Size:     integer from 0 to 50 (recommend 6 - 15)
+- Height:   integer from 0 to 50 (recommend 4 - 8)
+- Houses:   integer from 0 and up (recommend 0 - 4)
+- Trees:    any integer for trees, -1 for no trees (recommend 1)
+- Seed:     any integer for seed, -1 for random seed (recommend -1)
 
 ```sh
 ./island 12 5 2 1 -1
