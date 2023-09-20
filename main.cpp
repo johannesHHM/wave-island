@@ -16,30 +16,19 @@ float c[8][3] = {
     {p, p, p},
     {p, 0.0, p}};
 
+const int tile_amount = 3;
+
 enum tile_instance {
   air,
   grass,
-  water,
-  beach_0,
-  beach_1,
-  beach_2,
-  beach_3,
-  beach_corner_0,
-  beach_corner_1,
-  beach_corner_2,
-  beach_corner_3,
-  last
+  water
 };
 
-enum connections {
-  any,
-  gr_gr,
-  gr_ar,
-  ar_ar,
+int connection_amount = 2;
 
-  gr_wt,
-  wt_wt,
-  wt_ar
+enum connections {
+  empty,
+  one
 };
 
 struct polygon_data {
@@ -51,6 +40,12 @@ struct polygon_data {
   float p2[3];
   float p3[3];
   float p4[3];
+};
+
+struct point {
+  int x;
+  int y;
+  int z;
 };
 
 class Tile {
@@ -109,118 +104,190 @@ public:
       glRotatef(-rotation, 0.0, 1.0, 0.0);
     }
   };
+
+  void print() {
+    std::cout << "Info of tile, type: " << type << std::endl;
+    std::cout << "Connection x_1: " << x_1 << std::endl;
+    std::cout << "Connection x_0: " << x_0 << std::endl;
+    std::cout << "Connection y_1: " << y_1 << std::endl;
+    std::cout << "Connection y_0: " << y_0 << std::endl;
+    std::cout << "Connection z_1: " << z_1 << std::endl;
+    std::cout << "Connection z_0: " << z_0 << std::endl;
+
+    std::cout << "Neighbour list x_1: ";
+    for (int i = 0; i < neighbours_x_1.size(); i++) {
+      std::cout << neighbours_x_1[i] << ", ";
+    }
+    std::cout << std::endl;
+    std::cout << "Neighbour list x_0: ";
+    for (int i = 0; i < neighbours_x_0.size(); i++) {
+      std::cout << neighbours_x_0[i] << ", ";
+    }
+    std::cout << std::endl;
+    std::cout << "Neighbour list y_1: ";
+    for (int i = 0; i < neighbours_y_1.size(); i++) {
+      std::cout << neighbours_y_1[i] << ", ";
+    }
+    std::cout << std::endl;
+    std::cout << "Neighbour list y_0: ";
+    for (int i = 0; i < neighbours_y_0.size(); i++) {
+      std::cout << neighbours_y_0[i] << ", ";
+    }
+    std::cout << std::endl;
+    std::cout << "Neighbour list z_1: ";
+    for (int i = 0; i < neighbours_z_1.size(); i++) {
+      std::cout << neighbours_z_1[i] << ", ";
+    }
+    std::cout << std::endl;
+    std::cout << "Neighbour list z_0: ";
+    for (int i = 0; i < neighbours_z_0.size(); i++) {
+      std::cout << neighbours_z_0[i] << ", ";
+    }
+    std::cout << std::endl
+              << std::endl;
+  }
 };
 
 class World {
 public:
   static const int size = 4;
   Tile tiles[size][size][size];
-  std::vector<Tile> exTiles;
+  Tile example_tiles[tile_amount];
+  std::vector<tile_instance> possible_tiles[size][size][size];
+
+  void fillPossibleTiles() {
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < size; y++) {
+        for (int z = 0; z < size; z++) {
+          for (int i = 0; i < tile_amount; i++) {
+            possible_tiles[x][y][z].push_back(tile_instance(i));
+            // std::cout << tile_instance(i) << std::endl;
+          }
+        }
+      }
+    }
+  }
 
   void generateExampleList() {
-    Tile tile;
-    for (int tileEnum = air; tileEnum != last; tileEnum++) {
-      switch (tileEnum) {
+    for (int i = 0; i < tile_amount; i++) {
+      // Set type enum
+      Tile tile;
+      tile.type = tile_instance(i);
+
+      // Set connections
+      switch (tile.type) {
       case air:
-        tile.type = air;
-        tile.y_1 = any;
-        tile.y_0 = any;
-        tile.x_1 = any;
-        tile.x_0 = any;
-        tile.z_1 = any;
-        tile.z_0 = any;
+        tile.x_1 = empty;
+        tile.x_0 = empty;
+        tile.y_1 = empty;
+        tile.y_0 = empty;
+        tile.z_1 = empty;
+        tile.z_0 = empty;
         break;
       case grass:
-        tile.type = grass;
-        tile.y_1 = any;
-        tile.y_0 = any;
-        tile.x_1 = any;
-        tile.x_0 = any;
-        tile.z_1 = any;
-        tile.z_0 = any;
+        tile.x_1 = one;
+        tile.x_0 = one;
+        tile.y_1 = empty;
+        tile.y_0 = empty;
+        tile.z_1 = one;
+        tile.z_0 = one;
         break;
+      case water:
+        tile.x_1 = one;
+        tile.x_0 = one;
+        tile.y_1 = empty;
+        tile.y_0 = empty;
+        tile.z_1 = one;
+        tile.z_0 = one;
+        break;
+      }
+
+      // tile.print();
+
+      example_tiles[i] = tile;
+      // std::cout << tile_instance(i) << std::endl;
+    }
+  }
+
+  void generateNeighbourList() {
+    for (int i = 0; i < tile_amount; i++) {
+      Tile *tile = &example_tiles[i];
+      for (int j = 0; j < tile_amount; j++) {
+        if (i != j) {
+          Tile *other = &example_tiles[j];
+          if (tile->x_1 == other->x_0) {
+            tile->neighbours_x_1.push_back(other->type);
+          }
+          if (tile->x_0 == other->x_1) {
+            tile->neighbours_x_0.push_back(other->type);
+          }
+          if (tile->y_1 == other->y_0) {
+            tile->neighbours_y_1.push_back(other->type);
+          }
+          if (tile->y_0 == other->y_1) {
+            tile->neighbours_y_0.push_back(other->type);
+          }
+          if (tile->z_1 == other->z_0) {
+            tile->neighbours_z_1.push_back(other->type);
+          }
+          if (tile->z_0 == other->z_1) {
+            tile->neighbours_z_0.push_back(other->type);
+          }
+        }
+      }
+      tile->print();
+    }
+  }
+
+  void generateWorld() {
+    generateExampleList();
+    generateNeighbourList();
+    fillPossibleTiles();
+
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < size; y++) {
+        for (int z = 0; z < size; z++) {
+          Tile tile;
+          if (y == 1 and x == 1 and z == 0) {
+            tile.type = grass;
+            tile.rotation = 90.0;
+          }
+          if (y == 0 and x == 3) {
+            tile.type = water;
+          }
+          if (tile.type == grass) {
+            polygon_data polygon = {0.2, 0.8, 0.2, {0.0, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.0, 0.5, p}};
+            tile.polygons.push_back(polygon);
+
+          } else if (tile.type == water) {
+            polygon_data polygon = {0.2, 0.2, 0.8, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
+            tile.polygons.push_back(polygon);
+          }
+          tiles[x][y][z] = tile;
+        }
+      }
+    }
+  }
+
+  void drawTiles() {
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < size; y++) {
+        for (int z = 0; z < size; z++) {
+          glPushMatrix();
+          glTranslated(x, y, z);
+          tiles[x][y][z].drawTile();
+          glTranslated(-x, -y, -z);
+          glPopMatrix();
+        }
       }
     }
   }
 };
 
-void generateNeighbourLists(){};
-
-void generateWorld() {
-  for (int x = 0; x < size; x++) {
-    for (int y = 0; y < size; y++) {
-      for (int z = 0; z < size; z++) {
-        Tile tile;
-        if (y == 1 and x == 1 and z == 0) {
-          tile.type = grass;
-          tile.rotation = 90.0;
-        }
-        if (y == 0 and x == 3) {
-          tile.type = water;
-        }
-        if (tile.type == grass) {
-          polygon_data polygon = {0.2, 0.8, 0.2, {0.0, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.0, 0.5, p}};
-          tile.polygons.push_back(polygon);
-
-        } else if (tile.type == water) {
-          polygon_data polygon = {0.2, 0.2, 0.8, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
-          tile.polygons.push_back(polygon);
-        }
-
-        // if (tile.type == tile.beach) {
-        //   polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
-        //   tile.polygons.push_back(polygon);
-        //   polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
-        //   tile.polygons.push_back(polygon2);
-        // } else if (tile.type == tile.grass) {
-        //   polygon_data polygon = {0.2, 0.8, 0.2, {0.0, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.0, 0.5, p}};
-        //   tile.polygons.push_back(polygon);
-        // } else if (tile.type == tile.water) {
-        //   polygon_data polygon = {0.2, 0.2, 0.8, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
-        //   tile.polygons.push_back(polygon);
-        // } else if (tile.type == tile.beach_corner) {
-        //   std::cout << tile.type << std::endl;
-        //   polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}, {0.5, 0.5, 0}};
-        //   tile.polygons.push_back(polygon);
-        //   polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
-        //   tile.polygons.push_back(polygon2);
-        //}
-
-        tiles[x][y][z] = tile;
-      }
-    }
-  }
-}
-
-void drawTiles() {
-  for (int x = 0; x < size; x++) {
-    for (int y = 0; y < size; y++) {
-      for (int z = 0; z < size; z++) {
-        glPushMatrix();
-
-        glTranslated(x, y, z);
-
-        // float r = 10;
-        // glTranslated(r, r, r);
-        tiles[x][y][z].drawTile();
-        // glRotatef(tiles[x][y][z].rotation, 0.0, 1.0, 0.0);
-        // glTranslated(-r, -r, -r);
-
-        glTranslated(-x, -y, -z);
-        // glRotatef(-tiles[x][y][z].rotation, 0.0, 1.0, 0.0);
-        glPopMatrix();
-      }
-    }
-  }
-}
-}
-;
-
 World world;
 
 void initWorld() {
   world.generateWorld();
-  world.generateExampleList();
 }
 
 void myInit() {
