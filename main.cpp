@@ -205,38 +205,70 @@ public:
       // tile.print();
 
       example_tiles[i] = tile;
-      // std::cout << tile_instance(i) << std::endl;
     }
   }
 
   void generateNeighbourList() {
     for (int i = 0; i < tile_amount; i++) {
       Tile *tile = &example_tiles[i];
+      if (tile->x_1 == empty) {
+        tile->neighbours_x_1.push_back(air);
+      }
+      if (tile->x_0 == empty) {
+        tile->neighbours_x_0.push_back(air);
+      }
+      if (tile->y_1 == empty) {
+        tile->neighbours_y_1.push_back(air);
+      }
+      if (tile->y_0 == empty) {
+        tile->neighbours_y_0.push_back(air);
+      }
+      if (tile->z_1 == empty) {
+        tile->neighbours_z_1.push_back(air);
+      }
+      if (tile->z_0 == empty) {
+        tile->neighbours_z_0.push_back(air);
+      }
       for (int j = 0; j < tile_amount; j++) {
-        if (i != j) {
-          Tile *other = &example_tiles[j];
-          if (tile->x_1 == other->x_0) {
-            tile->neighbours_x_1.push_back(other->type);
-          }
-          if (tile->x_0 == other->x_1) {
-            tile->neighbours_x_0.push_back(other->type);
-          }
-          if (tile->y_1 == other->y_0) {
-            tile->neighbours_y_1.push_back(other->type);
-          }
-          if (tile->y_0 == other->y_1) {
-            tile->neighbours_y_0.push_back(other->type);
-          }
-          if (tile->z_1 == other->z_0) {
-            tile->neighbours_z_1.push_back(other->type);
-          }
-          if (tile->z_0 == other->z_1) {
-            tile->neighbours_z_0.push_back(other->type);
-          }
+        Tile *other = &example_tiles[j];
+
+        if (tile->x_1 == other->x_0 and tile->x_1 != empty) {
+          tile->neighbours_x_1.push_back(other->type);
+        }
+        if (tile->x_0 == other->x_1 and tile->x_0 != empty) {
+          tile->neighbours_x_0.push_back(other->type);
+        }
+        if (tile->y_1 == other->y_0 and tile->y_1 != empty) {
+          tile->neighbours_y_1.push_back(other->type);
+        }
+        if (tile->y_0 == other->y_1 and tile->y_0 != empty) {
+          tile->neighbours_y_0.push_back(other->type);
+        }
+        if (tile->z_1 == other->z_0 and tile->z_1 != empty) {
+          tile->neighbours_z_1.push_back(other->type);
+        }
+        if (tile->z_0 == other->z_1 and tile->z_0 != empty) {
+          tile->neighbours_z_0.push_back(other->type);
         }
       }
       tile->print();
     }
+  }
+
+  point findLowestEntropy() {
+    int lowest = tile_amount;
+    point lowest_point = {0, 0, 0};
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < size; y++) {
+        for (int z = 0; z < size; z++) {
+          if (possible_tiles[x][y][z].size() < tile_amount) {
+            lowest = possible_tiles[x][y][z].size();
+            lowest_point = {x, y, z};
+          }
+        }
+      }
+    }
+    return lowest_point;
   }
 
   void generateWorld() {
@@ -288,6 +320,11 @@ World world;
 
 void initWorld() {
   world.generateWorld();
+
+  point low = world.findLowestEntropy();
+  std::cout << low.x << std::endl;
+  std::cout << low.y << std::endl;
+  std::cout << low.z << std::endl;
 }
 
 void myInit() {
