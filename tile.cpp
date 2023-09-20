@@ -4,6 +4,9 @@
 #include <iostream>
 #include <vector>
 
+const int tile_amount = 24;
+const int connection_amount = 12;
+
 enum tile_instance {
   air,
   empty,
@@ -20,7 +23,16 @@ enum tile_instance {
   beach_in_corn_0,
   beach_in_corn_1,
   beach_in_corn_2,
-  beach_in_corn_3
+  beach_in_corn_3,
+  cliff_side_bot_0,
+  cliff_side_bot_1,
+  cliff_side_bot_2,
+  cliff_side_bot_3,
+  cliff_corn_bot_0,
+  cliff_corn_bot_1,
+  cliff_corn_bot_2,
+  cliff_corn_bot_3
+
 };
 
 std::vector<std::string> typeStrings{
@@ -39,7 +51,15 @@ std::vector<std::string> typeStrings{
     "beach_in_corn_0",
     "beach_in_corn_1",
     "beach_in_corn_2",
-    "beach_in_corn_3"};
+    "beach_in_corn_3",
+    "cliff_side_bot_0",
+    "cliff_side_bot_1",
+    "cliff_side_bot_2",
+    "cliff_side_bot_3",
+    "cliff_corn_bot_0",
+    "cliff_corn_bot_1",
+    "cliff_corn_bot_2",
+    "cliff_corn_bot_3"};
 
 enum connections {
   air_c,
@@ -49,7 +69,16 @@ enum connections {
   beach_c_0,
   beach_c_1,
   beach_c_2,
-  beach_c_3
+  beach_c_3,
+  cliff_bot_hor_c_0,
+  cliff_bot_hor_c_1,
+  cliff_bot_hor_c_2,
+  cliff_bot_hor_c_3,
+
+  cliff_mid_ver_c_0,
+  cliff_mid_ver_c_1,
+  cliff_mid_ver_c_2,
+  cliff_mid_ver_c_3,
 };
 
 struct polygon_data {
@@ -157,7 +186,7 @@ public:
       glRotatef(rotation, 0.0, 1.0, 0.0);
       glTranslatef(-0.5, -0.5, -0.5);
       drawSquare(polygon);
-      drawLine(polygon);
+      // drawLine(polygon);
       glTranslatef(0.5, 0.5, 0.5);
       glRotatef(-rotation, 0.0, 1.0, 0.0);
     }

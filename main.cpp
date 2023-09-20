@@ -13,14 +13,13 @@
 
 bool step = false;
 
-double cameraX = 20;
-double cameraY = 20;
-double cameraZ = 20;
+double cameraX = 30;
+double cameraY = 30;
+double cameraZ = 30;
 
 float p = 1.0;
 
-const int tile_amount = 16;
-const int connection_amount = 8;
+int zoom = 2;
 
 struct point {
   int x;
@@ -40,16 +39,17 @@ void printVectorPoint(std::vector<point> vec) {
 
 class World {
 public:
-  static const int size = 10;
-  Tile tiles[size][size][size];
+  static const int size = 20;
+  static const int height = 5;
+  Tile tiles[size][height][size];
   Tile example_tiles[tile_amount];
 
-  std::vector<tile_instance> possible_tiles[size][size][size];
-  bool collapsed[size][size][size] = {false};
+  std::vector<tile_instance> possible_tiles[size][height][size];
+  bool collapsed[size][height][size] = {false};
 
   void fillPossibleTiles() {
     for (int x = 0; x < size; x++) {
-      for (int y = 0; y < size; y++) {
+      for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
           for (int i = 0; i < tile_amount; i++) {
             possible_tiles[x][y][z].push_back(tile_instance(i));
@@ -317,6 +317,110 @@ public:
         tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
+      case cliff_side_bot_0: {
+        tile.x_1 = cliff_bot_hor_c_0;
+        tile.x_0 = cliff_bot_hor_c_0;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = one_s;
+        tile.z_0 = empty_c;
+
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        break;
+      }
+      case cliff_side_bot_1: {
+        tile.rotation = 90;
+        tile.x_1 = one_s;
+        tile.x_0 = empty_c;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = cliff_bot_hor_c_1;
+        tile.z_0 = cliff_bot_hor_c_1;
+
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        break;
+      }
+      case cliff_side_bot_2: {
+        tile.rotation = 180;
+
+        tile.x_1 = cliff_bot_hor_c_2;
+        tile.x_0 = cliff_bot_hor_c_2;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = empty_c;
+        tile.z_0 = one_s;
+
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        break;
+      }
+      case cliff_side_bot_3: {
+        tile.rotation = 270;
+
+        tile.x_1 = empty_c;
+        tile.x_0 = one_s;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = cliff_bot_hor_c_3;
+        tile.z_0 = cliff_bot_hor_c_3;
+
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        break;
+      }
+      case cliff_corn_bot_0: {
+        tile.x_1 = cliff_bot_hor_c_0;
+        tile.x_0 = one_s;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = one_s;
+        tile.z_0 = cliff_bot_hor_c_3;
+
+        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        break;
+      }
+      case cliff_corn_bot_1: {
+        tile.rotation = 90;
+        tile.x_1 = one_s;
+        tile.x_0 = cliff_bot_hor_c_0;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = one_s;
+        tile.z_0 = cliff_bot_hor_c_1;
+
+        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        break;
+      }
+      case cliff_corn_bot_2: {
+        tile.rotation = 180;
+        tile.x_1 = one_s;
+        tile.x_0 = cliff_bot_hor_c_2;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = cliff_bot_hor_c_1;
+        tile.z_0 = one_s;
+
+        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        break;
+      }
+      case cliff_corn_bot_3: {
+        tile.rotation = 270;
+        tile.x_1 = cliff_bot_hor_c_2;
+        tile.x_0 = one_s;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = cliff_bot_hor_c_3;
+        tile.z_0 = one_s;
+
+        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        break;
+      }
       }
 
       // tile.print();
@@ -359,7 +463,7 @@ public:
     int lowest = 1000;
     point lowest_point = {-1, -1, -1};
     for (int x = 0; x < size; x++) {
-      for (int y = 0; y < size; y++) {
+      for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
           if (possible_tiles[x][y][z].size() < lowest) {
             if (not collapsed[x][y][z]) {
@@ -412,6 +516,8 @@ public:
       }
     }
 
+    glutPostRedisplay();
+
     return pick;
   }
   tile_instance collapseTileAt(point p) {
@@ -438,6 +544,7 @@ public:
         // std::cout << "Picked " << pos_tile.type << std::endl;
       }
     }
+    glutPostRedisplay();
 
     return pick;
   }
@@ -462,7 +569,7 @@ public:
       neighbours.push_back({-1, -1, -1});
     }
 
-    if (p.y + 1 < size) {
+    if (p.y + 1 < height) {
       neighbours.push_back({p.x, p.y + 1, p.z});
     } else {
       neighbours.push_back({-1, -1, -1});
@@ -479,6 +586,7 @@ public:
     } else {
       neighbours.push_back({-1, -1, -1});
     }
+
     return neighbours;
   }
 
@@ -610,7 +718,7 @@ public:
 
   void setTiles() {
     for (int x = 0; x < size; x++) {
-      for (int y = 0; y < size; y++) {
+      for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
           tiles[x][y][z] = example_tiles[possible_tiles[x][y][z][0]];
         }
@@ -618,16 +726,16 @@ public:
     }
   }
 
-  void collapseBorderTo(int height, tile_instance tile) {
+  void collapseBorderTo(int h, tile_instance tile) {
     for (int i = 0; i < size; i++) {
-      collapseTileAtTo({i, height, 0}, tile);
-      propagate({i, height, 0});
-      collapseTileAtTo({0, height, i}, tile);
-      propagate({0, height, i});
-      collapseTileAtTo({i, height, size - 1}, tile);
-      propagate({i, height, size - 1});
-      collapseTileAtTo({size - 1, height, i}, tile);
-      propagate({size - 1, height, i});
+      collapseTileAtTo({i, h, 0}, tile);
+      propagate({i, h, 0});
+      collapseTileAtTo({0, h, i}, tile);
+      propagate({0, h, i});
+      collapseTileAtTo({i, h, size - 1}, tile);
+      propagate({i, h, size - 1});
+      collapseTileAtTo({size - 1, h, i}, tile);
+      propagate({size - 1, h, i});
     }
   }
 
@@ -636,16 +744,7 @@ public:
     generateNeighbourList();
     fillPossibleTiles();
 
-    collapseBorderTo(1, water);
-    std::cout << "IM OUT!";
-
-    // point p = {0, 0, 0};
-
-    // printPoint(p);
-    // if (p.x != -1) {
-    //   collapseTileAtTo(p, empty);
-    //   propagate(p);
-    // }
+    collapseBorderTo(0, water);
 
     iterate();
   }
@@ -653,7 +752,7 @@ public:
   void drawTiles() {
     drawOutline();
     for (int x = 0; x < size; x++) {
-      for (int y = 0; y < size; y++) {
+      for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
           glPushMatrix();
           glTranslated(x, y, z);
@@ -676,21 +775,21 @@ public:
     glVertex3f(0, 0, size);
     glVertex3f(0, 0, 0);
 
-    glVertex3f(0, size, 0);
+    glVertex3f(0, height, 0);
 
-    glVertex3f(size, size, 0);
+    glVertex3f(size, height, 0);
     glVertex3f(size, 0, 0);
-    glVertex3f(size, size, 0);
+    glVertex3f(size, height, 0);
 
-    glVertex3f(size, size, size);
+    glVertex3f(size, height, size);
     glVertex3f(size, 0, size);
-    glVertex3f(size, size, size);
+    glVertex3f(size, height, size);
 
-    glVertex3f(0, size, size);
+    glVertex3f(0, height, size);
     glVertex3f(0, 0, size);
-    glVertex3f(0, size, size);
+    glVertex3f(0, height, size);
 
-    glVertex3f(0, size, 0);
+    glVertex3f(0, height, 0);
 
     glEnd();
     glTranslatef(0.5, 0.5, 0.5);
@@ -714,7 +813,7 @@ void myInit() {
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glFrustum(-1, 1, -1, 1, 3, 60);
+  glFrustum(-1, 1, -1, 1, 3, 120);
   glMatrixMode(GL_MODELVIEW);
 
   initWorld();
@@ -724,7 +823,9 @@ void draw() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glLoadIdentity();
-  gluLookAt(cameraX, cameraY, cameraZ, 2, 2, 2, 0.0, 1.0, 0.0);
+  gluLookAt(cameraX, cameraY, cameraZ, 7, 7, 7, 0.0, 1.0, 0.0);
+
+  glScalef(zoom, zoom, zoom);
 
   world.drawTiles();
 
