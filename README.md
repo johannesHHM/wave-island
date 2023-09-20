@@ -1,13 +1,13 @@
 # About
 
-Final project for IDATT2505 Extended Reality.
+Final project for IDATT2505.
 A program that uses wave function collapse algorithm to generate an island.
 
 # Compile and Run
 
 ## Linux Compile
 
-Make sure GLU and GLUT is installed, and OpenGL is available.
+Make sure GLU, GLUT and OpenGL is available.
 
 ```sh
 git clone https://gitlab.stud.idi.ntnu.no/jhmorkem/IDATT2505-Project

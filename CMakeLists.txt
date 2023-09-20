@@ -1,7 +1,7 @@
 project(island)
 cmake_minimum_required(VERSION 3.16)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -Wall -Wextra -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(GLU REQUIRED)
