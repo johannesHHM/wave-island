@@ -81,10 +81,6 @@ public:
         tile.y_0 = air_c;
         tile.z_1 = air_c;
         tile.z_0 = air_c;
-        // polygon_data polygon = {0.6, 0.1, 0.1, 4, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
-        //  polygon_data polygon2 = {0.6, 0.1, 0.1, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
-
-        // tile.polygons.push_back(polygon);
         break;
       }
       case empty: {
@@ -94,11 +90,6 @@ public:
         tile.y_0 = empty_c;
         tile.z_1 = empty_c;
         tile.z_0 = empty_c;
-        // polygon_data polygon = {0.2, 0.2, 0.2, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
-        //  polygon_data polygon2 = {0.2, 0.2, 0.2, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
-
-        // tile.polygons.push_back(polygon);
-        //  tile.polygons.push_back(polygon2);
         break;
       }
       case grass: {
@@ -110,9 +101,8 @@ public:
         tile.z_0 = one_s;
 
         polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
-        // polygon_data polygon2 = {0.2, 0.8, 0.2, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
         tile.polygons.push_back(polygon);
-        // tile.polygons.push_back(polygon2);
+
         break;
       }
       case water: {
@@ -124,10 +114,7 @@ public:
         tile.z_0 = two_s;
 
         polygon_data polygon = {0.2, 0.2, 0.8, 4, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
-        // polygon_data polygon2 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
 
-        // tile.polygons.push_back(polygon);
-        //  tile.polygons.push_back(polygon2);
         break;
       }
       case beach_0: {
@@ -138,12 +125,9 @@ public:
         tile.z_1 = beach_c_0;
         tile.z_0 = beach_c_0;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}};
-        tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}};
-        tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}};
-        // tile.polygons.push_back(polygon3);
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
+        // tile.polygons.push_back({0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
         break;
       }
       case beach_1: {
@@ -156,12 +140,9 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = one_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}};
-        tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}};
-        tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}};
-        // tile.polygons.push_back(polygon3);
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
+        // tile.polygons.push_back({0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
         break;
       }
       case beach_2: {
@@ -174,12 +155,9 @@ public:
         tile.z_1 = beach_c_2;
         tile.z_0 = beach_c_2;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}};
-        tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}};
-        tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}};
-        // tile.polygons.push_back(polygon3);
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
+        // tile.polygons.push_back({0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
         break;
       }
       case beach_3: {
@@ -192,12 +170,9 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = two_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}};
-        tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}};
-        tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}};
-        // tile.polygons.push_back(polygon3);
+        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
+        // tile.polygons.push_back({0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
         break;
       }
       case beach_corn_0: {
@@ -209,17 +184,13 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = beach_c_0;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}};
-        tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
-        tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
-        // tile.polygons.push_back(polygon3);
+        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+        // tile.polygons.push_back({0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
         break;
       }
       case beach_corn_1: {
         tile.rotation = 90;
-
         tile.x_1 = two_s;
         tile.x_0 = beach_c_1;
         tile.y_1 = air_c;
@@ -227,17 +198,13 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = beach_c_2;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}};
-        tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
-        tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
-        // tile.polygons.push_back(polygon3);
+        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+        // tile.polygons.push_back({0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
         break;
       }
       case beach_corn_2: {
         tile.rotation = 180;
-
         tile.x_1 = two_s;
         tile.x_0 = beach_c_3;
         tile.y_1 = air_c;
@@ -245,17 +212,13 @@ public:
         tile.z_1 = beach_c_2;
         tile.z_0 = two_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}};
-        tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
-        tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
-        // tile.polygons.push_back(polygon3);
+        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+        // tile.polygons.push_back({0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
         break;
       }
       case beach_corn_3: {
         tile.rotation = 270;
-
         tile.x_1 = beach_c_3;
         tile.x_0 = two_s;
         tile.y_1 = air_c;
@@ -263,12 +226,9 @@ public:
         tile.z_1 = beach_c_0;
         tile.z_0 = two_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}};
-        tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
-        tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}};
-        // tile.polygons.push_back(polygon3);
+        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+        // tile.polygons.push_back({0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
         break;
       }
       case beach_in_corn_0: {
@@ -1220,7 +1180,7 @@ void draw() {
   glLightfv(GL_LIGHT1, GL_AMBIENT, blue1);
 
   glLoadIdentity();
-  gluLookAt(cameraX, cameraY, cameraZ, (world.size / 2) * zoom, 3, (world.size / 2) * zoom, 0.0, 1.0, 0.0);
+  gluLookAt(cameraX, cameraY, cameraZ, (world.size / 2), 3, (world.size / 2), 0.0, 1.0, 0.0);
 
   glScalef(zoom, zoom, zoom);
 
@@ -1261,10 +1221,10 @@ void input(unsigned char ch, int x, int y) {
     step = true;
     break;
   case 'o':
-    rotation_velocity += 1;
+    rotation_velocity += 0.6;
     break;
   case 'p':
-    rotation_velocity -= 1;
+    rotation_velocity -= 0.5;
     break;
   }
   glutPostRedisplay();
@@ -1272,6 +1232,7 @@ void input(unsigned char ch, int x, int y) {
 bool once = false;
 
 void idle() {
+  rotation_velocity -= 0.1;
   island_rotation += rotation_velocity;
   rotation_velocity /= 1.2;
   if (rotation_velocity < 0.2 and rotation_velocity > -0.2) {
