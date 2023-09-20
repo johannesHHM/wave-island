@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 
-const int tile_amount = 40;
-const int connection_amount = 28;
+const int tile_amount = 52;
+const int connection_amount = 32;
 
 enum tile_instance {
   air,
@@ -53,7 +53,22 @@ enum tile_instance {
   cliff_corn_top_0,
   cliff_corn_top_1,
   cliff_corn_top_2,
-  cliff_corn_top_3
+  cliff_corn_top_3,
+
+  cliff_in_corn_mid_0,
+  cliff_in_corn_mid_1,
+  cliff_in_corn_mid_2,
+  cliff_in_corn_mid_3,
+
+  cliff_in_corn_top_0,
+  cliff_in_corn_top_1,
+  cliff_in_corn_top_2,
+  cliff_in_corn_top_3,
+
+  cliff_in_corn_bot_0,
+  cliff_in_corn_bot_1,
+  cliff_in_corn_bot_2,
+  cliff_in_corn_bot_3
 
 };
 
@@ -98,7 +113,20 @@ std::vector<std::string> typeStrings{
     "cliff_corn_top_1",
     "cliff_corn_top_2",
     "cliff_corn_top_3",
-};
+    "cliff_in_corn_mid_0",
+    "cliff_in_corn_mid_1",
+    "cliff_in_corn_mid_2",
+    "cliff_in_corn_mid_3",
+
+    "cliff_in_side_top_0",
+    "cliff_in_side_top_1",
+    "cliff_in_side_top_2",
+    "cliff_in_side_top_3",
+
+    "cliff_in_corn_bot_0",
+    "cliff_in_corn_bot_1",
+    "cliff_in_corn_bot_2",
+    "cliff_in_corn_bot_3"};
 
 enum connections {
   air_c,
@@ -124,6 +152,11 @@ enum connections {
   cliff_vert_corn_1,
   cliff_vert_corn_2,
   cliff_vert_corn_3,
+
+  cliff_in_vert_corn_0,
+  cliff_in_vert_corn_1,
+  cliff_in_vert_corn_2,
+  cliff_in_vert_corn_3,
 
   cliff_mid_hor_c_0,
   cliff_mid_hor_c_1,
@@ -241,7 +274,7 @@ public:
       glRotatef(rotation, 0.0, 1.0, 0.0);
       glTranslatef(-0.5, -0.5, -0.5);
       drawSquare(polygon);
-      drawLine(polygon);
+      // drawLine(polygon);
       glTranslatef(0.5, 0.5, 0.5);
       glRotatef(-rotation, 0.0, 1.0, 0.0);
     }
