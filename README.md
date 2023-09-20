@@ -1,11 +1,11 @@
-## About
+# About
 
 Final project for IDATT2505 Extended Reality.
 A program that uses wave function collapse algorithm to generate an island.
 
-## Compile and Run
+# Compile and Run
 
-# Linux Compile
+## Linux Compile
 
 Make sure GLU and GLUT is installed, and OpenGL is available.
 
@@ -17,7 +17,7 @@ cmake ..
 make
 ```
 
-# Run
+## Run
 
 The program can be run by giving it zero arguments, and going thorugh configuration at runtime.
 
