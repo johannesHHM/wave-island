@@ -14,8 +14,11 @@
 bool step = false;
 
 double cameraX = 50;
-double cameraY = 30;
+double cameraY = 40;
 double cameraZ = 50;
+
+float island_rotation = 0;
+float rotation_velocity = 0;
 
 float p = 1.0;
 
@@ -39,7 +42,7 @@ void printVectorPoint(std::vector<point> vec) {
 
 class World {
 public:
-  static const int size = 10;
+  static const int size = 15;
   static const int height = 5;
   Tile tiles[size][height][size];
   Tile example_tiles[tile_amount];
@@ -52,7 +55,7 @@ public:
       for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
           for (int i = 0; i < tile_amount; i++) {
-            if ((x > 2 and x < size - 3) and (z > 2 and z < size - 3)) {
+            if ((x > 3 and x < size - 4) and (z > 3 and z < size - 4)) {
               if (i != water and i != beach_0 and i != beach_1 and i != beach_2 and i != beach_3 and i != beach_corn_0 and i != beach_corn_1 and i != beach_corn_2 and i != beach_corn_3 and i != beach_in_corn_0 and i != beach_in_corn_1 and i != beach_in_corn_2 and i != beach_in_corn_3) {
                 possible_tiles[x][y][z].push_back(tile_instance(i));
               }
@@ -1093,6 +1096,15 @@ public:
     }
   }
 
+  void collapseLayerTo(int height, tile_instance tile) {
+    for (int x = 0; x < size; x++) {
+      for (int z = 0; z < size; z++) {
+        collapseTileAtTo({x, height, z}, tile);
+        propagate({x, height, z});
+      }
+    }
+  }
+
   void generateWorld() {
     generateExampleList();
     generateNeighbourList();
@@ -1100,11 +1112,16 @@ public:
 
     collapseBorderTo(0, water);
 
+    collapseLayerTo(4, air);
+
     iterate();
   }
 
   void drawTiles() {
-    drawOutline();
+    glTranslatef(0, -1, 0);
+    drawOcean();
+    glTranslatef(0, 1, 0);
+    // drawOutline();
     for (int x = 0; x < size; x++) {
       for (int y = 0; y < height; y++) {
         for (int z = 0; z < size; z++) {
@@ -1116,6 +1133,16 @@ public:
         }
       }
     }
+  }
+
+  void drawOcean() {
+    glColor3f(0.2, 0.2, 0.8);
+    glBegin(GL_POLYGON);
+    glVertex3f(-100, 0, -100);
+    glVertex3f(100, 0, -100);
+    glVertex3f(100, 0, 100);
+    glVertex3f(-100, 0, 100);
+    glEnd();
   }
 
   void drawOutline() {
@@ -1167,7 +1194,7 @@ void myInit() {
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  glFrustum(-1, 1, -1, 1, 3, 120);
+  glFrustum(-1, 1, -1, 1, 3, 300);
   glMatrixMode(GL_MODELVIEW);
 
   initWorld();
@@ -1177,11 +1204,19 @@ void draw() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glLoadIdentity();
-  gluLookAt(cameraX, cameraY, cameraZ, (world.size / 2) * zoom, 1, (world.size / 2) * zoom, 0.0, 1.0, 0.0);
+  gluLookAt(cameraX, cameraY, cameraZ, (world.size / 2) * zoom, 3, (world.size / 2) * zoom, 0.0, 1.0, 0.0);
+
+  glScalef(zoom, zoom, zoom);
+
+  glRotatef(island_rotation, 0, 1, 0);
+
+  glTranslatef(-world.size / 2 * zoom, 0, -world.size / 2 * zoom);
 
   glScalef(zoom, zoom, zoom);
 
   world.drawTiles();
+
+  glTranslatef(world.size / 2 * zoom, 0, world.size / 2 * zoom);
 
   glutSwapBuffers();
 }
@@ -1209,12 +1244,24 @@ void input(unsigned char ch, int x, int y) {
   case 'l':
     step = true;
     break;
+  case 'o':
+    rotation_velocity += 1;
+    break;
+  case 'p':
+    rotation_velocity -= 1;
+    break;
   }
   glutPostRedisplay();
 }
 bool once = false;
 
 void idle() {
+  island_rotation += rotation_velocity;
+  rotation_velocity /= 1.2;
+  if (rotation_velocity < 0.2 and rotation_velocity > -0.2) {
+    rotation_velocity = 0;
+  }
+
   if (not once) {
     world.generateWorld();
     once = true;
