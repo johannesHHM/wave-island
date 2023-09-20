@@ -2,10 +2,21 @@
 #include <GL/glu.h>
 #include <GL/glut.h>
 #include <algorithm>
+#include <chrono>
 #include <iostream>
+#include <map>
+#include <set>
 #include <stdlib.h>
+#include <string.h>
+#include <thread>
 #include <time.h>
 #include <vector>
+
+bool step = false;
+
+double cameraX = 10;
+double cameraY = 10;
+double cameraZ = 10;
 
 float p = 1.0;
 
@@ -17,6 +28,12 @@ enum tile_instance {
   grass,
   water
 };
+
+std::vector<std::string> typeStrings{
+    "air",
+    "empty",
+    "grass",
+    "water"};
 
 int connection_amount = 3;
 
@@ -42,6 +59,28 @@ struct point {
   int y;
   int z;
 };
+
+void printPoint(point p) {
+  std::cout << "p: " << p.x << " " << p.y << " " << p.z << std::endl;
+}
+
+void printVectorType(std::vector<tile_instance> vec) {
+  for (int i = 0; i < vec.size(); i++) {
+    std::cout << typeStrings[vec.at(i)] << std::endl;
+  }
+}
+
+void printSetType(std::set<tile_instance> set) {
+  for (tile_instance const &tile : set) {
+    std::cout << tile << std::endl;
+  }
+}
+
+void printVectorPoint(std::vector<point> vec) {
+  for (int i = 0; i < vec.size(); i++) {
+    printPoint(vec[i]);
+  }
+}
 
 class Tile {
 public:
@@ -148,6 +187,7 @@ public:
   static const int size = 4;
   Tile tiles[size][size][size];
   Tile example_tiles[tile_amount];
+
   std::vector<tile_instance> possible_tiles[size][size][size];
   bool collapsed[size][size][size] = {false};
 
@@ -179,6 +219,11 @@ public:
         tile.y_0 = air_c;
         tile.z_1 = air_c;
         tile.z_0 = air_c;
+        polygon_data polygon = {0.6, 0.1, 0.1, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
+        // polygon_data polygon2 = {0.6, 0.1, 0.1, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
+
+        tile.polygons.push_back(polygon);
+        // tile.polygons.push_back(polygon2);
         break;
       }
       case empty: {
@@ -188,6 +233,11 @@ public:
         tile.y_0 = empty_c;
         tile.z_1 = empty_c;
         tile.z_0 = empty_c;
+        polygon_data polygon = {0.2, 0.2, 0.2, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
+        // polygon_data polygon2 = {0.2, 0.2, 0.2, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
+
+        tile.polygons.push_back(polygon);
+        // tile.polygons.push_back(polygon2);
         break;
       }
       case grass: {
@@ -198,8 +248,11 @@ public:
         tile.z_1 = one;
         tile.z_0 = one;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, {0.0, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.0, 0.5, p}};
+        polygon_data polygon = {0.2, 0.8, 0.2, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
+        // polygon_data polygon2 = {0.2, 0.8, 0.2, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
+
         tile.polygons.push_back(polygon);
+        // tile.polygons.push_back(polygon2);
         break;
       }
       case water: {
@@ -210,8 +263,11 @@ public:
         tile.z_1 = one;
         tile.z_0 = one;
 
-        polygon_data polygon = {0.2, 0.2, 0.8, {0.0, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.0, 0.5, p}};
+        polygon_data polygon = {0.2, 0.2, 0.8, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
+        // polygon_data polygon2 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
+
         tile.polygons.push_back(polygon);
+        // tile.polygons.push_back(polygon2);
         break;
       }
       }
@@ -309,18 +365,28 @@ public:
             if (not collapsed[x][y][z]) {
               lowest = possible_tiles[x][y][z].size();
               lowest_point = {x, y, z};
-              std::cout << "Lowest point " << x << " " << y << " " << z << std::endl;
+              // std::cout << "Lowest point " << x << " " << y << " " << z << std::endl;
             }
           }
         }
       }
     }
-    collapsed[lowest_point.x][lowest_point.y][lowest_point.z] = true;
+    if (lowest_point.x != -1) {
+      collapsed[lowest_point.x][lowest_point.y][lowest_point.z] = true;
+    }
     return lowest_point;
   }
 
   tile_instance collapseTileAt(point p) {
     std::vector<tile_instance> *poss_tiles = &possible_tiles[p.x][p.y][p.z];
+    // std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
+    //  for (tile_instance tile : *poss_tiles) {
+    //    std::cout << tile << std::endl;
+    //  }
+    if (poss_tiles->size() < 1) {
+      std::cout << "POSSIBLE TILES IS EMPTY" << std::endl;
+      printPoint(p);
+    }
     tile_instance pick = poss_tiles->at(rand() % poss_tiles->size());
     poss_tiles->resize(1);
     poss_tiles->at(0) = pick;
@@ -328,7 +394,7 @@ public:
     for (Tile pos_tile : example_tiles) {
       if (pick == pos_tile.type) {
         tiles[p.x][p.y][p.z] = pos_tile;
-        std::cout << "Picked " << pos_tile.type << std::endl;
+        // std::cout << "Picked " << pos_tile.type << std::endl;
       }
     }
 
@@ -382,8 +448,31 @@ public:
     return neighbours;
   }
 
+  bool typeInVector(std::vector<tile_instance> vec, tile_instance type) {
+    for (tile_instance type_vec : vec) {
+      if (type_vec == type) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Tile getTileByType(tile_instance type) {
+    Tile t;
+    for (int i = 0; i < tile_amount; i++) {
+      Tile tile = example_tiles[i];
+      if (tile.type == type) {
+        return tile;
+      }
+    }
+    return t;
+  }
+
   void propagate(point p) {
+    // p = {2, 2, 2};
+
     std::vector<point> stack;
+    // stack.push_back({1, 2, 2});
     stack.push_back(p);
 
     while (stack.size() > 0) {
@@ -391,92 +480,82 @@ public:
       stack.pop_back();
 
       std::vector<point> neigh = neighbours(current_point);
+      // printVectorPoint(neigh);
 
-      point p_other = neigh[0];
+      for (int i = 0; i < 5; i++) {
 
-      if (p_other.x != -1) {
-        std::vector<tile_instance> new_possible_tiles;
+        point neighbour_point = neigh.at(i);
 
-        for (tile_instance tile_type_other : possible_tiles[p_other.x][p_other.y][p_other.z]) {
-          for (tile_instance tile_type : tiles[p.x][p.y][p.z].neighbours_x_0) {
-            if (tile_type == tile_type_other) {
-              new_possible_tiles.push_back(tile_type);
+        if (neighbour_point.x != -1) {
+          std::vector<tile_instance> s = possible_tiles[current_point.x][current_point.y][current_point.z];
+          std::set<tile_instance> possible_neighbours;
+          for (tile_instance tl : s) {
+            Tile temp_tile = getTileByType(tl);
+            std::vector<tile_instance> tileNeighbour;
+            switch (i) {
+            case 0: {
+              tileNeighbour = temp_tile.neighbours_x_0;
+              break;
+            }
+            case 1: {
+              tileNeighbour = temp_tile.neighbours_x_1;
+              break;
+            }
+            case 2: {
+              tileNeighbour = temp_tile.neighbours_y_0;
+              break;
+            }
+            case 3: {
+              tileNeighbour = temp_tile.neighbours_y_1;
+              break;
+            }
+            case 4: {
+              tileNeighbour = temp_tile.neighbours_z_0;
+              break;
+            }
+            case 5: {
+              tileNeighbour = temp_tile.neighbours_z_1;
+              break;
+            }
+            }
+            for (tile_instance typ : tileNeighbour) {
+              possible_neighbours.insert(typ);
             }
           }
-        }
-        possible_tiles[p_other.x][p_other.y][p_other.z] = new_possible_tiles;
-      }
-      p_other = neigh[1];
-
-      if (p_other.x != -1) {
-        std::vector<tile_instance> new_possible_tiles;
-
-        for (tile_instance tile_type_other : possible_tiles[p_other.x][p_other.y][p_other.z]) {
-          for (tile_instance tile_type : tiles[p.x][p.y][p.z].neighbours_x_1) {
-            if (tile_type == tile_type_other) {
-              new_possible_tiles.push_back(tile_type);
+          std::vector<tile_instance> new_possible_tiles;
+          for (tile_instance const &tile_constrain : possible_neighbours) {
+            for (tile_instance tile_possible : possible_tiles[neighbour_point.x][neighbour_point.y][neighbour_point.z]) {
+              if (tile_constrain == tile_possible) {
+                new_possible_tiles.push_back(tile_possible);
+              }
             }
           }
-        }
-        possible_tiles[p_other.x][p_other.y][p_other.z] = new_possible_tiles;
-      }
-      p_other = neigh[2];
-
-      if (p_other.y != -1) {
-        std::vector<tile_instance> new_possible_tiles;
-
-        for (tile_instance tile_type_other : possible_tiles[p_other.x][p_other.y][p_other.z]) {
-          for (tile_instance tile_type : tiles[p.x][p.y][p.z].neighbours_y_0) {
-            if (tile_type == tile_type_other) {
-              new_possible_tiles.push_back(tile_type);
-            }
+          if (possible_tiles[neighbour_point.x][neighbour_point.y][neighbour_point.z].size() > new_possible_tiles.size()) {
+            // std::cout << "Restricted" << std::endl;
+            stack.push_back(neighbour_point);
           }
+          possible_tiles[neighbour_point.x][neighbour_point.y][neighbour_point.z] = new_possible_tiles;
+          // printVectorType(s);
+          std::cout << std::endl;
+          printSetType(possible_neighbours);
+          std::cout << "new possible tiles" << std::endl;
+
+          printVectorType(new_possible_tiles);
         }
-        possible_tiles[p_other.x][p_other.y][p_other.z] = new_possible_tiles;
-      }
-      p_other = neigh[3];
-
-      if (p_other.y != -1) {
-        std::vector<tile_instance> new_possible_tiles;
-
-        for (tile_instance tile_type_other : possible_tiles[p_other.x][p_other.y][p_other.z]) {
-          for (tile_instance tile_type : tiles[p.x][p.y][p.z].neighbours_y_1) {
-            if (tile_type == tile_type_other) {
-              new_possible_tiles.push_back(tile_type);
-            }
-          }
-        }
-        possible_tiles[p_other.x][p_other.y][p_other.z] = new_possible_tiles;
-      }
-      p_other = neigh[4];
-
-      if (p_other.z != -1) {
-        std::vector<tile_instance> new_possible_tiles;
-
-        for (tile_instance tile_type_other : possible_tiles[p_other.x][p_other.y][p_other.z]) {
-          for (tile_instance tile_type : tiles[p.x][p.y][p.z].neighbours_z_0) {
-            if (tile_type == tile_type_other) {
-              new_possible_tiles.push_back(tile_type);
-            }
-          }
-        }
-        possible_tiles[p_other.x][p_other.y][p_other.z] = new_possible_tiles;
-      }
-      p_other = neigh[5];
-
-      if (p_other.y != -1) {
-        std::vector<tile_instance> new_possible_tiles;
-
-        for (tile_instance tile_type_other : possible_tiles[p_other.x][p_other.y][p_other.z]) {
-          for (tile_instance tile_type : tiles[p.x][p.y][p.z].neighbours_z_1) {
-            if (tile_type == tile_type_other) {
-              new_possible_tiles.push_back(tile_type);
-            }
-          }
-        }
-        possible_tiles[p_other.x][p_other.y][p_other.z] = new_possible_tiles;
       }
     }
+  }
+
+  void iterateOnce() {
+    point p = findLowestEntropy();
+    // printPoint(p);
+    if (p.x != -1) {
+      collapseTileAt(p);
+      propagate(p);
+    }
+    // for (int i = 0; i < possible_tiles[1][2][2].size(); i++) {
+    //   std::cout << possible_tiles[1][2][2].at(i) << std::endl;
+    // }
   }
 
   void iterate() {
@@ -488,8 +567,12 @@ public:
       }
       collapseTileAt(p);
       propagate(p);
-      std::cout << "loop" << std::endl;
+      glutPostRedisplay();
+      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+      // std::cout << "loop" << std::endl;
     }
+    std::cout << "Exiting the iterate loop." << std::endl;
   }
 
   void setTiles() {
@@ -506,53 +589,37 @@ public:
   }
 
   void generateWorld() {
+    std::cout << "Generate world called." << std::endl;
     generateExampleList();
     generateNeighbourList();
     fillPossibleTiles();
 
-    iterate();
+    point p = {3, 2, 3};
+    collapsed[3][2][3] = true;
+    printPoint(p);
+    if (p.x != -1) {
+      collapseTileAt(p);
+      propagate(p);
+    }
 
+    // std::vector<tile_instance> v;
+    // v.push_back(grass);
     // collapseTileAt({2, 2, 2});
-    // tiles[2][2][2].print();
+    // collapsed[2][2][2] = true;
+
+    // possible_tiles[2][2][2] = v;
+
+    // std::cout << "p: " << p.x << " " << p.y << " " << p.z << std::endl;
 
     // propagate({2, 2, 2});
 
-    // std::cout << "Possible tiles at 1 2 2" << std::endl;
+    // iterate();
 
-    // for (tile_instance ins : possible_tiles[1][2][2]) {
-    //   std::cout << ins << std::endl;
-    // }
-
-    // collapseTileAt({1, 2, 2});
-    // propagate({1, 2, 2});
-    // tiles[1][2][2].print();
-
-    // collapseTileAt({3, 2, 2});
-    // propagate({3, 2, 2});
-
-    // collapseTileAt({2, 1, 2});
-    // propagate({2, 1, 2});
-
-    // collapseTileAt({2, 3, 2});
-    // propagate({2, 3, 2});
-
-    // collapseTileAt({2, 2, 1});
-    // propagate({2, 2, 1});
-
-    // collapseTileAt({2, 2, 3});
-    // propagate({2, 2, 3});
-
-    // for (int x = 0; x < size; x++) {
-    //   for (int y = 0; y < size; y++) {
-    //     for (int z = 0; z < size; z++) {
-    //       collapseTileAt({x, y, z});
-    //       tiles[x][y][z].drawTile();
-    //     }
-    //   }
-    // }
+    std::cout << "Generate world exiting." << std::endl;
   }
 
   void drawTiles() {
+    drawOutline();
     for (int x = 0; x < size; x++) {
       for (int y = 0; y < size; y++) {
         for (int z = 0; z < size; z++) {
@@ -565,25 +632,35 @@ public:
       }
     }
   }
+
+  void drawOutline() {
+    glColor3f(0.0, 0.0, 0.0);
+    glLineWidth(2.0);
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(0, 0, 0);
+    glVertex3f(size, 0, 0);
+    glVertex3f(size, 0, size);
+    glVertex3f(0, 0, size);
+    glVertex3f(0, 0, 0);
+
+    glVertex3f(0, size, 0);
+    glVertex3f(size, size, 0);
+    glVertex3f(size, size, size);
+    glVertex3f(0, size, size);
+    glVertex3f(0, size, 0);
+
+    glEnd();
+  }
 };
 
 World world;
 
 void initWorld() {
-
-  srand(time(NULL));
-
-  world.generateWorld();
-
-  // point low = world.findLowestEntropy();
-  // std::cout << low.x << std::endl;
-  // std::cout << low.y << std::endl;
-  // std::cout << low.z << std::endl;
-  // tile_instance til_ins = world.collapseTileAt(low);
-  // std::cout << til_ins << std::endl;
-
-  // world.setTiles();
-
+  int seed = time(NULL);
+  seed = 1666838701;
+  srand(seed);
+  std::cout << seed << std::endl;
+  // srand(1666838701);
   std::cout << std::endl;
 }
 
@@ -603,12 +680,52 @@ void draw() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glLoadIdentity();
-  gluLookAt(10, 10, 10, 0, 0, 0, 0.0, 1.0, 0.0);
+  gluLookAt(cameraX, cameraY, cameraZ, 2, 2, 2, 0.0, 1.0, 0.0);
 
   world.drawTiles();
 
   glutSwapBuffers();
 }
+
+void input(unsigned char ch, int x, int y) {
+  switch (ch) {
+  case 'w':
+    cameraZ -= 1;
+    break;
+  case 's':
+    cameraZ += 1;
+    break;
+  case 'd':
+    cameraX += 1;
+    break;
+  case 'a':
+    cameraX -= 1;
+    break;
+  case 'q':
+    cameraY += 1;
+    break;
+  case 'e':
+    cameraY -= 1;
+    break;
+  case 'l':
+    step = true;
+    break;
+  }
+  glutPostRedisplay();
+}
+bool once = false;
+
+void idle() {
+  if (not once) {
+    world.generateWorld();
+    once = true;
+  }
+  if (step) {
+    world.iterateOnce();
+    step = false;
+  }
+  glutPostRedisplay();
+};
 
 int main(int argc, char **argv) {
 
@@ -619,9 +736,9 @@ int main(int argc, char **argv) {
   glutCreateWindow("Islands");
 
   myInit();
-  // glutIdleFunc(idle);
+  glutIdleFunc(idle);
   glutDisplayFunc(draw);
-  // glutKeyboardFunc(input);
+  glutKeyboardFunc(input);
 
   glutMainLoop();
 
