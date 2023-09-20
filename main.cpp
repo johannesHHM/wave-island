@@ -30,6 +30,37 @@ struct point {
   int z;
 };
 
+struct color {
+  float r;
+  float g;
+  float b;
+};
+
+// color water_color = {0.4, 0.325, 0.796};
+// color grass_color = {0.427, 0.631, 0.875};
+// color cliff_color = {0.608, 0.922, 0.922};
+// color beach_color = {0.608, 0.922, 0.922};
+
+color space_cadet = {0.12549, 0.15686, 0.30588};
+color metallic_blue = {0.17255, 0.2902, 0.47059};
+color queen_blue = {0.21961, 0.45882, 0.63137};
+color sky_blue = {0.5451, 0.79216, 0.86667};
+color white = {1.0, 1.0, 1.0};
+color azureish_white = {0.83922, 0.88235, 0.91373};
+color cadet_blue = {0.6549, 0.73725, 0.78824};
+color light_slate_gray = {0.45098, 0.55294, 0.61569};
+
+// color water_color = queen_blue;
+// color grass_color = light_slate_gray;
+// color cliff_color = azureish_white;
+// color beach_color = azureish_white;
+
+// BAD NORTH
+color water_color = {0.56863, 0.6902, 0.6902};
+color grass_color = {0.64706, 0.75294, 0.61569};
+color cliff_color = {0.76471, 0.82353, 0.79608};
+color beach_color = {0.76471, 0.82353, 0.79608};
+
 void printPoint(point p) {
   std::cout << "p: " << p.x << " " << p.y << " " << p.z << std::endl;
 }
@@ -42,8 +73,8 @@ void printVectorPoint(std::vector<point> vec) {
 
 class World {
 public:
-  static const int size = 10; // 12?
-  static const int height = 4;
+  static const int size = 9; // 12?
+  static const int height = 5;
   Tile tiles[size][height][size];
   Tile example_tiles[tile_amount];
 
@@ -109,7 +140,7 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = one_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
+        polygon_data polygon = {grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.0, 0.2, p}};
         tile.polygons.push_back(polygon);
 
         break;
@@ -122,7 +153,7 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = two_s;
 
-        polygon_data polygon = {0.2, 0.2, 0.8, 4, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
+        polygon_data polygon = {water_color.r, water_color.g, water_color.b, 4, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
 
         break;
       }
@@ -134,9 +165,9 @@ public:
         tile.z_1 = beach_c_0;
         tile.z_0 = beach_c_0;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
-        // tile.polygons.push_back({0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
+        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
+        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
         break;
       }
       case beach_1: {
@@ -149,9 +180,9 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = one_s;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
-        // tile.polygons.push_back({0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
+        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
+        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
         break;
       }
       case beach_2: {
@@ -164,9 +195,9 @@ public:
         tile.z_1 = beach_c_2;
         tile.z_0 = beach_c_2;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
-        // tile.polygons.push_back({0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
+        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
+        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
         break;
       }
       case beach_3: {
@@ -179,9 +210,9 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = two_s;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
-        // tile.polygons.push_back({0.2, 0.2, 0.8, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.5, 0.2, 0.0}, {p, 0.2, 0.0}, {p, 0.2, p}, {0.5, 0.2, p}});
+        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {0.2, 0.0, 0.0}, {0.2, 0.0, p}, {0.5, 0.2, p}});
+        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 4, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {0.2, 0.0, 1.0}});
         break;
       }
       case beach_corn_0: {
@@ -193,9 +224,9 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = beach_c_0;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
-        // tile.polygons.push_back({0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
         break;
       }
       case beach_corn_1: {
@@ -207,9 +238,9 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = beach_c_2;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
-        // tile.polygons.push_back({0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
         break;
       }
       case beach_corn_2: {
@@ -221,9 +252,9 @@ public:
         tile.z_1 = beach_c_2;
         tile.z_0 = two_s;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
-        // tile.polygons.push_back({0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
         break;
       }
       case beach_corn_3: {
@@ -235,9 +266,9 @@ public:
         tile.z_1 = beach_c_0;
         tile.z_0 = two_s;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
-        // tile.polygons.push_back({0.2, 0.2, 0.8, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.5}});
+        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.5}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
+        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 5, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {1.0, 0.0, 0.8}, {0.2, 0.0, 0.0}});
         break;
       }
       case beach_in_corn_0: {
@@ -248,9 +279,9 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = beach_c_0;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
-        // tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
       case beach_in_corn_1: {
@@ -262,9 +293,9 @@ public:
         tile.z_1 = beach_c_0;
         tile.z_0 = one_s;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
-        // tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
       case beach_in_corn_2: {
@@ -276,9 +307,9 @@ public:
         tile.z_1 = beach_c_2;
         tile.z_0 = one_s;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
-        // tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
       case beach_in_corn_3: {
@@ -290,9 +321,9 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = beach_c_2;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
-        tile.polygons.push_back({0.95, 0.82, 0.42, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
-        // tile.polygons.push_back({0.2, 0.2, 0.8, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.5, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}, {0.0, 0.2, 0.5}});
+        tile.polygons.push_back({beach_color.r, beach_color.g, beach_color.b, 4, {0.2, 0.0, 0.0}, {0.5, 0.2, 0.0}, {0.0, 0.2, 0.5}, {0.0, 0.0, 0.2}});
+        // tile.polygons.push_back({water_color.r,water_color.g,water_color.b, 3, {0.2, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.2}});
         break;
       }
       case cliff_side_bot_0: {
@@ -303,8 +334,8 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = empty_c;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_side_bot_1: {
@@ -316,8 +347,8 @@ public:
         tile.z_1 = cliff_bot_hor_c_1;
         tile.z_0 = cliff_bot_hor_c_1;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_side_bot_2: {
@@ -330,8 +361,8 @@ public:
         tile.z_1 = empty_c;
         tile.z_0 = one_s;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_side_bot_3: {
@@ -344,8 +375,8 @@ public:
         tile.z_1 = cliff_bot_hor_c_3;
         tile.z_0 = cliff_bot_hor_c_3;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_corn_bot_0: {
@@ -356,8 +387,8 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = cliff_bot_hor_c_3;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
         break;
       }
       case cliff_corn_bot_1: {
@@ -369,8 +400,8 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = cliff_bot_hor_c_1;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
         break;
       }
       case cliff_corn_bot_2: {
@@ -382,8 +413,8 @@ public:
         tile.z_1 = cliff_bot_hor_c_1;
         tile.z_0 = one_s;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
         break;
       }
       case cliff_corn_bot_3: {
@@ -395,8 +426,8 @@ public:
         tile.z_1 = cliff_bot_hor_c_3;
         tile.z_0 = one_s;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 0.2, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.25, 0.0}, {1.0, 0.25, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
         break;
       }
       case cliff_side_mid_0: {
@@ -407,7 +438,7 @@ public:
         tile.z_1 = air_c;
         tile.z_0 = empty_c;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_side_mid_1: {
@@ -419,7 +450,7 @@ public:
         tile.z_1 = cliff_mid_hor_c_1;
         tile.z_0 = cliff_mid_hor_c_1;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_side_mid_2: {
@@ -431,7 +462,7 @@ public:
         tile.z_1 = empty_c;
         tile.z_0 = air_c;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_side_mid_3: {
@@ -443,7 +474,7 @@ public:
         tile.z_1 = cliff_mid_hor_c_3;
         tile.z_0 = cliff_mid_hor_c_3;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_corn_mid_0: {
@@ -454,7 +485,7 @@ public:
         tile.z_1 = air_c;
         tile.z_0 = cliff_mid_hor_c_3;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
 
         break;
       }
@@ -467,7 +498,7 @@ public:
         tile.z_1 = air_c;
         tile.z_0 = cliff_mid_hor_c_1;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
 
         break;
       }
@@ -480,7 +511,7 @@ public:
         tile.z_1 = cliff_mid_hor_c_1;
         tile.z_0 = air_c;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
 
         break;
       }
@@ -493,7 +524,7 @@ public:
         tile.z_1 = cliff_mid_hor_c_3;
         tile.z_0 = air_c;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
 
         break;
       }
@@ -505,8 +536,8 @@ public:
         tile.z_1 = air_c;
         tile.z_0 = one_s;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
       case cliff_side_top_1: {
@@ -518,8 +549,8 @@ public:
         tile.z_1 = cliff_top_hor_c_1;
         tile.z_0 = cliff_top_hor_c_1;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
       case cliff_side_top_2: {
@@ -531,8 +562,8 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = air_c;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
       case cliff_side_top_3: {
@@ -544,8 +575,8 @@ public:
         tile.z_1 = cliff_top_hor_c_3;
         tile.z_0 = cliff_top_hor_c_3;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
       case cliff_corn_top_0: {
@@ -556,8 +587,8 @@ public:
         tile.z_1 = air_c;
         tile.z_0 = cliff_top_hor_c_3;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
         break;
       }
       case cliff_corn_top_1: {
@@ -569,8 +600,8 @@ public:
         tile.z_1 = air_c;
         tile.z_0 = cliff_top_hor_c_1;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
         break;
       }
       case cliff_corn_top_2: {
@@ -582,8 +613,8 @@ public:
         tile.z_1 = cliff_top_hor_c_1;
         tile.z_0 = air_c;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
         break;
       }
       case cliff_corn_top_3: {
@@ -595,8 +626,8 @@ public:
         tile.z_1 = cliff_top_hor_c_3;
         tile.z_0 = air_c;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.0, 0.0}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.4, 0.2, 0.0}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.4, 0.2, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}});
         break;
       }
       case cliff_in_corn_top_0: {
@@ -607,8 +638,8 @@ public:
         tile.z_1 = cliff_top_hor_c_3;
         tile.z_0 = one_s;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
         break;
       }
       case cliff_in_corn_top_1: {
@@ -620,8 +651,8 @@ public:
         tile.z_1 = cliff_top_hor_c_1;
         tile.z_0 = one_s;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
         break;
       }
       case cliff_in_corn_top_2: {
@@ -633,8 +664,8 @@ public:
         tile.z_1 = cliff_top_hor_c_1;
         tile.z_0 = one_s;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
         break;
       }
       case cliff_in_corn_top_3: {
@@ -646,8 +677,8 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = cliff_top_hor_c_3;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.4, 0.2, 1.0}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 5, {1.0, 0.2, 0.0}, {0.0, 0.2, 0.0}, {0.0, 0.2, 0.6}, {0.4, 0.2, 1.0}, {1.0, 0.2, 1.0}});
         break;
       }
       case cliff_in_corn_mid_0: {
@@ -658,7 +689,7 @@ public:
         tile.z_1 = cliff_mid_hor_c_3;
         tile.z_0 = empty_c;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_in_corn_mid_1: {
@@ -670,7 +701,7 @@ public:
         tile.z_1 = cliff_mid_hor_c_1;
         tile.z_0 = empty_c;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_in_corn_mid_2: {
@@ -682,7 +713,7 @@ public:
         tile.z_1 = empty_c;
         tile.z_0 = cliff_mid_hor_c_1;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
 
         break;
       }
@@ -695,7 +726,7 @@ public:
         tile.z_1 = empty_c;
         tile.z_0 = cliff_mid_hor_c_3;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.3, 0.0, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
 
         break;
       }
@@ -707,8 +738,8 @@ public:
         tile.z_1 = cliff_bot_hor_c_3;
         tile.z_0 = empty_c;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_in_corn_bot_1: {
@@ -720,8 +751,8 @@ public:
         tile.z_1 = cliff_bot_hor_c_1;
         tile.z_0 = empty_c;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_in_corn_bot_2: {
@@ -733,8 +764,8 @@ public:
         tile.z_1 = empty_c;
         tile.z_0 = cliff_bot_hor_c_1;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_in_corn_bot_3: {
@@ -746,8 +777,8 @@ public:
         tile.z_1 = empty_c;
         tile.z_0 = cliff_bot_hor_c_3;
 
-        tile.polygons.push_back({0.2, 0.8, 0.2, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 3, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.0, 0.2, 1.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.25, 0.7}, {0.3, 0.25, 1.0}, {0.3, 1.0, 1.0}, {0.0, 1.0, 0.7}});
         break;
       }
       case cliff_tri_corn_0: {
@@ -758,9 +789,9 @@ public:
         tile.z_1 = air_c;
         tile.z_0 = cliff_bot_hor_c_3;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
       case cliff_tri_corn_1: {
@@ -772,9 +803,9 @@ public:
         tile.z_1 = cliff_top_hor_c_1;
         tile.z_0 = cliff_mid_hor_c_1;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
       case cliff_tri_corn_2: {
@@ -786,9 +817,9 @@ public:
         tile.z_1 = cliff_bot_hor_c_1;
         tile.z_0 = air_c;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
       case cliff_tri_corn_3: {
@@ -800,9 +831,9 @@ public:
         tile.z_1 = cliff_mid_hor_c_3;
         tile.z_0 = cliff_top_hor_c_3;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.3, 0.2, 0.0}, {1.0, 0.0, 0.7}, {1.0, 1.0, 0.7}, {0.3, 1.0, 0.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.0, 0.2, 0.0}, {0.3, 0.25, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
       case cliff_tri_corn_M_0: {
@@ -814,9 +845,9 @@ public:
         tile.z_1 = air_c;
         tile.z_0 = cliff_bot_hor_c_1;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
       case cliff_tri_corn_M_1: {
@@ -828,9 +859,9 @@ public:
         tile.z_1 = cliff_mid_hor_c_1;
         tile.z_0 = cliff_top_hor_c_1;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
       case cliff_tri_corn_M_2: {
@@ -842,9 +873,9 @@ public:
         tile.z_1 = cliff_bot_hor_c_3;
         tile.z_0 = air_c;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
       case cliff_tri_corn_M_3: {
@@ -856,9 +887,9 @@ public:
         tile.z_1 = cliff_top_hor_c_3;
         tile.z_0 = cliff_mid_hor_c_3;
 
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
-        tile.polygons.push_back({0.98, 0.98, 0.98, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
-        tile.polygons.push_back({0.2, 0.8, 0.2, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {0.0, 1.0, 0.7}, {0.7, 1.0, 0.0}, {0.7, 0.0, 0.0}});
+        tile.polygons.push_back({cliff_color.r, cliff_color.g, cliff_color.b, 4, {0.0, 0.0, 0.7}, {1.0, 0.0, 0.7}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
+        tile.polygons.push_back({grass_color.r, grass_color.g, grass_color.b, 4, {0.7, 0.25, 0.0}, {1.0, 0.2, 0.0}, {1.0, 0.2, 0.6}, {0.0, 0.2, 0.6}});
         break;
       }
       }
@@ -973,17 +1004,12 @@ public:
       printPoint(p);
     }
     tile_instance pick = poss_tiles->at(rand() % poss_tiles->size());
-    if (pick == cliff_tri_corn_0 or pick == cliff_tri_corn_1 or pick == cliff_tri_corn_2 or pick == cliff_tri_corn_3) {
-      std::cout << "LE PROBLEM " << typeStrings[pick] << " PICKED AT:" << std::endl;
-      printPoint(p);
-    }
     poss_tiles->resize(1);
     poss_tiles->at(0) = pick;
 
     for (Tile pos_tile : example_tiles) {
       if (pick == pos_tile.type) {
         tiles[p.x][p.y][p.z] = pos_tile;
-        // std::cout << "Picked " << pos_tile.type << std::endl;
       }
     }
     glutPostRedisplay();
@@ -1112,22 +1138,15 @@ public:
             }
           }
           if (possible_tiles[neighbour_point.x][neighbour_point.y][neighbour_point.z].size() > new_possible_tiles.size()) {
-            // std::cout << "Restricted" << std::endl;
             stack.push_back(neighbour_point);
           }
           possible_tiles[neighbour_point.x][neighbour_point.y][neighbour_point.z] = new_possible_tiles;
-          // printVectorType(s);
-          // std::cout << std::endl;
-          // printSetType(possible_neighbours);
-          // std::cout << "new possible tiles" << std::endl;
-
-          // printVectorType(new_possible_tiles);
         }
       }
     }
   }
-
   void iterateOnce() {
+
     bool ar = true;
     while (ar) {
       point p = findLowestEntropy();
@@ -1203,7 +1222,7 @@ public:
 
     collapseBorderTo(0, water);
 
-    collapseLayerTo(3, air);
+    collapseLayerTo(height - 1, air);
 
     // collapseLayerTo(0, empty);
 
@@ -1231,7 +1250,7 @@ public:
   }
 
   void drawOcean() {
-    glColor3f(0.2, 0.2, 0.8);
+    glColor3f(water_color.r, water_color.g, water_color.b);
     glBegin(GL_POLYGON);
     glVertex3f(-100, 0, -100);
     glVertex3f(100, 0, -100);
@@ -1283,7 +1302,7 @@ void initWorld() {
 void myInit() {
   std::cout << glGetString(GL_VERSION) << std::endl;
 
-  glClearColor(0.2, 0.2, 0.8, 1);
+  glClearColor(water_color.r, water_color.g, water_color.b, 1);
   glEnable(GL_DEPTH_TEST);
 
   glMatrixMode(GL_PROJECTION);
@@ -1297,19 +1316,19 @@ void myInit() {
 void draw() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  glEnable(GL_LIGHTING);
-  glEnable(GL_COLOR_MATERIAL);
-  glShadeModel(GL_SMOOTH);
-  // glEnable(GL_NORMALIZE);
-  //  glEnable(GL_LIGHT0);
-  glEnable(GL_LIGHT1);
+  // glEnable(GL_LIGHTING);
+  // glEnable(GL_COLOR_MATERIAL);
+  // glShadeModel(GL_SMOOTH);
+  // // glEnable(GL_NORMALIZE);
+  // // glEnable(GL_LIGHT0);
+  // glEnable(GL_LIGHT1);
 
-  float blue1[4] = {0.9, 0.9, 1, 1};
-  float blue2[4] = {0.5, 0.5, 0.9, 1};
-  float blue3[4] = {0.1, 0.1, 0.3, 1};
-  glLightfv(GL_LIGHT1, GL_DIFFUSE, blue2);
-  glLightfv(GL_LIGHT1, GL_SPECULAR, blue2);
-  glLightfv(GL_LIGHT1, GL_AMBIENT, blue1);
+  // float blue1[4] = {0.9, 0.9, 1, 1};
+  // float blue2[4] = {0.5, 0.5, 0.9, 1};
+  // float blue3[4] = {0.1, 0.1, 0.3, 1};
+  // glLightfv(GL_LIGHT1, GL_DIFFUSE, blue2);
+  // glLightfv(GL_LIGHT1, GL_SPECULAR, blue2);
+  // glLightfv(GL_LIGHT1, GL_AMBIENT, blue1);
 
   glLoadIdentity();
   gluLookAt(cameraX, cameraY, cameraZ, (world.size / 2), 3, (world.size / 2), 0.0, 1.0, 0.0);
