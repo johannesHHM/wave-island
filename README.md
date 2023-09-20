@@ -36,6 +36,31 @@ Or you can supply the 5 needed arguments, in order,
 ```sh
 ./island 12 5 2 1 -1
 ```
+The program will show a lightblue screen until the island has been generated.
+
+# Controls
+
+## Recommended Controls
+
+<kbd>space</kbd> stop island rotation
+
+<kbd>←</kbd> rotate island clockwise 
+
+<kbd>→</kbd> rotate island counter clockwise
+
+<kbd>↑</kbd> move camera position up
+
+<kbd>↓</kbd> move camera position down
+
+## Funky Controls
+
+<kbd>w</kbd> decrease camera Z position
+
+<kbd>a</kbd> increase camera X position 
+
+<kbd>s</kbd> decrease camera Z position 
+
+<kbd>d</kbd> increase camera X position 
 
 
 
