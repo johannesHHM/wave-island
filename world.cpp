@@ -43,6 +43,26 @@ public:
     }
   }
 
+  void emptyPossibleTiles() {
+    for (int x = 0; x < size; x++) {
+      for (int y = 0; y < height; y++) {
+        for (int z = 0; z < size; z++) {
+          possible_tiles[x][y][z].clear();
+        }
+      }
+    }
+  }
+
+  void reinitCollapsedArray() {
+    for (int x = 0; x < MAX_ISLAND_SIZE; x++) {
+      for (int y = 0; y < MAX_ISLAND_SIZE; y++) {
+        for (int z = 0; z < MAX_ISLAND_SIZE; z++) {
+          collapsed[x][y][z] = false;
+        }
+      }
+    }
+  }
+
   // Fills a list of all tiles with polygon data and connections. Used to generate neighbor lists and draw tiles
   void generateExampleList() {
     for (int i = 0; i < tile_amount; i++) {
@@ -427,6 +447,23 @@ public:
   void generateWorld() {
     generateExampleList();
     generateNeighbourList();
+    fillPossibleTiles();
+
+    collapseLayerTo(0, empty);
+    collapseBorderTo(1, water);
+    collapseLayerTo(height - 1, air);
+
+    iterate();
+
+    populateDoodads();
+
+    std::cout << "World Complete !" << std::endl;
+  }
+
+  void regenerateWorld() {
+    emptyPossibleTiles();
+    reinitCollapsedArray();
+
     fillPossibleTiles();
 
     collapseLayerTo(0, empty);

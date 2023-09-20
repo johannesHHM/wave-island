@@ -112,9 +112,26 @@ void input(unsigned char ch, int x, int y) {
     break;
   case 'a':
     cameraX -= 1;
+    break;
   case ' ':
     rotation_paused = not rotation_paused;
+    break;
+    // ENTER
+  case 13: {
+    world.seed = time(NULL);
+    srand(world.seed);
+    world.doodads.clear();
+
+    std::cout << "Using seed: " << world.seed << std::endl;
+    srand(world.seed);
+
+    std::cout << "Generating World ... " << std::endl;
+
+    world.regenerateWorld();
+    break;
   }
+  }
+
   glutPostRedisplay();
 }
 
@@ -194,8 +211,6 @@ void takeUserArguments() {
   std::cout << "Using seed: " << world.seed << std::endl;
   srand(world.seed);
 
-  std::cout << std::endl;
-
   std::cout << "Generating World ... " << std::endl;
 }
 
@@ -262,8 +277,6 @@ bool takeRunArgs(int argc, char **argv) {
 
   std::cout << "Using seed: " << world.seed << std::endl;
   srand(world.seed);
-
-  std::cout << std::endl;
 
   std::cout << "Generating World ... " << std::endl;
 
