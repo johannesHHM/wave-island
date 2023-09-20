@@ -3,12 +3,14 @@
 #include "tile.cpp"
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <GL/glut.h>
 #include <iostream>
 #include <vector>
 
 enum doodad_instance {
   bushes_big,
-  bushes_small
+  bushes_small,
+  house
 };
 
 struct circle_data {
@@ -103,26 +105,33 @@ public:
   void drawDoodad() {
     for (polygon_data polygon : polygons) {
 
+      glPushMatrix();
+      glTranslatef(x, y, z);
       glRotatef(rotation, 0.0, 1.0, 0.0);
       glTranslatef(-0.5, -0.5, -0.5);
       drawPolygon(polygon);
-      // drawLine(polygon);
+      //drawLine(polygon);
       glTranslatef(0.5, 0.5, 0.5);
       glRotatef(-rotation, 0.0, 1.0, 0.0);
+      glTranslatef(-x, -y, -z);
+      glPopMatrix();
     }
 
     for (circle_data circle : circles) {
-      glColor3f(circle.red, circle.green, circle.blue);
       glPushMatrix();
+      glColor3f(circle.red, circle.green, circle.blue);
       glTranslatef(x + circle.x, y + circle.y, z + circle.z);
       glRotatef(rotation, 0.0, 1.0, 0.0);
       glTranslatef(-0.5, -0.5, -0.5);
+
+      glColor3f(circle.red, circle.green, circle.blue);
+
       gluSphere(gluNewQuadric(), circle.radius, circle.detail, circle.detail);
       // drawLine(polygon);
       glTranslatef(0.5, 0.5, 0.5);
       glRotatef(-rotation, 0.0, 1.0, 0.0);
       glTranslatef(-(x + circle.x), -(y + circle.y), -(z + circle.z));
-      glPushMatrix();
+      glPopMatrix();
     }
   };
 };

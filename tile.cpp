@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-const int tile_amount = 60;
+const int tile_amount = 64;
 const int connection_amount = 32;
 
 enum tile_instance {
@@ -81,7 +81,12 @@ enum tile_instance {
   cliff_tri_corn_M_0,
   cliff_tri_corn_M_1,
   cliff_tri_corn_M_2,
-  cliff_tri_corn_M_3
+  cliff_tri_corn_M_3,
+
+  cliff_side_tri_corn_0,
+  cliff_side_tri_corn_1,
+  cliff_side_tri_corn_2,
+  cliff_side_tri_corn_3
 
 };
 
@@ -159,7 +164,12 @@ std::vector<std::string> typeStrings{
     "cliff_tri_corn_M_0",
     "cliff_tri_corn_M_1",
     "cliff_tri_corn_M_2",
-    "cliff_tri_corn_M_3"};
+    "cliff_tri_corn_M_3",
+
+    "cliff_side_tri_corn_0",
+    "cliff_side_tri_corn_1",
+    "cliff_side_tri_corn_2",
+    "cliff_side_tri_corn_3"};
 
 enum connections {
   air_c,
