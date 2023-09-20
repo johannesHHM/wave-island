@@ -20,27 +20,39 @@ double cameraZ = 10;
 
 float p = 1.0;
 
-const int tile_amount = 4;
+const int tile_amount = 9;
 
 enum tile_instance {
   air,
   empty,
   grass,
-  water
+  water,
+  beach_0,
+  beach_1,
+  beach_2,
+  beach_3,
+  beach_corn_0
 };
 
 std::vector<std::string> typeStrings{
     "air",
     "empty",
     "grass",
-    "water"};
+    "water",
+    "beach_0",
+    "beach_1",
+    "beach_2",
+    "beach_3"};
 
-int connection_amount = 3;
+int connection_amount = 6;
 
 enum connections {
   air_c,
   empty_c,
-  one
+  one_s,
+  two_s,
+  beach_c_0,
+  beach_c_1
 };
 
 struct polygon_data {
@@ -184,7 +196,7 @@ public:
 
 class World {
 public:
-  static const int size = 4;
+  static const int size = 10;
   Tile tiles[size][size][size];
   Tile example_tiles[tile_amount];
 
@@ -222,8 +234,7 @@ public:
         polygon_data polygon = {0.6, 0.1, 0.1, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
         // polygon_data polygon2 = {0.6, 0.1, 0.1, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
 
-        tile.polygons.push_back(polygon);
-        // tile.polygons.push_back(polygon2);
+        // tile.polygons.push_back(polygon);
         break;
       }
       case empty: {
@@ -233,22 +244,22 @@ public:
         tile.y_0 = empty_c;
         tile.z_1 = empty_c;
         tile.z_0 = empty_c;
-        polygon_data polygon = {0.2, 0.2, 0.2, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
-        // polygon_data polygon2 = {0.2, 0.2, 0.2, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
+        // polygon_data polygon = {0.2, 0.2, 0.2, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
+        //  polygon_data polygon2 = {0.2, 0.2, 0.2, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
 
-        tile.polygons.push_back(polygon);
-        // tile.polygons.push_back(polygon2);
+        // tile.polygons.push_back(polygon);
+        //  tile.polygons.push_back(polygon2);
         break;
       }
       case grass: {
-        tile.x_1 = one;
-        tile.x_0 = one;
+        tile.x_1 = one_s;
+        tile.x_0 = one_s;
         tile.y_1 = air_c;
         tile.y_0 = empty_c;
-        tile.z_1 = one;
-        tile.z_0 = one;
+        tile.z_1 = one_s;
+        tile.z_0 = one_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
+        polygon_data polygon = {0.2, 0.8, 0.2, {0.0, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.0, 0.5, p}};
         // polygon_data polygon2 = {0.2, 0.8, 0.2, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
 
         tile.polygons.push_back(polygon);
@@ -256,18 +267,94 @@ public:
         break;
       }
       case water: {
-        tile.x_1 = one;
-        tile.x_0 = one;
+        tile.x_1 = two_s;
+        tile.x_0 = two_s;
         tile.y_1 = air_c;
         tile.y_0 = empty_c;
-        tile.z_1 = one;
-        tile.z_0 = one;
+        tile.z_1 = two_s;
+        tile.z_0 = two_s;
 
-        polygon_data polygon = {0.2, 0.2, 0.8, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
+        polygon_data polygon = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
         // polygon_data polygon2 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
 
         tile.polygons.push_back(polygon);
         // tile.polygons.push_back(polygon2);
+        break;
+      }
+      case beach_0: {
+        tile.x_1 = one_s;
+        tile.x_0 = two_s;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = beach_c_0;
+        tile.z_0 = beach_c_0;
+
+        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
+        tile.polygons.push_back(polygon);
+        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
+        tile.polygons.push_back(polygon2);
+        break;
+      }
+      case beach_1: {
+        tile.rotation = 90;
+
+        tile.x_1 = beach_c_0;
+        tile.x_0 = beach_c_0;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = two_s;
+        tile.z_0 = one_s;
+
+        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
+        tile.polygons.push_back(polygon);
+        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
+        tile.polygons.push_back(polygon2);
+        break;
+      }
+      case beach_2: {
+        tile.rotation = 180;
+
+        tile.x_1 = two_s;
+        tile.x_0 = one_s;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = beach_c_1;
+        tile.z_0 = beach_c_1;
+
+        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
+        tile.polygons.push_back(polygon);
+        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
+        tile.polygons.push_back(polygon2);
+        break;
+      }
+      case beach_3: {
+        tile.rotation = 270;
+
+        tile.x_1 = beach_c_1;
+        tile.x_0 = beach_c_1;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = one_s;
+        tile.z_0 = two_s;
+
+        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
+        tile.polygons.push_back(polygon);
+        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
+        tile.polygons.push_back(polygon2);
+        break;
+      }
+      case beach_corn_0: {
+        tile.x_1 = one_s;
+        tile.x_0 = two_s;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = two_s;
+        tile.z_0 = beach_c_1;
+
+        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}, {0.5, 0.5, 0}};
+        tile.polygons.push_back(polygon);
+        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
+        tile.polygons.push_back(polygon2);
         break;
       }
       }
@@ -377,6 +464,39 @@ public:
     return lowest_point;
   }
 
+  tile_instance collapseTileAtTo(point p, tile_instance wanted_tile) {
+    std::vector<tile_instance> *poss_tiles = &possible_tiles[p.x][p.y][p.z];
+    if (poss_tiles->size() < 1) {
+      std::cout << "POSSIBLE TILES IS EMPTY" << std::endl;
+      printPoint(p);
+    }
+    for (tile_instance tile : *poss_tiles) {
+      if (wanted_tile == tile) {
+        poss_tiles->resize(1);
+        poss_tiles->at(0) = wanted_tile;
+
+        for (Tile pos_tile : example_tiles) {
+          if (wanted_tile == pos_tile.type) {
+            tiles[p.x][p.y][p.z] = pos_tile;
+          }
+        }
+        return wanted_tile;
+      }
+    }
+    std::cout << "Picking at random, couldnt collapse" << std::endl;
+    tile_instance pick = poss_tiles->at(rand() % poss_tiles->size());
+    poss_tiles->resize(1);
+    poss_tiles->at(0) = pick;
+
+    for (Tile pos_tile : example_tiles) {
+      if (pick == pos_tile.type) {
+        tiles[p.x][p.y][p.z] = pos_tile;
+        // std::cout << "Picked " << pos_tile.type << std::endl;
+      }
+    }
+
+    return pick;
+  }
   tile_instance collapseTileAt(point p) {
     std::vector<tile_instance> *poss_tiles = &possible_tiles[p.x][p.y][p.z];
     // std::cout << "POSSIBLE TILES: " << poss_tiles->size() << std::endl;
@@ -433,7 +553,7 @@ public:
       neighbours.push_back({-1, -1, -1});
     }
 
-    if (p.y + 1 < size) {
+    if (p.z + 1 < size) {
       neighbours.push_back({p.x, p.y, p.z + 1});
     } else {
       neighbours.push_back({-1, -1, -1});
@@ -470,7 +590,6 @@ public:
 
   void propagate(point p) {
     // p = {2, 2, 2};
-
     std::vector<point> stack;
     // stack.push_back({1, 2, 2});
     stack.push_back(p);
@@ -482,7 +601,7 @@ public:
       std::vector<point> neigh = neighbours(current_point);
       // printVectorPoint(neigh);
 
-      for (int i = 0; i < 5; i++) {
+      for (int i = 0; i < 6; i++) {
 
         point neighbour_point = neigh.at(i);
 
@@ -536,11 +655,11 @@ public:
           }
           possible_tiles[neighbour_point.x][neighbour_point.y][neighbour_point.z] = new_possible_tiles;
           // printVectorType(s);
-          std::cout << std::endl;
-          printSetType(possible_neighbours);
-          std::cout << "new possible tiles" << std::endl;
+          // std::cout << std::endl;
+          // printSetType(possible_neighbours);
+          // std::cout << "new possible tiles" << std::endl;
 
-          printVectorType(new_possible_tiles);
+          // printVectorType(new_possible_tiles);
         }
       }
     }
@@ -553,6 +672,9 @@ public:
       collapseTileAt(p);
       propagate(p);
     }
+
+    std::cout << "-----" << std::endl;
+    printVectorType(possible_tiles[0][0][0]);
     // for (int i = 0; i < possible_tiles[1][2][2].size(); i++) {
     //   std::cout << possible_tiles[1][2][2].at(i) << std::endl;
     // }
@@ -568,7 +690,7 @@ public:
       collapseTileAt(p);
       propagate(p);
       glutPostRedisplay();
-      std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+      // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
       // std::cout << "loop" << std::endl;
     }
@@ -594,13 +716,17 @@ public:
     generateNeighbourList();
     fillPossibleTiles();
 
-    point p = {3, 2, 3};
-    collapsed[3][2][3] = true;
-    printPoint(p);
-    if (p.x != -1) {
-      collapseTileAt(p);
-      propagate(p);
-    }
+    // iterate();
+
+    // point p = {2, 2, 2};
+    // collapsed[2][2][2] = true;
+    // printPoint(p);
+    // if (p.x != -1) {
+    //   collapseTileAtTo(p, water);
+    //   propagate(p);
+    // }
+
+    iterate();
 
     // std::vector<tile_instance> v;
     // v.push_back(grass);
@@ -635,6 +761,7 @@ public:
 
   void drawOutline() {
     glColor3f(0.0, 0.0, 0.0);
+    glTranslatef(-0.5, -0.5, -0.5);
     glLineWidth(2.0);
     glBegin(GL_LINE_LOOP);
     glVertex3f(0, 0, 0);
@@ -650,6 +777,7 @@ public:
     glVertex3f(0, size, 0);
 
     glEnd();
+    glTranslatef(0.5, 0.5, 0.5);
   }
 };
 
@@ -657,7 +785,7 @@ World world;
 
 void initWorld() {
   int seed = time(NULL);
-  seed = 1666838701;
+  // seed = 1666866302;
   srand(seed);
   std::cout << seed << std::endl;
   // srand(1666838701);
@@ -708,7 +836,7 @@ void input(unsigned char ch, int x, int y) {
     cameraY -= 1;
     break;
   case 'l':
-    step = true;
+    // step = true;
     break;
   }
   glutPostRedisplay();
