@@ -1,5 +1,7 @@
 #pragma once
 
+//Color struct and colors used
+
 struct color {
   float r;
   float g;

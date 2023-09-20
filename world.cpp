@@ -10,11 +10,11 @@ class World {
 public:
   const static int MAX_ISLAND_SIZE = 50;
 
-  int size = 12;         // 12 recommend
-  int height = 6;        // 6 recommend
-  int wanted_houses = 0; // 2 recommend
-  int seed = time(NULL); // random recommend
-  bool trees = true;     // true recommend
+  int size = 12;         //width of world         12 recommend
+  int height = 6;        //height of world        6 recommend
+  int wanted_houses = 2; //max houses in world    2 recommend
+  int seed = time(NULL); //seed for rand          random recommend
+  bool trees = true;     //trees or no trees      true recommend
 
   Tile tiles[MAX_ISLAND_SIZE][MAX_ISLAND_SIZE][MAX_ISLAND_SIZE];
   Tile example_tiles[tile_amount];
@@ -43,6 +43,7 @@ public:
     }
   }
 
+  // Empties possible tiles for a brave new world
   void emptyPossibleTiles() {
     for (int x = 0; x < size; x++) {
       for (int y = 0; y < height; y++) {
@@ -53,6 +54,7 @@ public:
     }
   }
 
+  // Fills collapsed array with false, for new world
   void reinitCollapsedArray() {
     for (int x = 0; x < MAX_ISLAND_SIZE; x++) {
       for (int y = 0; y < MAX_ISLAND_SIZE; y++) {
@@ -313,23 +315,6 @@ public:
       }
     }
   }
-  void iterateOnce() {
-
-    bool ar = true;
-    while (ar) {
-      point p = findLowestEntropy();
-      printPoint(p);
-      if (p.x != -1) {
-        tile_instance tile = collapseTileAt(p);
-        if (tile != air and tile != empty) {
-          ar = false;
-        }
-        propagate(p);
-      } else {
-        ar = false;
-      }
-    }
-  }
 
   // Function that has loop that generates world. Finds lowest entropy point,
   // collapses that point and updates rest of world to reflect new restrictions
@@ -460,6 +445,7 @@ public:
     std::cout << "World Complete !" << std::endl;
   }
 
+  // Function that generates a new world from the same parameters
   void regenerateWorld() {
     emptyPossibleTiles();
     reinitCollapsedArray();

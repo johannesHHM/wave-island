@@ -10,6 +10,7 @@
 const int tile_amount = 68;
 const int connection_amount = 32;
 
+// An enums that represent each every possible tile
 enum tile_instance {
   air,
   empty,
@@ -98,6 +99,7 @@ enum tile_instance {
 
 };
 
+// String version of every possible tile, for debugging
 std::vector<std::string> typeStrings{
     "air",
     "empty",
@@ -184,6 +186,7 @@ std::vector<std::string> typeStrings{
     "cliff_side_tri_corn_M_2",
     "cliff_side_tri_corn_M_3"};
 
+// enum for every tile connection type
 enum connections {
   air_c,
   empty_c,
@@ -226,12 +229,14 @@ enum connections {
   cliff_top_hor_c_3
 };
 
+// enum for every doodad connection type
 enum doodad_connection {
   grass_dood_big_c,
   grass_dood_small_c,
   none_dood_c
 };
 
+// struct that represents a polygon, with max sides of 5
 struct polygon_data {
   float red;
   float green;
@@ -246,6 +251,7 @@ struct polygon_data {
   float p5[3];
 };
 
+//struct that represents a point in 3d
 struct point {
   int x;
   int y;
@@ -254,13 +260,13 @@ struct point {
 
 class Tile {
 public:
-  GLfloat p = 1.0;
-
   tile_instance type = air;
   float rotation = 0.0;
 
+  // polygons to draw tile
   std::vector<polygon_data> polygons;
 
+  // All sides of tile and its connection type
   connections y_1;
   connections y_0;
   connections x_1;
@@ -268,12 +274,14 @@ public:
   connections z_1;
   connections z_0;
 
+  // tile has four possible doodad spots
   doodad_connection dood_0;
   doodad_connection dood_1;
   doodad_connection dood_2;
   doodad_connection dood_3;
   doodad_connection dood_center;
 
+  // neighbor lists, contain every possible tile that can be connected to this tile, generated during runtime
   std::vector<tile_instance> neighbours_y_1;
   std::vector<tile_instance> neighbours_y_0;
   std::vector<tile_instance> neighbours_x_1;
@@ -283,6 +291,7 @@ public:
 
   Tile(){};
 
+  // function to draw a polygon
   void drawSquare(polygon_data polygon) {
     glColor3f(polygon.red, polygon.green, polygon.blue);
     glBegin(GL_POLYGON);
@@ -312,6 +321,8 @@ public:
 
     glEnd();
   };
+
+  // function to draw line from polygon, used to debug
   void drawLine(polygon_data polygon) {
     glColor3f(0.0, 0.0, 0.0);
     glLineWidth(3.0);
@@ -343,6 +354,7 @@ public:
     glEnd();
   };
 
+  // function to draw tile
   void drawTile() {
     for (polygon_data polygon : polygons) {
 
@@ -355,6 +367,7 @@ public:
     }
   };
 
+  //prints all tile information
   void print() {
     std::cout << "Info of tile, type: " << typeStrings[type] << std::endl;
     std::cout << "Connection x_1: " << x_1 << std::endl;
@@ -398,6 +411,7 @@ public:
   }
 };
 
+// Function that contains all tile information for every tile type
 Tile fillTileData(Tile tile) {
   switch (tile.type) {
   case air: {

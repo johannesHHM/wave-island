@@ -8,12 +8,14 @@
 #include <iostream>
 #include <vector>
 
+// enum for all doodad types
 enum doodad_instance {
   bushes_big,
   bushes_small,
   house
 };
 
+// struct with data needed to draw a circle
 struct circle_data {
   float red;
   float green;
@@ -29,6 +31,7 @@ struct circle_data {
 
 class Doodad {
 public:
+  // position
   float x;
   float y;
   float z;
@@ -42,6 +45,7 @@ public:
 
   Doodad(){};
 
+  // function that draws polygon
   void drawPolygon(polygon_data polygon) {
     glColor3f(polygon.red, polygon.green, polygon.blue);
     glBegin(GL_POLYGON);
@@ -72,6 +76,7 @@ public:
     glEnd();
   };
 
+  // function that draws line from polygon, debug
   void drawLine(polygon_data polygon) {
     glColor3f(0.0, 0.0, 0.0);
     glLineWidth(3.0);
@@ -103,6 +108,7 @@ public:
     glEnd();
   };
 
+  // function that draws all doodad polygons and circles
   void drawDoodad() {
     for (polygon_data polygon : polygons) {
 
@@ -137,6 +143,7 @@ public:
   };
 };
 
+//function that contains all doodad data
 void fillDoodadData(Doodad &dood) {
   std::vector<color> colors;
   colors.push_back({0.21961, 0.32157, 0.28627});
