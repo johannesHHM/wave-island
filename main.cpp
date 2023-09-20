@@ -1,10 +1,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
-#include <algorithm>
-#include <chrono>
 #include <iostream>
-#include <map>
 #include <set>
 #include <stdlib.h>
 #include <string.h>
@@ -20,7 +17,7 @@ double cameraZ = 20;
 
 float p = 1.0;
 
-const int tile_amount = 12;
+const int tile_amount = 13;
 
 enum tile_instance {
   air,
@@ -34,8 +31,11 @@ enum tile_instance {
   beach_corn_0,
   beach_corn_1,
   beach_corn_2,
-  beach_corn_3
-
+  beach_corn_3,
+  beach_in_corn_0,
+  beach_in_corn_1,
+  beach_in_corn_2,
+  beach_in_corn_3
 };
 
 std::vector<std::string> typeStrings{
@@ -50,7 +50,11 @@ std::vector<std::string> typeStrings{
     "beach_corn_0",
     "beach_corn_1",
     "beach_corn_2",
-    "beach_corn_3"};
+    "beach_corn_3",
+    "beach_in_corn_0",
+    "beach_in_corn_1",
+    "beach_in_corn_2",
+    "beach_in_corn_3"};
 
 int connection_amount = 8;
 
@@ -70,10 +74,13 @@ struct polygon_data {
   float green;
   float blue;
 
+  int point_amount;
+
   float p1[3];
   float p2[3];
   float p3[3];
   float p4[3];
+  float p5[3];
 };
 
 struct point {
@@ -132,20 +139,58 @@ public:
   void drawSquare(polygon_data polygon) {
     glColor3f(polygon.red, polygon.green, polygon.blue);
     glBegin(GL_POLYGON);
-    glVertex3fv(polygon.p1);
-    glVertex3fv(polygon.p2);
-    glVertex3fv(polygon.p3);
-    glVertex3fv(polygon.p4);
+    switch (polygon.point_amount) {
+    case 3: {
+      glVertex3fv(polygon.p1);
+      glVertex3fv(polygon.p2);
+      glVertex3fv(polygon.p3);
+      break;
+    }
+    case 4: {
+      glVertex3fv(polygon.p1);
+      glVertex3fv(polygon.p2);
+      glVertex3fv(polygon.p3);
+      glVertex3fv(polygon.p4);
+      break;
+    }
+    case 5: {
+      glVertex3fv(polygon.p1);
+      glVertex3fv(polygon.p2);
+      glVertex3fv(polygon.p3);
+      glVertex3fv(polygon.p4);
+      glVertex3fv(polygon.p5);
+      break;
+    }
+    }
     glEnd();
   };
   void drawLine(polygon_data polygon) {
     glColor3f(0.0, 0.0, 0.0);
     glLineWidth(2.0);
     glBegin(GL_LINE_LOOP);
-    glVertex3fv(polygon.p1);
-    glVertex3fv(polygon.p2);
-    glVertex3fv(polygon.p3);
-    glVertex3fv(polygon.p4);
+    switch (polygon.point_amount) {
+    case 3: {
+      glVertex3fv(polygon.p1);
+      glVertex3fv(polygon.p2);
+      glVertex3fv(polygon.p3);
+      break;
+    }
+    case 4: {
+      glVertex3fv(polygon.p1);
+      glVertex3fv(polygon.p2);
+      glVertex3fv(polygon.p3);
+      glVertex3fv(polygon.p4);
+      break;
+    }
+    case 5: {
+      glVertex3fv(polygon.p1);
+      glVertex3fv(polygon.p2);
+      glVertex3fv(polygon.p3);
+      glVertex3fv(polygon.p4);
+      glVertex3fv(polygon.p5);
+      break;
+    }
+    }
     glEnd();
   };
 
@@ -206,7 +251,7 @@ public:
 
 class World {
 public:
-  static const int size = 10;
+  static const int size = 7;
   Tile tiles[size][size][size];
   Tile example_tiles[tile_amount];
 
@@ -241,7 +286,7 @@ public:
         tile.y_0 = air_c;
         tile.z_1 = air_c;
         tile.z_0 = air_c;
-        polygon_data polygon = {0.6, 0.1, 0.1, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
+        polygon_data polygon = {0.6, 0.1, 0.1, 4, {0.0, 1.0, 0.0}, {p, 1.0, 0.0}, {p, 1.0, p}, {0.0, 1.0, p}};
         // polygon_data polygon2 = {0.6, 0.1, 0.1, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
 
         // tile.polygons.push_back(polygon);
@@ -269,7 +314,7 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = one_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, {0.0, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.0, 0.5, p}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.0, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.0, 0.5, p}};
         // polygon_data polygon2 = {0.2, 0.8, 0.2, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
 
         tile.polygons.push_back(polygon);
@@ -284,7 +329,7 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = two_s;
 
-        polygon_data polygon = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
+        polygon_data polygon = {0.2, 0.2, 0.8, 4, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
         // polygon_data polygon2 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {p, 0.0, 0.0}, {p, 0.0, p}, {0.0, 0.0, p}};
 
         tile.polygons.push_back(polygon);
@@ -299,9 +344,9 @@ public:
         tile.z_1 = beach_c_0;
         tile.z_0 = beach_c_0;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
         tile.polygons.push_back(polygon2);
         break;
       }
@@ -315,9 +360,9 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = one_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
         tile.polygons.push_back(polygon2);
         break;
       }
@@ -331,9 +376,9 @@ public:
         tile.z_1 = beach_c_2;
         tile.z_0 = beach_c_2;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
         tile.polygons.push_back(polygon2);
         break;
       }
@@ -347,9 +392,9 @@ public:
         tile.z_1 = one_s;
         tile.z_0 = two_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 4, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, p}, {0.5, 0.5, p}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, p}, {0.5, 0.5, p}};
         tile.polygons.push_back(polygon2);
         break;
       }
@@ -362,11 +407,11 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = beach_c_0;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}, {0.5, 0.5, 0}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
         tile.polygons.push_back(polygon3);
         break;
       }
@@ -380,11 +425,11 @@ public:
         tile.z_1 = two_s;
         tile.z_0 = beach_c_2;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}, {0.5, 0.5, 0}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
         tile.polygons.push_back(polygon3);
         break;
       }
@@ -398,11 +443,11 @@ public:
         tile.z_1 = beach_c_2;
         tile.z_0 = two_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}, {0.5, 0.5, 0}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
         tile.polygons.push_back(polygon3);
         break;
       }
@@ -416,12 +461,63 @@ public:
         tile.z_1 = beach_c_0;
         tile.z_0 = two_s;
 
-        polygon_data polygon = {0.2, 0.8, 0.2, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}, {0.5, 0.5, 0}};
+        polygon_data polygon = {0.2, 0.8, 0.2, 3, {0.5, 0.5, 0.0}, {p, 0.5, 0.0}, {p, 0.5, 0.5}};
         tile.polygons.push_back(polygon);
-        polygon_data polygon2 = {0.95, 0.82, 0.42, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
+        polygon_data polygon2 = {0.95, 0.82, 0.42, 4, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.5}, {1.0, 0.0, p}, {0.0, 0.0, 0.0}};
         tile.polygons.push_back(polygon2);
-        polygon_data polygon3 = {0.2, 0.2, 0.8, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
+        polygon_data polygon3 = {0.2, 0.2, 0.8, 4, {0.0, 0.0, 0.0}, {0.0, 0.0, 1.0}, {1.0, 0.0, 1.0}, {0.0, 0.0, 0.0}};
         tile.polygons.push_back(polygon3);
+        break;
+      }
+      case beach_in_corn_0: {
+        tile.x_1 = one_s;
+        tile.x_0 = beach_c_3;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = one_s;
+        tile.z_0 = beach_c_0;
+
+        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.0}, {1.0, 0.5, 1.0}, {0.0, 0.5, 1.0}, {0.0, 0.5, 0.5}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 3, {0.0, 0.0, 0.0}, {0.5, 0.5, 0.0}, {0.0, 0.5, 0.5}});
+        break;
+      }
+      case beach_in_corn_1: {
+        tile.rotation = 90;
+        tile.x_1 = one_s;
+        tile.x_0 = beach_c_1;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = beach_c_0;
+        tile.z_0 = one_s;
+
+        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.0}, {1.0, 0.5, 1.0}, {0.0, 0.5, 1.0}, {0.0, 0.5, 0.5}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 3, {0.0, 0.0, 0.0}, {0.5, 0.5, 0.0}, {0.0, 0.5, 0.5}});
+        break;
+      }
+      case beach_in_corn_2: {
+        tile.rotation = 180;
+        tile.x_1 = beach_c_1;
+        tile.x_0 = one_s;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = beach_c_2;
+        tile.z_0 = one_s;
+
+        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.0}, {1.0, 0.5, 1.0}, {0.0, 0.5, 1.0}, {0.0, 0.5, 0.5}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 3, {0.0, 0.0, 0.0}, {0.5, 0.5, 0.0}, {0.0, 0.5, 0.5}});
+        break;
+      }
+      case beach_in_corn_3: {
+        tile.rotation = 270;
+        tile.x_1 = beach_c_3;
+        tile.x_0 = one_s;
+        tile.y_1 = air_c;
+        tile.y_0 = empty_c;
+        tile.z_1 = one_s;
+        tile.z_0 = beach_c_2;
+
+        tile.polygons.push_back({0.2, 0.8, 0.2, 5, {0.5, 0.5, 0.0}, {1.0, 0.5, 0.0}, {1.0, 0.5, 1.0}, {0.0, 0.5, 1.0}, {0.0, 0.5, 0.5}});
+        tile.polygons.push_back({0.95, 0.82, 0.42, 3, {0.0, 0.0, 0.0}, {0.5, 0.5, 0.0}, {0.0, 0.5, 0.5}});
         break;
       }
       }
