@@ -14,7 +14,7 @@ A program that uses wave function collapse algorithm to generate an island.
 Make sure GLU, GLUT and OpenGL is available.
 
 ```sh
-git clone https://gitlab.stud.idi.ntnu.no/jhmorkem/IDATT2505-Project
+git clone https://github.com/johannesHHM/wave-island
 mkdir IDATT2505-Project/build
 cd IDATT2505-Project/build
 cmake ..
