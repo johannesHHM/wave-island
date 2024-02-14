@@ -15,8 +15,8 @@ Make sure GLU, GLUT and OpenGL is available.
 
 ```sh
 git clone https://github.com/johannesHHM/wave-island
-mkdir IDATT2505-Project/build
-cd IDATT2505-Project/build
+mkdir wave-island/build
+cd wave-island/build
 cmake ..
 make
 ```
